@@ -29,6 +29,7 @@ module.exports = typescript.config(
       'new-cap': 'off',
       'sort-keys': 'off',
       'sort-imports': 'off',
+      'no-duplicate-imports': 'off',
 
       '@stylistic/semi': ['error', 'never'],
       '@stylistic/function-call-spacing': 'error',

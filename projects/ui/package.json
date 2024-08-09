@@ -4,7 +4,9 @@
   "private": false,
   "peerDependencies": {
     "@angular/common": "^18.1.0",
-    "@angular/core": "^18.1.0"
+    "@angular/core": "^18.1.0",
+    "class-variance-authority": "^0.7.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "dependencies": {
     "tslib": "^2.3.0"
