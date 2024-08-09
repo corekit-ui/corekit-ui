@@ -1,15 +1,15 @@
 // @ts-check
-import eslint from '@eslint/js'
-import stylistic from '@stylistic/eslint-plugin'
-import angular from 'angular-eslint'
-import typescript from 'typescript-eslint'
+const eslint = require('@eslint/js')
+const stylistic = require('@stylistic/eslint-plugin')
+const angular = require('angular-eslint')
+const typescript = require('typescript-eslint')
 
-export default typescript.config(
+module.exports = typescript.config(
   {
     files: ['**/*.ts'],
     plugins: { '@stylistic': stylistic },
     languageOptions: {
-      parserOptions: { project: true, tsconfigRootDir: import.meta.dirname }
+      parserOptions: { project: true, tsconfigRootDir: __dirname }
     },
     extends: [
       eslint.configs.all,
@@ -28,6 +28,7 @@ export default typescript.config(
       'space-before-function-paren': ['error', 'never'],
       'new-cap': 'off',
       'sort-keys': 'off',
+      'sort-imports': 'off',
 
       '@stylistic/semi': ['error', 'never'],
       '@stylistic/function-call-spacing': 'error',
@@ -67,6 +68,7 @@ export default typescript.config(
       '@typescript-eslint/no-magic-numbers': 'warn',
       '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
       '@typescript-eslint/class-methods-use-this': 'off',
+      '@typescript-eslint/prefer-readonly-parameter-types': 'off',
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
         {
@@ -132,13 +134,22 @@ export default typescript.config(
       '@angular-eslint/prefer-on-push-component-change-detection': 'warn',
       '@angular-eslint/component-class-suffix': 'off',
       '@angular-eslint/directive-class-suffix': 'off',
+      '@angular-eslint/no-host-metadata-property': 'off',
       '@angular-eslint/directive-selector': [
         'error',
-        { type: ['element', 'attribute'], prefix: 'ck', style: 'camelCase' }
+        {
+          type: ['element', 'attribute'],
+          prefix: ['ck', 'app'],
+          style: 'camelCase'
+        }
       ],
       '@angular-eslint/component-selector': [
         'error',
-        { type: ['element', 'attribute'], prefix: 'ck', style: 'kebab-case' }
+        {
+          type: ['element', 'attribute'],
+          prefix: ['ck', 'app'],
+          style: 'kebab-case'
+        }
       ],
       '@angular-eslint/component-max-inline-declarations': [
         'error',
@@ -153,6 +164,8 @@ export default typescript.config(
   {
     files: ['**/*.html'],
     extends: angular.configs.templateAll,
-    rules: {}
+    rules: {
+      '@angular-eslint/template/i18n': 'off'
+    }
   }
 )
