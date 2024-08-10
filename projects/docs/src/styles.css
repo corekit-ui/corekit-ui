@@ -12,10 +12,10 @@
     --radius: 0.5rem;
 
     --background: 0 0% 100%;
-    --foreground: 0 0% 0%;
+    --foreground: 240 5.88% 3.33%;
 
     --surface: 0 0% 100%;
-    --surface-foreground: 0 0% 0%;
+    --surface-foreground: 240 5.88% 3.33%;
 
     --primary: 240 5.9% 10%;
     --primary-foreground: 0 0% 98%;
@@ -44,10 +44,10 @@
   }
 
   .dark {
-    --background: 0 0% 0%;
+    --background: 240 5.88% 3.33%;
     --foreground: 0 0% 98%;
 
-    --surface: 0 0% 0%;
+    --surface: 240 5.88% 3.33%;
     --surface-foreground: 0 0% 98%;
 
     --primary: 0 0% 98%;
