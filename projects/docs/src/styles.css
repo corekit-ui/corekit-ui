@@ -1,3 +1,6 @@
+@use '@angular/cdk';
+@include cdk.overlay();
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -65,6 +68,10 @@
 @layer base {
   * {
     @apply border-border;
+  }
+
+  *:focus-visible {
+    @apply rounded outline-none ring ring-primary ring-opacity-30 transition-shadow;
   }
 
   body {
