@@ -1,0 +1,16 @@
+@if (!errored()) {
+  <img
+    class="transition-all"
+    fill
+    placeholder
+    [priority]="priority()"
+    [ngSrc]="src()"
+    [alt]="alt()"
+    (load)="loaded.set(true)"
+    (error)="errored.set(true)"
+  />
+}
+
+@if (!loaded()) {
+  {{ fallback() }}
+}
