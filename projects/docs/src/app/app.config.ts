@@ -6,7 +6,14 @@ import {
 import { provideClientHydration } from '@angular/platform-browser'
 import { provideAnimations } from '@angular/platform-browser/animations'
 import { provideRouter } from '@angular/router'
-import { LucideAngularModule, Minus, Plus } from 'lucide-angular'
+import {
+  Check,
+  CircleX,
+  Info,
+  LucideAngularModule,
+  Terminal,
+  TriangleAlert
+} from 'lucide-angular'
 import { routes } from './app.routes'
 
 export const appConfig: ApplicationConfig = {
@@ -15,6 +22,14 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(),
     provideAnimations(),
-    importProvidersFrom(LucideAngularModule.pick({ Plus, Minus }))
+    importProvidersFrom(
+      LucideAngularModule.pick({
+        Terminal,
+        Info,
+        TriangleAlert,
+        CircleX,
+        Check
+      })
+    )
   ]
 }

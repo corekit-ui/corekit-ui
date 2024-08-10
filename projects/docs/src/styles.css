@@ -12,56 +12,68 @@
     --radius: 0.5rem;
 
     --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --foreground: 0 0% 0%;
 
     --surface: 0 0% 100%;
-    --surface-foreground: 240 10% 3.9%;
+    --surface-foreground: 0 0% 0%;
 
     --primary: 240 5.9% 10%;
     --primary-foreground: 0 0% 98%;
 
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
+    --secondary: 220 8.9% 46.1%;
+    --secondary-foreground: 0 0% 98%;
 
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --accent: 211.29 100% 50%;
+    --accent-foreground: 0 0% 98%;
 
-    --destructive: 355 100% 60%;
+    --success: 128.72 50% 49%;
+    --success-foreground: 0 0% 98%;
+
+    --warning: 35.06 100% 50%;
+    --warning-foreground: 0 0% 98%;
+
+    --destructive: 3.19 100% 59.41%;
     --destructive-foreground: 0 0% 98%;
 
     --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --muted-foreground: 240 2% 50%;
 
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
+    --ring: 240 5.9% 80%;
   }
 
   .dark {
-    --background: 240 10% 3.9%;
+    --background: 0 0% 0%;
     --foreground: 0 0% 98%;
 
-    --surface: 240 10% 3.9%;
+    --surface: 0 0% 0%;
     --surface-foreground: 0 0% 98%;
 
     --primary: 0 0% 98%;
     --primary-foreground: 240 5.9% 10%;
 
-    --secondary: 240 3.7% 15.9%;
+    --secondary: 220 8.9% 46.1%;
     --secondary-foreground: 0 0% 98%;
 
-    --accent: 240 3.7% 15.9%;
+    --accent: 210.25 100% 52.16%;
     --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 85.7% 97.3%;
+    --success: 128.72 50% 49%;
+    --success-foreground: 0 0% 98%;
+
+    --warning: 36.15deg 100% 52.16%;
+    --warning-foreground: 0 0% 98%;
+
+    --destructive: 3.35 100% 61.37%;
+    --destructive-foreground: 0 0% 98%;
 
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
 
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    --ring: 240 4.9% 35.9%;
   }
 }
 
@@ -71,7 +83,7 @@
   }
 
   *:focus-visible {
-    @apply rounded outline-none ring ring-primary ring-opacity-30 transition-shadow;
+    @apply rounded outline-none ring ring-ring transition-shadow;
   }
 
   body {
