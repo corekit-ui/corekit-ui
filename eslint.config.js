@@ -32,6 +32,7 @@ module.exports = typescript.config(
       'no-duplicate-imports': 'off',
       'no-underscore-dangle': 'off',
       'capitalized-comments': 'off',
+      'arrow-body-style': 'off',
 
       '@stylistic/semi': ['error', 'never'],
       '@stylistic/function-call-spacing': 'error',

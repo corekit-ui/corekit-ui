@@ -3,6 +3,7 @@ import { CkH1 } from '@corekit/ui/typography'
 import { LucideIconConfig } from 'lucide-angular'
 import { AccordionPageComponent } from './features/components/accordion-page/accordion-page.component'
 import { AlertPageComponent } from './features/components/alert-page/alert-page.component'
+import { AvatarPageComponent } from './features/components/avatar-page/avatar-page.component'
 import { TypographyPageComponent } from './features/components/typography-page/typography-page.component'
 
 @Component({
@@ -12,7 +13,8 @@ import { TypographyPageComponent } from './features/components/typography-page/t
     TypographyPageComponent,
     CkH1,
     AccordionPageComponent,
-    AlertPageComponent
+    AlertPageComponent,
+    AvatarPageComponent
   ],
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
