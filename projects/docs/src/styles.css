@@ -68,6 +68,6 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background leading-7 text-foreground;
   }
 }

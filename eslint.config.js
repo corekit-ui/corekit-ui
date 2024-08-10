@@ -70,6 +70,8 @@ module.exports = typescript.config(
       '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
       '@typescript-eslint/class-methods-use-this': 'off',
       '@typescript-eslint/prefer-readonly-parameter-types': 'off',
+      '@typescript-eslint/no-extraneous-class': 'off',
+      '@typescript-eslint/unbound-method': 'off',
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
         {

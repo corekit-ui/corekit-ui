@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core'
-import { CkButton } from '@corekit/ui/button'
+import { CkH1 } from '@corekit/ui/typography'
+import { TypographyPageComponent } from './features/components/typography-page/typography-page.component'
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CkButton],
+  imports: [TypographyPageComponent, CkH1],
   templateUrl: './app.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'block container space-y-6 py-6' }
 })
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class AppComponent {}
