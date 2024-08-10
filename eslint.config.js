@@ -30,6 +30,8 @@ module.exports = typescript.config(
       'sort-keys': 'off',
       'sort-imports': 'off',
       'no-duplicate-imports': 'off',
+      'no-underscore-dangle': 'off',
+      'capitalized-comments': 'off',
 
       '@stylistic/semi': ['error', 'never'],
       '@stylistic/function-call-spacing': 'error',
@@ -72,6 +74,8 @@ module.exports = typescript.config(
       '@typescript-eslint/prefer-readonly-parameter-types': 'off',
       '@typescript-eslint/no-extraneous-class': 'off',
       '@typescript-eslint/unbound-method': 'off',
+      '@typescript-eslint/parameter-properties': 'off',
+      '@typescript-eslint/consistent-type-imports': 'off',
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
         {
@@ -168,7 +172,8 @@ module.exports = typescript.config(
     files: ['**/*.html'],
     extends: angular.configs.templateAll,
     rules: {
-      '@angular-eslint/template/i18n': 'off'
+      '@angular-eslint/template/i18n': 'off',
+      '@angular-eslint/template/no-call-expression': 'off'
     }
   }
 )
