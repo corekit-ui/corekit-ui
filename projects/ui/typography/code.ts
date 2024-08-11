@@ -2,7 +2,7 @@ import { Directive, input } from '@angular/core'
 import { classNames } from '@corekit/ui/utils'
 
 export const code =
-  'bg-surface-foreground text-surface relative rounded px-[.375rem] py-[0.25rem] font-mono text-sm'
+  'bg-muted text-foreground relative rounded px-[.375rem] py-1 font-mono text-sm'
 
 @Directive({
   selector: '[ckCode], code',
