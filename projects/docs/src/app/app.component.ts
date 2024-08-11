@@ -6,6 +6,7 @@ import { AlertPageComponent } from './features/components/alert-page/alert-page.
 import { AvatarPageComponent } from './features/components/avatar-page/avatar-page.component'
 import { BadgePageComponent } from './features/components/badge-page/badge-page.component'
 import { ButtonPageComponent } from './features/components/button-page/button-page.component'
+import { CardPageComponent } from './features/components/card-page/card-page.component'
 import { TypographyPageComponent } from './features/components/typography-page/typography-page.component'
 
 @Component({
@@ -18,7 +19,8 @@ import { TypographyPageComponent } from './features/components/typography-page/t
     AlertPageComponent,
     AvatarPageComponent,
     BadgePageComponent,
-    ButtonPageComponent
+    ButtonPageComponent,
+    CardPageComponent
   ],
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
