@@ -5,6 +5,7 @@ import { AccordionPageComponent } from './features/components/accordion-page/acc
 import { AlertPageComponent } from './features/components/alert-page/alert-page.component'
 import { AvatarPageComponent } from './features/components/avatar-page/avatar-page.component'
 import { BadgePageComponent } from './features/components/badge-page/badge-page.component'
+import { ButtonPageComponent } from './features/components/button-page/button-page.component'
 import { TypographyPageComponent } from './features/components/typography-page/typography-page.component'
 
 @Component({
@@ -16,7 +17,8 @@ import { TypographyPageComponent } from './features/components/typography-page/t
     AccordionPageComponent,
     AlertPageComponent,
     AvatarPageComponent,
-    BadgePageComponent
+    BadgePageComponent,
+    ButtonPageComponent
   ],
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

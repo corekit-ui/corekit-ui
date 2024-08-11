@@ -77,6 +77,7 @@ module.exports = typescript.config(
       '@typescript-eslint/unbound-method': 'off',
       '@typescript-eslint/parameter-properties': 'off',
       '@typescript-eslint/consistent-type-imports': 'off',
+      '@typescript-eslint/no-use-before-define': 'off',
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
         {
