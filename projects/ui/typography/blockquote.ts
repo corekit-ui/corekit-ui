@@ -1,7 +1,8 @@
 import { Directive, input } from '@angular/core'
 import { classNames } from '@corekit/ui/utils'
 
-export const blockquote = 'mt-6 border-l-4 ps-5 italic'
+export const blockquote =
+  'text-base leading-relaxed my-6 border-l-4 ps-5 italic'
 
 @Directive({
   selector: '[ckBlockquote], blockquote',

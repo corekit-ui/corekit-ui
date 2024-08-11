@@ -1,7 +1,7 @@
 import { Directive, input } from '@angular/core'
 import { classNames } from '@corekit/ui/utils'
 
-const h3 = 'mt-4 text-lg font-semibold tracking-tight first:mt-0 md:text-xl'
+const h3 = 'mt-4 text-xl font-bold tracking-tight first:mt-0'
 
 @Directive({
   selector: '[ckH3], h3',
