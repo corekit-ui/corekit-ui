@@ -1,7 +1,8 @@
 import { Directive, input } from '@angular/core'
 import { classNames } from '@corekit/ui/utils'
 
-const alertTitle = 'mb-1 font-medium leading-none tracking-tight block'
+const alertTitle =
+  'mb-1.5 text-base font-medium leading-none tracking-tight block'
 
 @Directive({
   selector: '[ckAlertTitle], ck-alert-title',

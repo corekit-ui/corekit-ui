@@ -1,7 +1,7 @@
 import { Directive, input } from '@angular/core'
 import { classNames } from '@corekit/ui/utils'
 
-const small = 'text-sm font-medium leading-none text-muted-foreground'
+const small = 'text-sm font-medium leading-none'
 
 @Directive({
   selector: '[ckSmall], small',

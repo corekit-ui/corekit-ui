@@ -3,7 +3,7 @@ import { classNames } from '@corekit/ui/utils'
 import { CkAccordionItem } from '../accordion-item/accordion-item'
 
 export const accordionItemHeader =
-  'py-3 gap-2 flex items-center w-full text-start font-semibold [&:is([disabled])]:opacity-50 [&:is([disabled])]:pointer-events-none'
+  'py-3 gap-2 flex items-center w-full text-start text-base leading-relaxed font-medium [&:is([disabled])]:opacity-50 [&:is([disabled])]:pointer-events-none hover:underline underline-offset-2'
 
 /**
  * OnPush change detection is not possible in this case

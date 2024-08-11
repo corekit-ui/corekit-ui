@@ -6,7 +6,7 @@ export type Color = VariantProps<typeof button>['color']
 export type Appearance = VariantProps<typeof button>['appearance']
 
 export const button = cva(
-  'border rounded-md transition-all inline-flex items-center justify-center whitespace-nowrap text-sm font-medium',
+  'border rounded-md transition-all inline-flex items-center justify-center whitespace-nowrap font-medium',
   {
     variants: {
       size: { sm: 'h-8 px-3 text-xs', md: 'h-10 px-4', lg: 'h-11 px-8' },

@@ -28,6 +28,6 @@ import { TypographyPageComponent } from './features/components/typography-page/t
 })
 export class AppComponent {
   constructor(private readonly _lucide: LucideIconConfig) {
-    this._lucide.size = 16
+    this._lucide.size = 18
   }
 }

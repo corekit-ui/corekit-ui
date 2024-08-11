@@ -1,7 +1,7 @@
 import { Directive, input } from '@angular/core'
 import { classNames } from '@corekit/ui/utils'
 
-const list = 'my-6 ps-6 [&>li:not(:first-child)]:mt-2'
+const list = 'text-base leading-relaxed my-6 ps-6 [&>li:not(:first-child)]:mt-2'
 
 @Directive({
   selector: '[ckList]',

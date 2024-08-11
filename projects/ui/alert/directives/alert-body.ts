@@ -1,7 +1,7 @@
 import { Directive, input } from '@angular/core'
 import { classNames } from '@corekit/ui/utils'
 
-const alertBody = 'text-sm [&_p]:leading-relaxed block'
+const alertBody = '[&_p]:leading-relaxed block'
 
 @Directive({
   selector: '[ckAlertBody], ck-alert-body',
