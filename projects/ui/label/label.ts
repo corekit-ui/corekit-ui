@@ -10,6 +10,9 @@ export class CkLabel {
   public readonly class = input<string>()
 
   protected get _class(): string {
-    return classNames('font-medium peer-disabled:opacity-50', this.class())
+    return classNames(
+      'font-medium peer-invalid:text-destructive peer-disabled:opacity-50',
+      this.class()
+    )
   }
 }

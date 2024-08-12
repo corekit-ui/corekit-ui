@@ -7,6 +7,7 @@ import { AvatarPageComponent } from './features/components/avatar-page/avatar-pa
 import { BadgePageComponent } from './features/components/badge-page/badge-page.component'
 import { ButtonPageComponent } from './features/components/button-page/button-page.component'
 import { CardPageComponent } from './features/components/card-page/card-page.component'
+import { CheckboxPageComponent } from './features/components/checkbox-page/checkbox-page.component'
 import { LabelPageComponent } from './features/components/label-page/label-page.component'
 import { TypographyPageComponent } from './features/components/typography-page/typography-page.component'
 
@@ -23,6 +24,7 @@ import { TypographyPageComponent } from './features/components/typography-page/t
     ButtonPageComponent,
     CardPageComponent,
     LabelPageComponent,
+    CheckboxPageComponent
   ],
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
