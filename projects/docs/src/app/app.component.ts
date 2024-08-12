@@ -9,6 +9,7 @@ import { ButtonPageComponent } from './features/components/button-page/button-pa
 import { CardPageComponent } from './features/components/card-page/card-page.component'
 import { CheckboxPageComponent } from './features/components/checkbox-page/checkbox-page.component'
 import { LabelPageComponent } from './features/components/label-page/label-page.component'
+import { RadioPageComponent } from './features/components/radio-page/radio-page.component'
 import { TypographyPageComponent } from './features/components/typography-page/typography-page.component'
 
 @Component({
@@ -24,7 +25,8 @@ import { TypographyPageComponent } from './features/components/typography-page/t
     ButtonPageComponent,
     CardPageComponent,
     LabelPageComponent,
-    CheckboxPageComponent
+    CheckboxPageComponent,
+    RadioPageComponent
   ],
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
