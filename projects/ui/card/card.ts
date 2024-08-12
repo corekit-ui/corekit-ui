@@ -1,7 +1,12 @@
 import { Directive, input } from '@angular/core'
 import { classNames } from '@corekit/ui/utils'
 
-const card = 'block rounded-lg border bg-card text-card-foreground shadow-sm'
+const card = `
+  block shadow-sm rounded-lg border
+  p-6 md:p-7
+  bg-surface text-surface-foreground
+  space-y-4 md:space-y-5
+`
 
 @Directive({
   selector: '[ckCard], ck-card',

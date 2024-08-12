@@ -30,6 +30,11 @@ export const button = cva(
       { shape: ['pill', 'circle'], class: 'rounded-full' },
 
       {
+        appearance: ['solid', 'outline'],
+        class: 'shadow-sm active:shadow-none'
+      },
+
+      {
         appearance: ['outline', 'ghost'],
         class: 'hover:bg-opacity-5 dark:hover:bg-opacity-10'
       },
