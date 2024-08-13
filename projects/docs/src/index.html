@@ -20,16 +20,16 @@
     <div class="fixed bottom-5 right-5">
       <button
         type="button"
-        class="rounded bg-foreground px-4 py-1 text-background"
-        onclick="document.body.classList.remove('dark')"
+        class="bg-foreground text-background rounded px-4 py-1"
+        onclick="document.body.classList.remove('dark'); document.body.style.colorScheme = 'light'"
       >
         Light
       </button>
 
       <button
         type="button"
-        class="rounded bg-foreground px-4 py-1 text-background"
-        onclick="document.body.classList.add('dark')"
+        class="bg-foreground text-background rounded px-4 py-1"
+        onclick="document.body.classList.add('dark'); document.body.style.colorScheme = 'dark'"
       >
         Dark
       </button>

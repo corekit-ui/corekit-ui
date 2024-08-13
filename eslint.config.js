@@ -34,6 +34,8 @@ module.exports = typescript.config(
       'capitalized-comments': 'off',
       'arrow-body-style': 'off',
       'no-alert': 'warn',
+      'no-ternary': 'off',
+      'no-implicit-coercion': 'off',
 
       '@stylistic/semi': ['error', 'never'],
       '@stylistic/function-call-spacing': 'error',
@@ -79,6 +81,9 @@ module.exports = typescript.config(
       '@typescript-eslint/parameter-properties': 'off',
       '@typescript-eslint/consistent-type-imports': 'off',
       '@typescript-eslint/no-use-before-define': 'off',
+      '@typescript-eslint/strict-boolean-expressions': 'off',
+      '@typescript-eslint/max-params': 'off',
+      't@typescript-eslint/no-magic-numbers': ['error', { ignore: [0, 1] }],
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
         {

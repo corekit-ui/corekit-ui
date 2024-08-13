@@ -89,10 +89,10 @@
   }
 
   *:focus-visible {
-    @apply rounded outline-none ring-2 ring-ring ring-offset-2 ring-offset-background transition-shadow;
+    @apply ring-ring ring-offset-background rounded outline-none ring-2 ring-offset-2;
   }
 
   body {
-    @apply bg-background text-sm leading-normal text-foreground;
+    @apply bg-background text-foreground text-sm leading-normal;
   }
 }
