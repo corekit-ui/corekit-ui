@@ -11,6 +11,7 @@ import {
   CircleX,
   Info,
   LucideAngularModule,
+  Search,
   Terminal,
   TriangleAlert
 } from 'lucide-angular'
@@ -28,7 +29,8 @@ export const appConfig: ApplicationConfig = {
         Info,
         TriangleAlert,
         CircleX,
-        Check
+        Check,
+        Search
       })
     )
   ]

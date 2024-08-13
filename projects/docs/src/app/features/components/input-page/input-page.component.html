@@ -1,0 +1,43 @@
+<div class="space-y-1">
+  <label for="input">Regular</label>
+
+  <div class="relative flex items-center">
+    <input
+      #invalid
+      id="input"
+      type="text"
+      ckInput
+      padEnd
+      placeholder="Placeholder"
+    />
+
+    <div class="text-muted-foreground absolute right-3">
+      <lucide-icon name="search" />
+    </div>
+  </div>
+</div>
+
+<div class="space-y-1">
+  <label for="disabled">Disabled</label>
+  <input id="disabled" type="text" ckInput placeholder="Placeholder" disabled />
+</div>
+
+<div class="space-y-1">
+  <label for="select">Select</label>
+
+  <select id="select" ckInput>
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+  </select>
+</div>
+
+<div class="space-y-1">
+  <label for="file">File</label>
+  <input id="file" type="file" ckInput placeholder="Placeholder" />
+</div>
+
+<div class="space-y-1">
+  <label for="textarea">Textarea</label>
+  <textarea id="textarea" ckInput placeholder="Placeholder"></textarea>
+</div>
