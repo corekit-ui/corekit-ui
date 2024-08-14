@@ -13,6 +13,7 @@ import {
   LucideAngularModule,
   Search,
   Terminal,
+  ToggleLeft,
   TriangleAlert
 } from 'lucide-angular'
 import { routes } from './app.routes'
@@ -30,7 +31,8 @@ export const appConfig: ApplicationConfig = {
         TriangleAlert,
         CircleX,
         Check,
-        Search
+        Search,
+        ToggleLeft
       })
     )
   ]

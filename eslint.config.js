@@ -72,7 +72,6 @@ module.exports = typescript.config(
 
       '@typescript-eslint/no-confusing-void-expression': 'off',
       '@typescript-eslint/method-signature-style': ['error', 'method'],
-      '@typescript-eslint/no-magic-numbers': 'warn',
       '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
       '@typescript-eslint/class-methods-use-this': 'off',
       '@typescript-eslint/prefer-readonly-parameter-types': 'off',
@@ -83,15 +82,11 @@ module.exports = typescript.config(
       '@typescript-eslint/no-use-before-define': 'off',
       '@typescript-eslint/strict-boolean-expressions': 'off',
       '@typescript-eslint/max-params': 'off',
-      't@typescript-eslint/no-magic-numbers': ['error', { ignore: [0, 1] }],
+      '@typescript-eslint/no-magic-numbers': ['warn', { ignore: [0, 1] }],
+      '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
-        {
-          accessibility: 'explicit',
-          overrides: {
-            constructors: 'no-public'
-          }
-        }
+        { accessibility: 'explicit', overrides: { constructors: 'no-public' } }
       ],
       '@typescript-eslint/naming-convention': [
         'error',
@@ -150,22 +145,6 @@ module.exports = typescript.config(
       '@angular-eslint/component-class-suffix': 'off',
       '@angular-eslint/directive-class-suffix': 'off',
       '@angular-eslint/no-host-metadata-property': 'off',
-      '@angular-eslint/directive-selector': [
-        'error',
-        {
-          type: ['element', 'attribute'],
-          prefix: ['ck', 'app'],
-          style: 'camelCase'
-        }
-      ],
-      '@angular-eslint/component-selector': [
-        'error',
-        {
-          type: ['element', 'attribute'],
-          prefix: ['ck', 'app'],
-          style: 'kebab-case'
-        }
-      ],
       '@angular-eslint/component-max-inline-declarations': [
         'error',
         { template: 1 }
