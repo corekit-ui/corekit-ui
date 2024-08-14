@@ -1,0 +1,85 @@
+<form [formGroup]="form">
+  <ck-form-field>
+    <label ckLabel for="input">Regular</label>
+
+    <div class="relative flex items-center">
+      @if (prefixVisible) {
+        <ck-input-prefix>
+          <lucide-icon name="search" />
+        </ck-input-prefix>
+      }
+
+      <input
+        #invalid
+        id="input"
+        type="email"
+        ckInput
+        placeholder="john.appleseed@acmecorp.com"
+        formControlName="email"
+      />
+
+      <button
+        ckInputSuffix
+        ckButton
+        shape="square"
+        size="sm"
+        type="button"
+        class="right-1 rounded-sm"
+        appearance="ghost"
+        title="Toggle prefix"
+        (click)="prefixVisible = !prefixVisible"
+      >
+        <lucide-icon name="toggle-left" />
+      </button>
+    </div>
+
+    @if (form.controls.email.errors?.['required']) {
+      <ck-error>This field is required</ck-error>
+    }
+
+    @if (form.controls.email.errors?.['email']) {
+      <ck-error>Invalid email</ck-error>
+    }
+  </ck-form-field>
+
+  <ck-form-field>
+    <div class="flex items-center gap-2">
+      <input ckCheckbox id="agreed" type="checkbox" formControlName="agreed" />
+      <label for="agreed">Accept terms and conditions</label>
+    </div>
+
+    @if (form.controls.agreed.errors?.['required']) {
+      <ck-error>You have to agree</ck-error>
+    }
+  </ck-form-field>
+
+  <ck-form-field>
+    <label for="#">Question?</label>
+
+    <div class="flex items-center gap-2">
+      <input
+        ckRadio
+        id="yes"
+        type="radio"
+        value="yes"
+        formControlName="question"
+      />
+      <label for="yes">Yes</label>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <input
+        ckRadio
+        id="no"
+        type="radio"
+        value="no"
+        formControlName="question"
+      />
+      <label for="no">No</label>
+    </div>
+
+    @if (form.controls.question.errors?.['required']) {
+      <ck-error>You have to select</ck-error>
+    }
+  </ck-form-field>
+</form>

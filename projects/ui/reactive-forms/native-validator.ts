@@ -38,13 +38,9 @@ export class CkNativeValidator implements Validator {
   }
 
   private _translateValidity(): void {
-    const error =
-      Object.values(this._control?.errors ?? ({} as Record<string, string>)).at(
-        0
-      ) ?? 'Invalid'
+    const errors = (this._control?.errors ?? {}) as Record<string, string>
+    const message = Object.values(errors).at(0) ?? ''
 
-    this._host.nativeElement.setCustomValidity(
-      this._control?.invalid ? error : ''
-    )
+    this._host.nativeElement.setCustomValidity(message)
   }
 }

@@ -11,6 +11,10 @@ export default {
       padding: '1.5rem',
       screens: { '2xl': '1400px' }
     },
+    transitionTimingFunction: {
+      DEFAULT: 'cubic-bezier(0.25, 1, 0.5, 1)'
+    },
+    transitionDuration: { DEFAULT: '250ms' },
     extend: {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
