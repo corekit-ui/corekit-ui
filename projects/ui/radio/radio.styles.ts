@@ -21,9 +21,9 @@ export const radio = cva(
     'after:rounded-full',
     'after:transition-transform',
     'checked:after:scale-100',
-    'invalid:border-destructive',
-    'invalid:ring-destructive/50',
-    'invalid:checked:after:bg-destructive'
+    'group-[]/invalid:border-destructive',
+    'group-[]/invalid:ring-destructive/50',
+    'group-[]/invalid:checked:after:bg-destructive'
   ],
   {
     variants: {

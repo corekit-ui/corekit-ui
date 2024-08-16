@@ -5,6 +5,7 @@ import { checkbox, Color } from './checkbox.styles'
 
 @Directive({
   selector: '[ckCheckbox]',
+  exportAs: 'ckCheckbox',
   standalone: true,
   hostDirectives: [CkNativeValidator],
   host: {

@@ -1,6 +1,6 @@
 <form [formGroup]="form">
   <ck-form-field>
-    <label ckLabel for="input">Regular</label>
+    <label ckLabel for="email">Regular</label>
 
     <div class="relative flex items-center">
       @if (prefixVisible) {
@@ -10,8 +10,7 @@
       }
 
       <input
-        #invalid
-        id="input"
+        id="email"
         type="email"
         ckInput
         placeholder="john.appleseed@acmecorp.com"
@@ -42,10 +41,14 @@
     }
   </ck-form-field>
 
-  <ck-form-field>
+  <ck-form-field [errorStateMatcher]="formSubmittedErrorStateMatcher">
     <div class="flex items-center gap-2">
       <input ckCheckbox id="agreed" type="checkbox" formControlName="agreed" />
-      <label for="agreed">Accept terms and conditions</label>
+      <label for="agreed">
+        Accept terms and conditions (with custom
+        <code>ErrorStateMatcher</code>
+        )
+      </label>
     </div>
 
     @if (form.controls.agreed.errors?.['required']) {
@@ -82,4 +85,6 @@
       <ck-error>You have to select</ck-error>
     }
   </ck-form-field>
+
+  <button ckButton type="submit">Submit</button>
 </form>

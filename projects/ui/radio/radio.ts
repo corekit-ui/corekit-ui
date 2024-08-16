@@ -5,6 +5,7 @@ import { Color, radio } from './radio.styles'
 
 @Directive({
   selector: '[ckRadio]',
+  exportAs: 'ckRadio',
   standalone: true,
   hostDirectives: [CkNativeValidator],
   host: {

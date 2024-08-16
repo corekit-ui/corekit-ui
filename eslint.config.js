@@ -21,7 +21,7 @@ module.exports = typescript.config(
       'prefer-const': 'error',
       'no-unused-vars': 'error',
       eqeqeq: ['error', 'always', { null: 'ignore' }],
-      curly: ['error', 'multi'],
+      curly: ['error', 'multi-line'],
       'no-console': 'warn',
       'one-var': 'off',
       'func-style': ['error', 'declaration'],
@@ -84,6 +84,8 @@ module.exports = typescript.config(
       '@typescript-eslint/max-params': 'off',
       '@typescript-eslint/no-magic-numbers': ['warn', { ignore: [0, 1] }],
       '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/prefer-nullish-coalescing': 'warn',
+      '@typescript-eslint/no-invalid-void-type': 'off',
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
         { accessibility: 'explicit', overrides: { constructors: 'no-public' } }

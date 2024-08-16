@@ -1,55 +1,63 @@
 import {
-  AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  computed,
   contentChild,
+  DoCheck,
   effect,
   Injector,
   input,
   runInInjectionContext,
-  Signal
+  signal
 } from '@angular/core'
-import { toSignal } from '@angular/core/rxjs-interop'
-import { FormControlStatus, NgControl } from '@angular/forms'
+import { FormGroupDirective, NgControl } from '@angular/forms'
 import { CkInput, CkInputPrefix, CkInputSuffix } from '@corekit/ui/input'
-import { CkLabel } from '@corekit/ui/label'
+import { ErrorStateMatcher } from '@corekit/ui/reactive-forms'
 import { classNames } from '@corekit/ui/utils'
-import { distinctUntilChanged, startWith } from 'rxjs'
+import { FADE_IN_DOWN } from './animations/fade-in-down.animation'
 
-const formField = 'relative block space-y-1 pb-5'
+const formField = 'relative block space-y-0.5 pb-5'
 
 @Component({
   selector: 'ck-form-field, [ckFormField]',
+  exportAs: 'ckFormField',
   standalone: true,
-  template: '<ng-content />',
+  templateUrl: './form-field.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [FADE_IN_DOWN],
   host: { '[class]': '_class' }
 })
-export class CkFormField implements AfterContentInit, AfterViewInit {
+export class CkFormField implements DoCheck, AfterViewInit {
   public readonly class = input<string>()
+  public readonly errorStateMatcher = input<ErrorStateMatcher>()
+  public readonly errorState = computed(() => this._errorState())
 
   protected get _class(): string {
-    return classNames(formField, this.class())
+    return classNames(
+      formField,
+      this._errorState() && 'group/invalid',
+      this.class()
+    )
   }
 
   private readonly _ngControl = contentChild.required(NgControl)
-  private readonly _label = contentChild(CkLabel)
   private readonly _input = contentChild(CkInput)
   private readonly _inputPrefix = contentChild(CkInputPrefix)
   private readonly _inputSuffix = contentChild(CkInputSuffix)
+  private readonly _errorState = signal(false)
 
-  private _ngControlStatus!: Signal<FormControlStatus>
+  constructor(
+    private readonly _injector: Injector,
+    private readonly _defaultErrorStateMatcher: ErrorStateMatcher,
+    private readonly _formGroupDirective: FormGroupDirective
+  ) {}
 
-  constructor(private readonly _injector: Injector) {
-    effect(this._updateLabelValidity.bind(this), { allowSignalWrites: true })
-  }
-
-  public ngAfterContentInit(): void {
-    runInInjectionContext(
-      this._injector,
-      this._setupNgControlStatusEmitter.bind(this)
-    )
+  public ngDoCheck(): void {
+    // This has to be recalculated every time change detection
+    // runs due to a lot of events that we want to react, but
+    // cannot subscribe to.
+    this._calculateErrorState()
   }
 
   public ngAfterViewInit(): void {
@@ -59,24 +67,24 @@ export class CkFormField implements AfterContentInit, AfterViewInit {
     })
   }
 
-  private _setupNgControlStatusEmitter(): void {
-    const status$ = this._ngControl().statusChanges!.pipe(
-      distinctUntilChanged(),
-      startWith(this._ngControl().status as FormControlStatus)
-    )
-
-    this._ngControlStatus = toSignal(status$, { requireSync: true })
-  }
-
-  private _updateLabelValidity(): void {
-    this._label()?.invalid.set(this._ngControlStatus() === 'INVALID')
-  }
-
   private _updateInputPadStart(): void {
     this._input()?.padStart(!!this._inputPrefix())
   }
 
   private _updateInputPadEnd(): void {
     this._input()?.padEnd(!!this._inputSuffix())
+  }
+
+  private _calculateErrorState(): void {
+    const errorStateMatcher =
+      this.errorStateMatcher() ?? this._defaultErrorStateMatcher
+
+    const oldState = this._errorState()
+    const newState = errorStateMatcher.matches(
+      this._ngControl(),
+      this._formGroupDirective
+    )
+
+    if (newState !== oldState) this._errorState.set(newState)
   }
 }

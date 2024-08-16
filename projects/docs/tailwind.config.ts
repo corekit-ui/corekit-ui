@@ -14,7 +14,7 @@ export default {
     transitionTimingFunction: {
       DEFAULT: 'cubic-bezier(0.25, 1, 0.5, 1)'
     },
-    transitionDuration: { DEFAULT: '250ms' },
+    transitionDuration: { DEFAULT: '200ms' },
     extend: {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],

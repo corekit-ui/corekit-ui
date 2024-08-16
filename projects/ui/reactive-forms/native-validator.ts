@@ -39,7 +39,7 @@ export class CkNativeValidator implements Validator {
 
   private _translateValidity(): void {
     const errors = (this._control?.errors ?? {}) as Record<string, string>
-    const message = Object.values(errors).at(0) ?? ''
+    const message = Object.keys(errors).at(0) ?? ''
 
     this._host.nativeElement.setCustomValidity(message)
   }
