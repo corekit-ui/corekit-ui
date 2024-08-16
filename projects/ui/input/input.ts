@@ -12,6 +12,7 @@ import { inputStyles } from './input.styles'
 
 @Component({
   selector: '[ckInput]',
+  exportAs: 'ckInput',
   standalone: true,
   template: '<ng-content />',
   hostDirectives: [CkNativeValidator],

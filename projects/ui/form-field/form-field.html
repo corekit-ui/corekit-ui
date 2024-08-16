@@ -1,0 +1,7 @@
+<ng-content />
+
+@if (errorState()) {
+  <div class="absolute" @fadeInDown>
+    <ng-content select="ck-error, [ckError]" />
+  </div>
+}
