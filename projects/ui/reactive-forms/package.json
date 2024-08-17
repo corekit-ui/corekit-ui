@@ -4,9 +4,5 @@
       "entryFile": "public-api.ts",
       "cssUrl": "inline"
     }
-  },
-  "peerDependencies": {
-    "clsx": "^2.1.1",
-    "tailwind-merge": "^2.4.0"
   }
 }
