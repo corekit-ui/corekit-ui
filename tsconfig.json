@@ -21,8 +21,8 @@
     "lib": ["ES2022", "dom"],
     "useDefineForClassFields": false,
     "paths": {
-      "@corekit/ui/*": ["./dist/ui/*"],
-      "@corekit/ui": ["./dist/ui"]
+      "@corekit/ui": ["./projects/ui"],
+      "@corekit/ui/*": ["./projects/ui/*"],
     }
   },
   "angularCompilerOptions": {

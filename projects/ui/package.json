@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "Angular component library inspired by shadcn/ui. Built with Angular CDK and Tailwind – the tools you already love.",
   "author": "Azamat R",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/corekit-ui/corekit-ui.git",

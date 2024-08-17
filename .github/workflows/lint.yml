@@ -29,3 +29,22 @@ jobs:
 
       - name: Lint
         run: bash .github/workflows/scripts/lint-commit-messages.sh
+
+  lint_code:
+    name: Codebase
+    needs: lint_commits
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint

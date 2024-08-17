@@ -5,11 +5,9 @@ import { CkAccordionItem } from '../accordion-item/accordion-item'
 export const accordionItemHeader =
   'py-3 gap-2 flex items-center w-full text-start text-base leading-relaxed font-medium [&:is([disabled])]:opacity-50 [&:is([disabled])]:pointer-events-none hover:underline underline-offset-2'
 
-/**
- * OnPush change detection is not possible in this case
- * due to changes not picking up when another item toggled
- * in single mode
- */
+// OnPush change detection is not possible in this case
+// due to changes not picking up when another item toggled
+// in single mode
 // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
 @Component({
   selector: 'ck-accordion-item-header, [ckAccordionItemHeader]',
