@@ -1,15 +1,14 @@
 {
   "name": "corekit",
   "version": "0.0.0",
-  "private": false,
+  "author": "Azamat R",
+  "private": true,
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
     "lint": "ng lint",
-    "watch:ui": "ng build ui --watch --configuration development",
-    "serve:ssr:docs": "node dist/docs/server/server.mjs"
+    "build:ui": "ng build ui",
+    "watch:ui": "npm run build:ui -- --watch --configuration development"
   },
   "dependencies": {
     "@angular/animations": "^18.1.0",
