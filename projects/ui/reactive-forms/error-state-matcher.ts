@@ -1,15 +1,20 @@
 import { Injectable } from '@angular/core'
-import { FormGroupDirective, NgControl } from '@angular/forms'
+import {
+  AbstractControl,
+  FormGroupDirective,
+  NgControl,
+  NgForm,
+} from '@angular/forms'
 
 @Injectable({ providedIn: 'root' })
 export class ErrorStateMatcher {
   public matches(
-    control: NgControl,
-    form: FormGroupDirective | undefined
+    control: AbstractControl | NgControl | null,
+    form: FormGroupDirective | NgForm | null | undefined,
   ): boolean {
     return !!(
-      control.invalid &&
-      (control.dirty || control.touched || !form || form.submitted)
+      control?.invalid &&
+      (control.dirty || control.touched || form?.submitted)
     )
   }
 }
