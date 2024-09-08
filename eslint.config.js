@@ -36,6 +36,13 @@ module.exports = typescript.config(
       'no-alert': 'warn',
       'no-ternary': 'off',
       'no-implicit-coercion': 'off',
+      'no-plusplus': 'off',
+      'max-classes-per-file': 'off',
+      'no-nested-ternary': 'off',
+      'no-warning-comments': 'off',
+      'no-eq-null': 'off',
+      'max-lines': 'off',
+      'no-undefined': 'off',
 
       '@stylistic/semi': ['error', 'never'],
       '@stylistic/function-call-spacing': 'error',
@@ -70,6 +77,11 @@ module.exports = typescript.config(
         }
       ],
 
+      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+      '@typescript-eslint/no-unnecessary-condition': 'warn',
+      '@typescript-eslint/no-magic-numbers': 'off',
+      '@typescript-eslint/unified-signatures': 'off',
+      '@typescript-eslint/consistent-return': 'off',
       '@typescript-eslint/no-confusing-void-expression': 'off',
       '@typescript-eslint/method-signature-style': ['error', 'method'],
       '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
@@ -82,7 +94,6 @@ module.exports = typescript.config(
       '@typescript-eslint/no-use-before-define': 'off',
       '@typescript-eslint/strict-boolean-expressions': 'off',
       '@typescript-eslint/max-params': 'off',
-      '@typescript-eslint/no-magic-numbers': ['warn', { ignore: [0, 1] }],
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/prefer-nullish-coalescing': 'warn',
       '@typescript-eslint/no-invalid-void-type': 'off',
@@ -141,7 +152,13 @@ module.exports = typescript.config(
           ]
         }
       ],
+      '@typescript-eslint/no-unused-expressions': [
+        'error',
+        { allowShortCircuit: true }
+      ],
 
+      '@angular-eslint/template/no-any': 'off',
+      '@angular-eslint/no-forward-ref': 'off',
       '@angular-eslint/no-pipe-impure': 'warn',
       '@angular-eslint/prefer-on-push-component-change-detection': 'warn',
       '@angular-eslint/component-class-suffix': 'off',
