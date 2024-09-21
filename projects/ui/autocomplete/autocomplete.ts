@@ -22,12 +22,12 @@ import {
   signal,
   TemplateRef,
   untracked,
-  viewChild
+  viewChild,
 } from '@angular/core'
 import {
   outputToObservable,
   toObservable,
-  toSignal
+  toSignal,
 } from '@angular/core/rxjs-interop'
 import { CkClassNamesPipe } from '@corekit/ui/common'
 import { CkOption } from '@corekit/ui/option'
@@ -48,17 +48,17 @@ let uniqueIdCounter = 0
   templateUrl: './autocomplete.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [PANEL_ANIMATION],
-  host: { class: 'hidden' }
+  host: { class: 'hidden' },
 })
 export class CkAutocomplete implements OnDestroy {
   public readonly class = input<string>('')
 
   public readonly ariaLabel = input<string | undefined>(undefined, {
-    alias: 'aria-label'
+    alias: 'aria-label',
   })
 
   public readonly ariaLabelledby = input<string | undefined>(undefined, {
-    alias: 'aria-labelledby'
+    alias: 'aria-labelledby',
   })
 
   /**
@@ -77,7 +77,7 @@ export class CkAutocomplete implements OnDestroy {
    * token.
    */
   public readonly autoActiveFirstOption = input<boolean, unknown>(false, {
-    transform: booleanAttribute
+    transform: booleanAttribute,
   })
 
   /**
@@ -91,7 +91,7 @@ export class CkAutocomplete implements OnDestroy {
    * token.
    */
   public readonly requireSelection = input<boolean, unknown>(false, {
-    transform: booleanAttribute
+    transform: booleanAttribute,
   })
 
   /** Event emitted when autocomplete is opened. */
@@ -104,7 +104,7 @@ export class CkAutocomplete implements OnDestroy {
   public readonly id = `ck-autocomplete-${uniqueIdCounter++}`
 
   /** Whether the suggestion panel is open. */
-  public readonly isOpen = computed(() => !!this._trigger()?._isPanelOpen())
+  public readonly isOpen = computed(() => !!this._trigger()?.isPanelOpen())
 
   /** Emits when the suggestion panel opening animation is done. */
   public readonly animationInDone = computed(() => {
