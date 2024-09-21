@@ -50,13 +50,13 @@ const options: Framework[] = [
 export class AutocompletePageComponent {
   public readonly requireSelection = signal(true)
   public readonly autoActiveFirstOption = signal(true)
-  public readonly framework = signal<string | undefined>(undefined)
+  public readonly framework = signal<string | undefined>('')
 
   public readonly filteredOptions = computed(() => {
     const filterValue = this._filterValue().trim().toLowerCase()
 
-    return options.filter(({ name, stars }) =>
-      `${name} ${stars}`.includes(filterValue)
+    return options.filter(({ name }) =>
+      name.toLowerCase().includes(filterValue.toLowerCase()),
     )
   })
 
@@ -75,6 +75,6 @@ export class AutocompletePageComponent {
   public filter(event: Event): void {
     const target = _getEventTarget<HTMLInputElement>(event)
 
-    this._filterValue.set(target!.value)
+    this._filterValue.set(target?.value ?? '')
   }
 }

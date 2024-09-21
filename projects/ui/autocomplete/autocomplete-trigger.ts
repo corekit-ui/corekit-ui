@@ -1,3 +1,6 @@
+// FIXME: There's a bug which leads to visually deselecting previously selected
+//        option by selecting another disabled one.
+
 import { Directionality } from '@angular/cdk/bidi'
 import {
   DOWN_ARROW,
