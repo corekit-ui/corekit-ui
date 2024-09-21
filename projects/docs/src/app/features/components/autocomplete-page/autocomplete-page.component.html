@@ -1,0 +1,58 @@
+<div>
+  <div class="flex items-center gap-2">
+    <input
+      ckCheckbox
+      id="requireSelection"
+      type="checkbox"
+      [(ngModel)]="requireSelection"
+    />
+    <label for="requireSelection">Require selection</label>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <input
+      ckCheckbox
+      id="autoActiveFirstOption"
+      type="checkbox"
+      [(ngModel)]="autoActiveFirstOption"
+    />
+    <label for="autoActiveFirstOption">Autofocus first option</label>
+  </div>
+</div>
+
+<div>Form value: {{ framework() | json }}</div>
+
+<ck-form-field class="max-w-60">
+  <label ckLabel for="framework">Select Framework</label>
+
+  <div class="relative flex items-center">
+    <ck-input-prefix>
+      <lucide-icon name="search" />
+    </ck-input-prefix>
+
+    <input
+      #trigger="ckAutocompleteTrigger"
+      ckInput
+      id="framework"
+      type="text"
+      placeholder="Start typing..."
+      [class.ring-0]="autocomplete.isOpen()"
+      [ck-autocomplete-trigger-for]="autocomplete"
+      [(ngModel)]="framework"
+      (input)="filter($event)"
+    />
+
+    <ck-autocomplete
+      #autocomplete
+      [requireSelection]="requireSelection()"
+      [autoActiveFirstOption]="autoActiveFirstOption()"
+      [displayWith]="displayFn"
+    >
+      @for (option of filteredOptions(); track option.name + $index) {
+        <ck-option [value]="option" [disabled]="option.disabled">
+          {{ option.name }}
+        </ck-option>
+      }
+    </ck-autocomplete>
+  </div>
+</ck-form-field>
