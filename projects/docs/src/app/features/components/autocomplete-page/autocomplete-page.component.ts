@@ -4,7 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  signal
+  signal,
 } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { CkAutocomplete, CkAutocompleteTrigger } from '@corekit/ui/autocomplete'
@@ -23,7 +23,7 @@ const options: Framework[] = [
   { name: 'Vue', stars: 22800, disabled: false },
   { name: 'React', stars: 22800, disabled: true },
   { name: 'Next.js', stars: 208000, disabled: false },
-  { name: 'Astro', stars: 45700, disabled: false }
+  { name: 'Astro', stars: 45700, disabled: false },
 ]
 
 @Component({
@@ -41,11 +41,11 @@ const options: Framework[] = [
     CkCheckbox,
     FormsModule,
     LucideAngularModule,
-    JsonPipe
+    JsonPipe,
   ],
   templateUrl: './autocomplete-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'block space-y-3' }
+  host: { class: 'block space-y-3' },
 })
 export class AutocompletePageComponent {
   public readonly requireSelection = signal(true)
@@ -64,7 +64,7 @@ export class AutocompletePageComponent {
 
   public readonly displayFn = (framework: Framework | null): string => {
     const numberFormatter = Intl.NumberFormat('en', {
-      notation: 'compact'
+      notation: 'compact',
     }).format
 
     return framework?.name

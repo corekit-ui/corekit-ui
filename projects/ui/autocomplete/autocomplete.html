@@ -2,10 +2,7 @@
   <div
     #panel
     role="listbox"
-    [class]="
-      'bg-surface text-surface-foreground flex h-full w-full flex-col overflow-auto rounded-lg border p-1 shadow-md motion-safe:scroll-smooth'
-        | ckClassNames: panelClass()
-    "
+    [class]="_class()"
     [id]="id"
     [ngClass]="{
       visible: !!options().length,

@@ -31,9 +31,10 @@ import {
 } from '@angular/core/rxjs-interop'
 import { CkClassNamesPipe } from '@corekit/ui/common'
 import { CkOption } from '@corekit/ui/option'
-import { getScrollPosition } from '@corekit/ui/utils'
+import { classNames, getScrollPosition } from '@corekit/ui/utils'
 import { map, merge, switchMap } from 'rxjs'
 import { CkAutocompleteTrigger } from './autocomplete-trigger'
+import { autocompleteStyles } from './autocomplete.styles'
 import { PANEL_ANIMATION } from './panel.animation'
 
 let uniqueIdCounter = 0
@@ -50,6 +51,8 @@ let uniqueIdCounter = 0
   host: { class: 'hidden' }
 })
 export class CkAutocomplete implements OnDestroy {
+  public readonly class = input<string>('')
+
   public readonly ariaLabel = input<string | undefined>(undefined, {
     alias: 'aria-label'
   })
@@ -57,14 +60,6 @@ export class CkAutocomplete implements OnDestroy {
   public readonly ariaLabelledby = input<string | undefined>(undefined, {
     alias: 'aria-labelledby'
   })
-
-  /**
-   * CSS classes to be applied to the suggestion panel.
-   *
-   * Can be configured globally through the `CK_AUTOCOMPLETE_DEFAULT_OPTIONS`
-   * token.
-   */
-  public readonly panelClass = input<string>('', { alias: 'class' })
 
   /**
    * Function that maps an option's value to its' display value in the trigger.
@@ -158,6 +153,16 @@ export class CkAutocomplete implements OnDestroy {
       })
     )
   )
+
+  /**
+   * CSS classes to be applied to the suggestion panel.
+   *
+   * Can be configured globally through the `CK_AUTOCOMPLETE_DEFAULT_OPTIONS`
+   * token.
+   */
+  protected readonly _class = computed(() => {
+    return classNames(autocompleteStyles, this.class())
+  })
 
   /**
    * Writeable of {@link animationInDone `animationInDone`} and
