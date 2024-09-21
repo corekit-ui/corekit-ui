@@ -1,0 +1,21 @@
+<ng-template #template let-labelId="labelId">
+  <div
+    #panel
+    role="listbox"
+    [class]="
+      'bg-surface text-surface-foreground flex h-full w-full flex-col overflow-auto rounded-lg border p-1 shadow-md motion-safe:scroll-smooth'
+        | ckClassNames: panelClass()
+    "
+    [id]="id"
+    [ngClass]="{
+      visible: !!options().length,
+      'pointer-events-none invisible': !options().length
+    }"
+    [attr.aria-label]="ariaLabel()"
+    [attr.aria-labelledby]="_getAriaLabelledby(labelId)"
+    @panelAnimation
+    (@panelAnimation.done)="_animationDone.set($event)"
+  >
+    <ng-content />
+  </div>
+</ng-template>

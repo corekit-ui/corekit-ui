@@ -1,6 +1,8 @@
 import { Directive, input } from '@angular/core'
 import { classNames } from '@corekit/ui/utils'
 
+let uniqueIdCounter = 0
+
 @Directive({
   selector: '[ckLabel], label',
   standalone: true,
@@ -8,6 +10,7 @@ import { classNames } from '@corekit/ui/utils'
 })
 export class CkLabel {
   public readonly class = input<string>()
+  public readonly id = input<string>(`ck-label-${uniqueIdCounter++}`)
 
   protected get _class(): string {
     return classNames(
