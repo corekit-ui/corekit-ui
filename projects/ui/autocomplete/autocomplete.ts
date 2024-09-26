@@ -66,7 +66,7 @@ export class CkAutocomplete implements OnDestroy {
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public readonly displayWith = input<((value: any) => string) | undefined>(
-    undefined
+    undefined,
   )
 
   /**
@@ -133,7 +133,7 @@ export class CkAutocomplete implements OnDestroy {
 
   /** Currently active (fake focused with keyboard) option. */
   public readonly activeOption = toSignal(
-    this._keyManager.change.pipe(map(index => this.options().at(index)))
+    this._keyManager.change.pipe(map(index => this.options().at(index))),
   )
 
   /** Reference to the template of the panel. */
@@ -148,10 +148,10 @@ export class CkAutocomplete implements OnDestroy {
     toObservable(this.options).pipe(
       switchMap(options => {
         return merge(
-          ...options.map(option => outputToObservable(option.selectionChange))
+          ...options.map(option => outputToObservable(option.selectionChange)),
         )
-      })
-    )
+      }),
+    ),
   )
 
   /**
@@ -176,6 +176,9 @@ export class CkAutocomplete implements OnDestroy {
   constructor(private readonly _injector: Injector) {
     effect(this._optionsChangesEffect.bind(this), { allowSignalWrites: true })
     effect(() => this._scrollTo(this.activeOption()))
+    effect(this._openEffect.bind(this), {
+      allowSignalWrites: true,
+    })
   }
 
   public ngOnDestroy(): void {
@@ -187,7 +190,7 @@ export class CkAutocomplete implements OnDestroy {
 
     const top = getScrollPosition(
       option.host.nativeElement,
-      this._panel()!.nativeElement
+      this._panel()!.nativeElement,
     )
 
     // TODO: configure scroll behavior so it's instant when we need to scroll
@@ -199,15 +202,19 @@ export class CkAutocomplete implements OnDestroy {
   public _selectOptionByValue(value: unknown, emitEvent = true): void {
     if (value == null) return this._deselectAll()
 
-    const optionToSelect = this.options().find(
-      option => option.value() === value
-    )
+    const displayWith = this.displayWith()
+
+    const optionToSelect = this.options().find(option => {
+      return displayWith
+        ? displayWith(option.value()) === displayWith(value)
+        : option.value() === value
+    })
 
     !optionToSelect?.isSelected() && optionToSelect?.select(emitEvent)
   }
 
-  public _deselectAll(): void {
-    this.options().forEach(option => option.deselect())
+  public _deselectAll(except?: CkOption): void {
+    this.options().forEach(option => option !== except && option.deselect())
   }
 
   public _navigate(event: KeyboardEvent): void
@@ -240,7 +247,7 @@ export class CkAutocomplete implements OnDestroy {
   }
 
   private _initListKeyManager(
-    options: Signal<readonly CkOption[]>
+    options: Signal<readonly CkOption[]>,
   ): ActiveDescendantKeyManager<CkOption> {
     return (
       new ActiveDescendantKeyManager(options, this._injector)
@@ -252,18 +259,27 @@ export class CkAutocomplete implements OnDestroy {
   }
 
   private _resetActiveOption(): void {
-    // -1 to select first/last item on next arrow navigation regardless of the
-    // option's disabled state. This is to conform with WAI-ARIA keyboard navigation
-    // spec.
-    let resetToIndex = -1
+    let resetToIndex = this.options().indexOf(this.selectedOption()!)
 
-    if (this.autoActiveFirstOption()) {
-      // If user enabled autoactivation of the first item, find the first
-      // *enabled* item index, so it's more convenient for keyboard users.
+    if (!this.selectedOption() && this.autoActiveFirstOption()) {
       resetToIndex = this.options().findIndex(option => !option.disabled)
     }
 
     this._keyManager.setActiveItem(resetToIndex)
+  }
+
+  /**
+   * Runs when the suggestion panel opens.
+   *
+   * * Marks active option as pending to be selected if autoselection is enabled (???);
+   * * Marks selected option as active and scrolls it into view.
+   */
+  private _openEffect(): void {
+    if (!this.isOpen()) return
+
+    untracked(
+      () => this.selectedOption() && this._navigate(this.selectedOption()!),
+    )
   }
 
   /**

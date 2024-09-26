@@ -1,4 +1,3 @@
-import { _getEventTarget } from '@angular/cdk/platform'
 import { JsonPipe } from '@angular/common'
 import {
   ChangeDetectionStrategy,
@@ -50,31 +49,31 @@ const options: Framework[] = [
 export class AutocompletePageComponent {
   public readonly requireSelection = signal(true)
   public readonly autoActiveFirstOption = signal(true)
-  public readonly framework = signal<string | undefined>('')
+  public readonly framework = signal<Framework | undefined>(undefined)
 
   public readonly filteredOptions = computed(() => {
     const filterValue = this._filterValue().trim().toLowerCase()
 
-    return options.filter(({ name }) =>
-      name.toLowerCase().includes(filterValue.toLowerCase()),
-    )
+    return options.filter(({ name, stars }) => {
+      return `${name} (${this._numberFormatter(stars)} stars)`
+        .toLowerCase()
+        .includes(filterValue)
+    })
   })
+
+  private readonly _numberFormatter = Intl.NumberFormat('en', {
+    notation: 'compact',
+  }).format
 
   private readonly _filterValue = signal<string>('')
 
   public readonly displayFn = (framework: Framework | null): string => {
-    const numberFormatter = Intl.NumberFormat('en', {
-      notation: 'compact',
-    }).format
-
     return framework?.name
-      ? `${framework.name} (${numberFormatter(framework.stars)} stars)`
+      ? `${framework.name} (${this._numberFormatter(framework.stars)} stars)`
       : ''
   }
 
-  public filter(event: Event): void {
-    const target = _getEventTarget<HTMLInputElement>(event)
-
-    this._filterValue.set(target?.value ?? '')
+  public filter(value: string | null): void {
+    this._filterValue.set(value ?? '')
   }
 }

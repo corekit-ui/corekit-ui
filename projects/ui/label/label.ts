@@ -6,7 +6,7 @@ let uniqueIdCounter = 0
 @Directive({
   selector: '[ckLabel], label',
   standalone: true,
-  host: { '[class]': '_class' }
+  host: { '[class]': '_class', '[id]': 'id()' },
 })
 export class CkLabel {
   public readonly class = input<string>()
@@ -15,7 +15,7 @@ export class CkLabel {
   protected get _class(): string {
     return classNames(
       'font-medium peer-disabled:opacity-50 group-[]/invalid:text-destructive',
-      this.class()
+      this.class(),
     )
   }
 }

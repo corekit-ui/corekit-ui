@@ -30,6 +30,7 @@
       <lucide-icon name="search" />
     </ck-input-prefix>
 
+    <!-- eslint-disable @angular-eslint/template/no-any -->
     <input
       #trigger="ckAutocompleteTrigger"
       ckInput
@@ -39,8 +40,10 @@
       [class.ring-0]="autocomplete.isOpen()"
       [ck-autocomplete-trigger-for]="autocomplete"
       [(ngModel)]="framework"
-      (input)="filter($event)"
+      (input)="filter($any($event.target).value)"
+      (focus)="filter($any($event.target).value)"
     />
+    <!-- eslint-enable @angular-eslint/template/no-any -->
 
     <ck-autocomplete
       #autocomplete

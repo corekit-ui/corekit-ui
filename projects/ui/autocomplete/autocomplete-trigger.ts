@@ -1,6 +1,3 @@
-// FIXME: There's a bug which leads to visually deselecting previously selected
-//        option by selecting another disabled one.
-
 import { Directionality } from '@angular/cdk/bidi'
 import {
   DOWN_ARROW,
@@ -244,11 +241,7 @@ export class CkAutocompleteTrigger
     effect(this._originWidthChangeEffect.bind(this))
     effect(this._positionChangeEffect.bind(this))
     effect(this._outsideClickEffect.bind(this))
-
-    effect(this._dropdownAnimationInEffect.bind(this), {
-      allowSignalWrites: true,
-    })
-
+    effect(this._optionsChangesEffect.bind(this))
     effect(this._optionsSelectionChangeEffect.bind(this), {
       allowSignalWrites: true,
     })
@@ -266,6 +259,7 @@ export class CkAutocompleteTrigger
     // programmatically. Report in Material repo.
     this.autocomplete()._selectOptionByValue(value, false)
     this._updateNativeInputValue(value)
+    this._formControlValue.set(value)
   }
 
   public registerOnChange(onChange: (value: unknown) => void): void {
@@ -503,6 +497,7 @@ export class CkAutocompleteTrigger
    */
   private _setValueAndClose(optionToSelect: CkOption | null): void {
     if (optionToSelect?.isSelected()) {
+      this.autocomplete()._deselectAll(optionToSelect)
       this._setValue(optionToSelect.value())
       this.host.nativeElement.focus()
 
@@ -577,7 +572,7 @@ export class CkAutocompleteTrigger
   private _isSelectionKeydownEvent(event: KeyboardEvent): boolean {
     return (
       this.autocomplete().isOpen() &&
-      !!this.autocomplete().activeOption() &&
+      !this.autocomplete().activeOption()?.disabled &&
       event.keyCode === ENTER &&
       !hasModifierKey(event)
     )
@@ -640,6 +635,25 @@ export class CkAutocompleteTrigger
   }
 
   /**
+   * Runs when options change.
+   *
+   * `@for()` renders new DOM elements representing new options' list each time options
+   * change as a result of filtering. When currently selected option matches new
+   * filter criteria, it will not be shown as selected, because it's a completely
+   * new `CkOption` instance and DOM element. This effect _visually_ re-selects
+   * newly-rendered-but-already-selected option.
+   */
+  private _optionsChangesEffect(): void {
+    this.autocomplete().options()
+
+    untracked(() => {
+      if (!this.autocomplete().requireSelection()) return
+
+      this.autocomplete()._selectOptionByValue(this._formControlValue(), false)
+    })
+  }
+
+  /**
    * Runs when an option is selected.
    *
    * Sets the value and closes the dropdown.
@@ -664,28 +678,5 @@ export class CkAutocompleteTrigger
     if (!this._outsideClick() || !untracked(this._overlayAttached)) return
 
     untracked(() => this._setValueAndClose(null))
-  }
-
-  /**
-   * Runs when the dropdown opening animation completes.
-   *
-   * * Marks active option as pending to be selected if autoselection is enabled;
-   * * Marks selected option as active and scrolls it into view.
-   */
-  private _dropdownAnimationInEffect(): void {
-    const event = this.autocomplete().animationInDone()
-
-    if (!event) return
-
-    untracked(() => {
-      if (
-        !this._displayValueOnOpen() ||
-        !this.autocomplete().selectedOption()
-      ) {
-        return
-      }
-
-      this.autocomplete()._navigate(this.autocomplete().selectedOption()!)
-    })
   }
 }
