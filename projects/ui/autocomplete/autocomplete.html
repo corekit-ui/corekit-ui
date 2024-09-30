@@ -6,12 +6,11 @@
     [id]="id"
     [ngClass]="{
       visible: !!options().length,
-      'pointer-events-none invisible': !options().length
+      'pointer-events-none invisible': !options().length,
     }"
     [attr.aria-label]="ariaLabel()"
     [attr.aria-labelledby]="_getAriaLabelledby(labelId)"
-    @panelAnimation
-    (@panelAnimation.done)="_animationDone.set($event)"
+    [attr.data-state]="isOpen() ? 'open' : 'closed'"
   >
     <ng-content />
   </div>

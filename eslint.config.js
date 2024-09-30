@@ -9,12 +9,12 @@ module.exports = typescript.config(
     files: ['**/*.ts'],
     plugins: { '@stylistic': stylistic },
     languageOptions: {
-      parserOptions: { project: true, tsconfigRootDir: __dirname }
+      parserOptions: { project: true, tsconfigRootDir: __dirname },
     },
     extends: [
       eslint.configs.all,
       ...typescript.configs.all,
-      ...angular.configs.tsAll
+      ...angular.configs.tsAll,
     ],
     processor: angular.processInlineTemplates,
     rules: {
@@ -43,27 +43,28 @@ module.exports = typescript.config(
       'no-eq-null': 'off',
       'max-lines': 'off',
       'no-undefined': 'off',
+      'no-void': 'off',
 
       '@stylistic/semi': ['error', 'never'],
       '@stylistic/function-call-spacing': 'error',
       '@stylistic/lines-between-class-members': [
         'error',
         'always',
-        { exceptAfterSingleLine: true }
+        { exceptAfterSingleLine: true },
       ],
       '@stylistic/padding-line-between-statements': [
         'error',
         {
           blankLine: 'always',
           prev: '*',
-          next: ['function', 'block', 'block-like', 'return', 'break']
+          next: ['function', 'block', 'block-like', 'return', 'break'],
         },
         { blankLine: 'always', prev: '*', next: ['const', 'let'] },
         { blankLine: 'always', prev: ['const', 'let'], next: '*' },
         {
           blankLine: 'any',
           prev: ['const', 'let'],
-          next: ['const', 'let']
+          next: ['const', 'let'],
         },
         { blankLine: 'always', prev: 'directive', next: '*' },
         { blankLine: 'any', prev: 'directive', next: 'directive' },
@@ -73,8 +74,8 @@ module.exports = typescript.config(
         {
           blankLine: 'never',
           prev: 'function-overload',
-          next: ['function-overload', 'function']
-        }
+          next: ['function-overload', 'function'],
+        },
       ],
 
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
@@ -99,7 +100,7 @@ module.exports = typescript.config(
       '@typescript-eslint/no-invalid-void-type': 'off',
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
-        { accessibility: 'explicit', overrides: { constructors: 'no-public' } }
+        { accessibility: 'explicit', overrides: { constructors: 'no-public' } },
       ],
       '@typescript-eslint/naming-convention': [
         'error',
@@ -107,14 +108,14 @@ module.exports = typescript.config(
           selector: 'memberLike',
           modifiers: ['private'],
           format: ['camelCase'],
-          leadingUnderscore: 'require'
+          leadingUnderscore: 'require',
         },
         {
           selector: ['classProperty'],
           modifiers: ['private', 'static', 'readonly'],
           format: ['UPPER_CASE'],
-          leadingUnderscore: 'forbid'
-        }
+          leadingUnderscore: 'forbid',
+        },
       ],
       '@typescript-eslint/ban-ts-comment': [
         'error',
@@ -123,8 +124,8 @@ module.exports = typescript.config(
           'ts-nocheck': 'allow-with-description',
           'ts-expect-error': 'allow-with-description',
           'ts-check': false,
-          minimumDescriptionLength: 30
-        }
+          minimumDescriptionLength: 30,
+        },
       ],
       '@typescript-eslint/member-ordering': [
         'error',
@@ -148,16 +149,16 @@ module.exports = typescript.config(
             'public-method',
             'protected-method',
             'private-method',
-            '#private-method'
-          ]
-        }
+            '#private-method',
+          ],
+        },
       ],
       '@typescript-eslint/no-unused-expressions': [
         'error',
-        { allowShortCircuit: true }
+        { allowShortCircuit: true },
       ],
 
-      '@angular-eslint/template/no-any': 'off',
+      '@angular-eslint/no-async-lifecycle-method': 'off',
       '@angular-eslint/no-forward-ref': 'off',
       '@angular-eslint/no-pipe-impure': 'warn',
       '@angular-eslint/prefer-on-push-component-change-detection': 'warn',
@@ -166,20 +167,20 @@ module.exports = typescript.config(
       '@angular-eslint/no-host-metadata-property': 'off',
       '@angular-eslint/component-max-inline-declarations': [
         'error',
-        { template: 1 }
+        { template: 1 },
       ],
       '@angular-eslint/no-input-prefix': [
         'error',
-        { prefixes: ['on', 'is', 'has', 'had', 'was', 'been'] }
-      ]
-    }
+        { prefixes: ['on', 'is', 'has', 'had', 'was', 'been'] },
+      ],
+    },
   },
   {
     files: ['**/*.html'],
     extends: angular.configs.templateAll,
     rules: {
       '@angular-eslint/template/i18n': 'off',
-      '@angular-eslint/template/no-call-expression': 'off'
-    }
-  }
+      '@angular-eslint/template/no-call-expression': 'off',
+    },
+  },
 )

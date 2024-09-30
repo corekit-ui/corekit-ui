@@ -3,9 +3,8 @@
 // Some public properties are calculated from private ones, so privates should be
 // higher in the code.
 /* eslint-disable @typescript-eslint/member-ordering */
-import { AnimationEvent } from '@angular/animations'
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y'
-import { NgClass, NgTemplateOutlet } from '@angular/common'
+import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common'
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -29,13 +28,11 @@ import {
   toObservable,
   toSignal,
 } from '@angular/core/rxjs-interop'
-import { CkClassNamesPipe } from '@corekit/ui/common'
 import { CkOption } from '@corekit/ui/option'
 import { classNames, getScrollPosition } from '@corekit/ui/utils'
-import { map, merge, switchMap } from 'rxjs'
+import { filter, fromEvent, map, merge, switchMap } from 'rxjs'
 import { CkAutocompleteTrigger } from './autocomplete-trigger'
 import { autocompleteStyles } from './autocomplete.styles'
-import { PANEL_ANIMATION } from './panel.animation'
 
 let uniqueIdCounter = 0
 
@@ -44,10 +41,9 @@ let uniqueIdCounter = 0
   selector: 'ck-autocomplete, [ck-autocomplete]',
   exportAs: 'ckAutocomplete',
   standalone: true,
-  imports: [NgTemplateOutlet, NgClass, CkClassNamesPipe],
+  imports: [NgTemplateOutlet, NgClass, AsyncPipe],
   templateUrl: './autocomplete.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [PANEL_ANIMATION],
   host: { class: 'hidden' },
 })
 export class CkAutocomplete implements OnDestroy {
@@ -106,20 +102,6 @@ export class CkAutocomplete implements OnDestroy {
   /** Whether the suggestion panel is open. */
   public readonly isOpen = computed(() => !!this._trigger()?.isPanelOpen())
 
-  /** Emits when the suggestion panel opening animation is done. */
-  public readonly animationInDone = computed(() => {
-    const event = this._animationDone()
-
-    return event?.fromState === 'void' ? event : null
-  })
-
-  /** Emits when the suggestion panel closing animation is done. */
-  public readonly animationOutDone = computed(() => {
-    const event = this._animationDone()
-
-    return event?.toState === 'void' ? event : null
-  })
-
   /** All autocomplete options. */
   public readonly options = contentChildren(CkOption, { descendants: true })
 
@@ -164,14 +146,18 @@ export class CkAutocomplete implements OnDestroy {
     return classNames(autocompleteStyles, this.class())
   })
 
-  /**
-   * Writeable of {@link animationInDone `animationInDone`} and
-   * {@link animationOutDone `animationOutDone`}.
-   */
-  protected readonly _animationDone = signal<AnimationEvent | null>(null)
+  protected readonly _position = computed(() => this._trigger()?.position())
 
   /** HTML Element containing the list of options. */
   private readonly _panel = viewChild<ElementRef<HTMLDivElement>>('panel')
+
+  /** Emits when the suggestion panel opening animation has finished. */
+  public readonly _animationEnd = toObservable(this._panel).pipe(
+    filter(Boolean),
+    switchMap(panel => {
+      return fromEvent<AnimationEvent>(panel.nativeElement, 'animationend')
+    }),
+  )
 
   constructor(private readonly _injector: Injector) {
     effect(this._optionsChangesEffect.bind(this), { allowSignalWrites: true })

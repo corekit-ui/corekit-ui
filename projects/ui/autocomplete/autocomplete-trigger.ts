@@ -46,6 +46,7 @@ import { CkFormField } from '@corekit/ui/form-field'
 import { CkOption } from '@corekit/ui/option'
 import {
   filter,
+  firstValueFrom,
   fromEvent,
   map,
   merge,
@@ -82,11 +83,11 @@ const CONTROL_VALUE_ACCESSOR_PROVIDER = {
     '[attr.aria-controls]':
       '(!autocompleteDisabled() && autocomplete().isOpen()) ? autocomplete().id : null',
     '[attr.aria-haspopup]': 'autocompleteDisabled() ? null : "listbox"',
-    '(click)': '_openViaClick()',
+    '(click)': 'openPanel()',
     '(focus)': '_openViaFocus()',
     '(keydown)': '_handleKeydown($event)',
     '(input)':
-      '_openViaInput(); !autocomplete().requireSelection() && _setValueViaInput($event)',
+      'openPanel(this._displayValueOnKeydown()); !autocomplete().requireSelection() && _setValueViaInput($event)',
     '(blur)': '_closeViaBlur()',
   },
 })
@@ -166,8 +167,18 @@ export class CkAutocompleteTrigger
   })
 
   private _portal: TemplatePortal | undefined
-  private readonly _overlayPositionStrategy = this._getOverlayPositionStrategy()
   private readonly _overlayRef = signal<OverlayRef | undefined>(undefined)
+
+  private readonly _overlayPositionStrategy = toSignal(
+    toObservable(this._overlayRef).pipe(
+      filter(Boolean),
+      map(overlayRef => {
+        return overlayRef.getConfig()
+          .positionStrategy as FlexibleConnectedPositionStrategy
+      }),
+    ),
+  )
+
   private readonly _formControlValue = signal<unknown>(null)
   private readonly _displayValueOnOpen = signal<unknown>(null)
 
@@ -247,11 +258,11 @@ export class CkAutocompleteTrigger
     })
   }
 
-  public ngOnDestroy(): void {
+  public async ngOnDestroy(): Promise<void> {
     if (!this._overlayRef()) return
 
-    this.closePanel()
-    this._overlayRef()?.dispose()
+    await this.closePanel()
+    this._overlayRef()!.dispose()
   }
 
   public writeValue(value: unknown): void {
@@ -284,6 +295,8 @@ export class CkAutocompleteTrigger
    * trigger value.
    */
   public openPanel(value?: unknown): void {
+    if (this.autocomplete().isOpen() || !this._canOpen()) return
+
     const safeValue = value ?? this.host.nativeElement.value
 
     if (!this._overlayRef()) {
@@ -305,8 +318,10 @@ export class CkAutocompleteTrigger
   }
 
   /** Closes the suggestion panel. */
-  public closePanel(): void {
+  public async closePanel(): Promise<void> {
     if (this.autocomplete()._trigger() === this) this.autocomplete()._close()
+
+    await firstValueFrom(this.autocomplete()._animationEnd)
 
     this._overlayRef()!.detach()
   }
@@ -319,7 +334,7 @@ export class CkAutocompleteTrigger
    */
   public updatePosition(position?: AutocompletePosition): void {
     if (position) {
-      this._overlayPositionStrategy.withPositions(
+      this._overlayPositionStrategy()?.withPositions(
         this._getOverlayPositions(position),
       )
     }
@@ -338,33 +353,21 @@ export class CkAutocompleteTrigger
   /** Opens autocomplete dropdown if it can be opened by focusing the trigger. */
   protected _openViaFocus(): void {
     if (!this._canOpenOnNextFocus()) return this._setCanOpenOnNextFocus(true)
-    if (this._canOpen()) this.openPanel()
-  }
-
-  /** Opens autocomplete dropdown if it can be opened by clicking the trigger. */
-  protected _openViaClick(): void {
-    if (!this.autocomplete().isOpen() && this._canOpen()) this.openPanel()
-  }
-
-  /** Opens autocomplete dropdown if it can be opened by typing. */
-  protected _openViaInput(): void {
-    if (this.autocomplete().isOpen() || !this._canOpen()) return
-
-    this.openPanel(this._displayValueOnKeydown())
+    this.openPanel()
   }
 
   /** Routes different key/combination presses to respective features. */
   protected _handleKeydown(event: KeyboardEvent): void {
     if (this._isOpeningKeydownEvent(event)) {
-      return this.openPanel(this._displayValueOnKeydown())
+      this.openPanel(this._displayValueOnKeydown())
     }
 
     if (this._isClosingKeydownEvent(event)) {
-      return this._setValueAndClose(null)
+      void this._setValueAndClose(null)
     }
 
     if (this._isNavigationKeydownEvent(event)) {
-      return this.autocomplete()._navigate(event)
+      this.autocomplete()._navigate(event)
     }
 
     if (this._isSelectionKeydownEvent(event)) {
@@ -406,7 +409,7 @@ export class CkAutocompleteTrigger
 
   private _getOverlayConfig(): OverlayConfig {
     return new OverlayConfig({
-      positionStrategy: this._overlayPositionStrategy,
+      positionStrategy: this._getOverlayPositionStrategy(),
       scrollStrategy: this._scrollStrategy,
       width: this._dropdownOriginWidth(),
       maxHeight: 170,
@@ -440,6 +443,7 @@ export class CkAutocompleteTrigger
         overlayX: 'start',
         overlayY: 'top',
         offsetY,
+        panelClass: 'group/ck-position-below',
       },
       {
         originX: 'end',
@@ -447,6 +451,7 @@ export class CkAutocompleteTrigger
         overlayX: 'end',
         overlayY: 'top',
         offsetY,
+        panelClass: 'group/ck-position-below',
       },
     ]
 
@@ -457,6 +462,7 @@ export class CkAutocompleteTrigger
         overlayX: 'start',
         overlayY: 'bottom',
         offsetY: -offsetY,
+        panelClass: 'group/ck-position-above',
       },
       {
         originX: 'end',
@@ -464,6 +470,7 @@ export class CkAutocompleteTrigger
         overlayX: 'end',
         overlayY: 'bottom',
         offsetY: -offsetY,
+        panelClass: 'group/ck-position-above',
       },
     ]
 
@@ -480,7 +487,7 @@ export class CkAutocompleteTrigger
       ? this._getDisplayValue(value)
       : value
 
-    this.host.nativeElement.value = (displayValue as string) ?? ''
+    this.host.nativeElement.value = (displayValue as string | null) ?? ''
   }
 
   private _coerceNumberInput(
@@ -495,7 +502,9 @@ export class CkAutocompleteTrigger
    * Depending on the provided option, decides whether to set specific value or
    * reset everything and closes the dropdown.
    */
-  private _setValueAndClose(optionToSelect: CkOption | null): void {
+  private async _setValueAndClose(
+    optionToSelect: CkOption | null,
+  ): Promise<void> {
     if (optionToSelect?.isSelected()) {
       this.autocomplete()._deselectAll(optionToSelect)
       this._setValue(optionToSelect.value())
@@ -513,7 +522,7 @@ export class CkAutocompleteTrigger
       this._setValue(null)
     }
 
-    if (!optionToSelect) this.closePanel()
+    if (!optionToSelect) return this.closePanel()
   }
 
   private _setValue(value: unknown, updateDisplayValue = true): void {
@@ -562,11 +571,7 @@ export class CkAutocompleteTrigger
   }
 
   private _isOpeningKeydownEvent({ keyCode }: KeyboardEvent): boolean {
-    return (
-      (keyCode === UP_ARROW || keyCode === DOWN_ARROW) &&
-      !this.autocomplete().isOpen() &&
-      this._canOpen()
-    )
+    return keyCode === UP_ARROW || keyCode === DOWN_ARROW
   }
 
   private _isSelectionKeydownEvent(event: KeyboardEvent): boolean {
@@ -631,7 +636,7 @@ export class CkAutocompleteTrigger
    * Updates dropdown origin.
    */
   private _originChangeEffect(): void {
-    this._overlayPositionStrategy.setOrigin(this._origin().host)
+    this._overlayPositionStrategy()?.setOrigin(this._origin().host)
   }
 
   /**
@@ -665,7 +670,7 @@ export class CkAutocompleteTrigger
 
     untracked(() => {
       this.updatePosition(this.position())
-      this._setValueAndClose(selectionChange.source)
+      void this._setValueAndClose(selectionChange.source)
     })
   }
 
@@ -677,6 +682,6 @@ export class CkAutocompleteTrigger
   private _outsideClickEffect(): void {
     if (!this._outsideClick() || !untracked(this._overlayAttached)) return
 
-    untracked(() => this._setValueAndClose(null))
+    untracked(() => void this._setValueAndClose(null))
   }
 }
