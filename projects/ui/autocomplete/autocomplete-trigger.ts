@@ -29,6 +29,7 @@ import {
   Host,
   Inject,
   input,
+  NgZone,
   numberAttribute,
   OnDestroy,
   Optional,
@@ -66,11 +67,10 @@ const CONTROL_VALUE_ACCESSOR_PROVIDER = {
   multi: true,
 }
 
-/**
- * Directive that adds autocomplete feature to an input or a textarea.
- */
+/** Directive that adds autocomplete feature to an input or a textarea. */
 @Directive({
-  selector: 'input[ck-autocomplete-trigger-for]',
+  selector:
+    'input[ck-autocomplete-trigger-for], textarea[ck-autocomplete-trigger-for]',
   exportAs: 'ckAutocompleteTrigger',
   standalone: true,
   providers: [CONTROL_VALUE_ACCESSOR_PROVIDER],
@@ -246,6 +246,7 @@ export class CkAutocompleteTrigger
     private readonly _viewContainerRef: ViewContainerRef,
     private readonly _overlay: Overlay,
     private readonly _changeDetectorRef: ChangeDetectorRef,
+    private readonly _zone: NgZone,
   ) {
     effect(this._windowBlurEffect.bind(this), { allowSignalWrites: true })
     effect(this._originChangeEffect.bind(this))
@@ -266,11 +267,13 @@ export class CkAutocompleteTrigger
   }
 
   public writeValue(value: unknown): void {
-    // TODO: This fixes a bug, where option is not selected when value is set
-    // programmatically. Report in Material repo.
-    this.autocomplete()._selectOptionByValue(value, false)
-    this._updateNativeInputValue(value)
-    this._formControlValue.set(value)
+    void firstValueFrom(this._zone.onStable).then(() => {
+      // TODO: This fixes a bug, where option is not selected when value is set
+      // programmatically. Report in Material repo.
+      this.autocomplete()._selectOptionByValue(value, false)
+      this._updateNativeInputValue(value)
+      this._formControlValue.set(value)
+    })
   }
 
   public registerOnChange(onChange: (value: unknown) => void): void {
@@ -352,8 +355,8 @@ export class CkAutocompleteTrigger
 
   /** Opens autocomplete dropdown if it can be opened by focusing the trigger. */
   protected _openViaFocus(): void {
-    if (!this._canOpenOnNextFocus()) return this._setCanOpenOnNextFocus(true)
-    this.openPanel()
+    if (this._canOpenOnNextFocus()) return this.openPanel()
+    this._setCanOpenOnNextFocus(true)
   }
 
   /** Routes different key/combination presses to respective features. */
@@ -395,7 +398,7 @@ export class CkAutocompleteTrigger
 
     if (!selectedOption) return
 
-    const displayValue = this._getDisplayValue(
+    const displayValue = this.autocomplete().displayWith()(
       selectedOption.value() as unknown,
     )
 
@@ -479,13 +482,8 @@ export class CkAutocompleteTrigger
     return positions[position]
   }
 
-  private _updateNativeInputValue(
-    value: unknown,
-    processDisplayWith = true,
-  ): void {
-    const displayValue = processDisplayWith
-      ? this._getDisplayValue(value)
-      : value
+  private _updateNativeInputValue(value: unknown): void {
+    const displayValue = this.autocomplete().displayWith()(value)
 
     this.host.nativeElement.value = (displayValue as string | null) ?? ''
   }
@@ -528,20 +526,7 @@ export class CkAutocompleteTrigger
   private _setValue(value: unknown, updateDisplayValue = true): void {
     updateDisplayValue && this._updateNativeInputValue(value ?? null)
 
-    // TODO: this should wait until the animation is done, otherwise the value
-    // gets reset while the panel is still animating which looks glitchy. It'll likely break
-    // some tests to change it at this point.
     this._onChange(value ?? null)
-  }
-
-  /**
-   * Given a value, returns a string that should be shown within the input
-   * calculated by {@link CkAutocomplete.displayWith `CkAutocomplete.displayWith`}.
-   */
-  private _getDisplayValue<T = unknown>(value: T): T | string {
-    const displayWith = this.autocomplete().displayWith()
-
-    return displayWith ? displayWith(value) : value
   }
 
   private _setCanOpenOnNextFocus(canOpenOnNextFocus?: boolean): void {

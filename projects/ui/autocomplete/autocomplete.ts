@@ -61,8 +61,9 @@ export class CkAutocomplete implements OnDestroy {
    * Function that maps an option's value to its' display value in the trigger.
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public readonly displayWith = input<((value: any) => string) | undefined>(
-    undefined,
+  public readonly displayWith = input<(value: any) => string>(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    value => value,
   )
 
   /**
@@ -115,7 +116,7 @@ export class CkAutocomplete implements OnDestroy {
 
   /** Currently active (fake focused with keyboard) option. */
   public readonly activeOption = toSignal(
-    this._keyManager.change.pipe(map(index => this.options().at(index))),
+    this._keyManager.change.pipe(map(index => this.options()[index])),
   )
 
   /** Reference to the template of the panel. */
@@ -188,12 +189,8 @@ export class CkAutocomplete implements OnDestroy {
   public _selectOptionByValue(value: unknown, emitEvent = true): void {
     if (value == null) return this._deselectAll()
 
-    const displayWith = this.displayWith()
-
     const optionToSelect = this.options().find(option => {
-      return displayWith
-        ? displayWith(option.value()) === displayWith(value)
-        : option.value() === value
+      return this.displayWith()(option.value()) === this.displayWith()(value)
     })
 
     !optionToSelect?.isSelected() && optionToSelect?.select(emitEvent)
