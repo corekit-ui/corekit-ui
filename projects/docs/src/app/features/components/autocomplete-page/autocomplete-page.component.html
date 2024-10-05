@@ -20,7 +20,15 @@
   </div>
 </div>
 
-<div>Form value: {{ framework() | json }}</div>
+<div>
+  Selected Option value:
+  <code>{{ selectedOption() | json }}</code>
+</div>
+
+<div>
+  Form value:
+  <code>{{ frameworkId() | json }}</code>
+</div>
 
 <ck-form-field class="max-w-56">
   <label ckLabel for="framework">Select Framework</label>
@@ -39,9 +47,9 @@
       placeholder="Start typing..."
       [class.ring-0]="autocomplete.isOpen()"
       [ck-autocomplete-trigger-for]="autocomplete"
-      [(ngModel)]="framework"
-      (input)="filter($any($event.target).value)"
-      (focus)="filter($any($event.target).value)"
+      [(ngModel)]="frameworkId"
+      (input)="query.set($any($event.target).value ?? '')"
+      (focus)="query.set($any($event.target).value ?? '')"
     />
     <!-- eslint-enable @angular-eslint/template/no-any -->
 
@@ -49,11 +57,11 @@
       #autocomplete
       [requireSelection]="requireSelection()"
       [autoActiveFirstOption]="autoActiveFirstOption()"
-      [displayWith]="displayFn"
+      [displayWith]="displayWith"
     >
-      @for (option of filteredOptions(); track option.name + $index) {
-        <ck-option [value]="option" [disabled]="option.disabled">
-          {{ option.name }}
+      @for (framework of frameworks(); track framework.id) {
+        <ck-option [value]="framework.id" [disabled]="framework.disabled">
+          {{ framework.name }}
         </ck-option>
       }
     </ck-autocomplete>

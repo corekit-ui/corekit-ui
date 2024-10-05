@@ -169,15 +169,23 @@ export class CkAutocompleteTrigger
   private _portal: TemplatePortal | undefined
   private readonly _overlayRef = signal<OverlayRef | undefined>(undefined)
 
-  private readonly _overlayPositionStrategy = toSignal(
-    toObservable(this._overlayRef).pipe(
-      filter(Boolean),
-      map(overlayRef => {
-        return overlayRef.getConfig()
-          .positionStrategy as FlexibleConnectedPositionStrategy
-      }),
-    ),
-  )
+  private readonly _overlayConfig = new OverlayConfig({
+    positionStrategy: this._getOverlayPositionStrategy(),
+    scrollStrategy: this._scrollStrategy,
+    width: this._dropdownOriginWidth(),
+    maxHeight: 170,
+    direction: this._directionality,
+  })
+
+  private readonly _overlayPositionStrategy = this._overlay
+    .position()
+    .flexibleConnectedTo(this._origin().host)
+    .withPositions(this._getOverlayPositions(this.position()))
+    .withPush(false)
+    // Apply margins to avoid clipping the dropdown by viewport
+    .withFlexibleDimensions(true)
+    .withGrowAfterOpen(true)
+    .withViewportMargin(6)
 
   private readonly _formControlValue = signal<unknown>(null)
   private readonly _displayValueOnOpen = signal<unknown>(null)
@@ -254,15 +262,16 @@ export class CkAutocompleteTrigger
     effect(this._positionChangeEffect.bind(this))
     effect(this._outsideClickEffect.bind(this))
     effect(this._optionsChangesEffect.bind(this))
+    effect(this._animationOutDoneEffect.bind(this), { allowSignalWrites: true })
     effect(this._optionsSelectionChangeEffect.bind(this), {
       allowSignalWrites: true,
     })
   }
 
-  public async ngOnDestroy(): Promise<void> {
+  public ngOnDestroy(): void {
     if (!this._overlayRef()) return
 
-    await this.closePanel()
+    this.closePanel()
     this._overlayRef()!.dispose()
   }
 
@@ -309,7 +318,7 @@ export class CkAutocompleteTrigger
         { labelId: this._formField.labelId() },
       )
 
-      this._overlayRef.set(this._overlay.create(this._getOverlayConfig()))
+      this._overlayRef.set(this._overlay.create(this._overlayConfig))
     }
 
     if (!this._overlayAttached()) {
@@ -321,12 +330,8 @@ export class CkAutocompleteTrigger
   }
 
   /** Closes the suggestion panel. */
-  public async closePanel(): Promise<void> {
+  public closePanel(): void {
     if (this.autocomplete()._trigger() === this) this.autocomplete()._close()
-
-    await firstValueFrom(this.autocomplete()._animationEnd)
-
-    this._overlayRef()!.detach()
   }
 
   /**
@@ -337,7 +342,7 @@ export class CkAutocompleteTrigger
    */
   public updatePosition(position?: AutocompletePosition): void {
     if (position) {
-      this._overlayPositionStrategy()?.withPositions(
+      this._overlayPositionStrategy.withPositions(
         this._getOverlayPositions(position),
       )
     }
@@ -366,7 +371,7 @@ export class CkAutocompleteTrigger
     }
 
     if (this._isClosingKeydownEvent(event)) {
-      void this._setValueAndClose(null)
+      this._setValueAndClose(null)
     }
 
     if (this._isNavigationKeydownEvent(event)) {
@@ -408,16 +413,6 @@ export class CkAutocompleteTrigger
   protected _closeViaBlur(): void {
     this._onTouched()
     this._setCanOpenOnNextFocus(true)
-  }
-
-  private _getOverlayConfig(): OverlayConfig {
-    return new OverlayConfig({
-      positionStrategy: this._getOverlayPositionStrategy(),
-      scrollStrategy: this._scrollStrategy,
-      width: this._dropdownOriginWidth(),
-      maxHeight: 170,
-      direction: this._directionality,
-    })
   }
 
   private _getOverlayPositionStrategy(): FlexibleConnectedPositionStrategy {
@@ -500,13 +495,10 @@ export class CkAutocompleteTrigger
    * Depending on the provided option, decides whether to set specific value or
    * reset everything and closes the dropdown.
    */
-  private async _setValueAndClose(
-    optionToSelect: CkOption | null,
-  ): Promise<void> {
+  private _setValueAndClose(optionToSelect: CkOption | null): void {
     if (optionToSelect?.isSelected()) {
       this.autocomplete()._deselectAll(optionToSelect)
       this._setValue(optionToSelect.value())
-      this.host.nativeElement.focus()
 
       return this.closePanel()
     }
@@ -621,7 +613,7 @@ export class CkAutocompleteTrigger
    * Updates dropdown origin.
    */
   private _originChangeEffect(): void {
-    this._overlayPositionStrategy()?.setOrigin(this._origin().host)
+    this._overlayPositionStrategy.setOrigin(this._origin().host)
   }
 
   /**
@@ -655,7 +647,7 @@ export class CkAutocompleteTrigger
 
     untracked(() => {
       this.updatePosition(this.position())
-      void this._setValueAndClose(selectionChange.source)
+      this._setValueAndClose(selectionChange.source)
     })
   }
 
@@ -667,6 +659,15 @@ export class CkAutocompleteTrigger
   private _outsideClickEffect(): void {
     if (!this._outsideClick() || !untracked(this._overlayAttached)) return
 
-    untracked(() => void this._setValueAndClose(null))
+    untracked(() => this._setValueAndClose(null))
+  }
+
+  /**
+   * Runs when suggestion panel closing animation finishes.
+   *
+   * Detaches the overlay.
+   */
+  private _animationOutDoneEffect(): void {
+    if (this.autocomplete()._animationOutDone()) this._overlayRef()!.detach()
   }
 }

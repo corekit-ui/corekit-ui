@@ -3,6 +3,7 @@
 // Some public properties are calculated from private ones, so privates should be
 // higher in the code.
 /* eslint-disable @typescript-eslint/member-ordering */
+import { AnimationEvent } from '@angular/animations'
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y'
 import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common'
 import {
@@ -17,7 +18,6 @@ import {
   input,
   OnDestroy,
   output,
-  Signal,
   signal,
   TemplateRef,
   untracked,
@@ -30,9 +30,10 @@ import {
 } from '@angular/core/rxjs-interop'
 import { CkOption } from '@corekit/ui/option'
 import { classNames, getScrollPosition } from '@corekit/ui/utils'
-import { filter, fromEvent, map, merge, switchMap } from 'rxjs'
+import { filter, map, merge, Subject, switchMap } from 'rxjs'
 import { CkAutocompleteTrigger } from './autocomplete-trigger'
 import { autocompleteStyles } from './autocomplete.styles'
+import { ZOOM_IN_ANIMATION } from './zoom-in.animation'
 
 let uniqueIdCounter = 0
 
@@ -44,6 +45,7 @@ let uniqueIdCounter = 0
   imports: [NgTemplateOutlet, NgClass, AsyncPipe],
   templateUrl: './autocomplete.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [ZOOM_IN_ANIMATION],
   host: { class: 'hidden' },
 })
 export class CkAutocomplete implements OnDestroy {
@@ -112,7 +114,14 @@ export class CkAutocomplete implements OnDestroy {
   })
 
   /** Manages keyboard navigation in the options list. */
-  private readonly _keyManager = this._initListKeyManager(this.options)
+  private readonly _keyManager = new ActiveDescendantKeyManager(
+    this.options,
+    this._injector,
+  )
+    .withWrap()
+    // Disallow skipping disabled options when navigating. This is to conform
+    // with https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/
+    .skipPredicate(() => false)
 
   /** Currently active (fake focused with keyboard) option. */
   public readonly activeOption = toSignal(
@@ -137,6 +146,18 @@ export class CkAutocomplete implements OnDestroy {
     ),
   )
 
+  /** Stream of animation completion events. */
+  public readonly _animationDone = new Subject<AnimationEvent>()
+
+  /** Stream of closing animation completion events. */
+  public readonly _animationOutDone = toSignal(
+    this._animationDone.pipe(
+      filter(event => {
+        return event.fromState === 'open' && event.toState === 'closed'
+      }),
+    ),
+  )
+
   /**
    * CSS classes to be applied to the suggestion panel.
    *
@@ -147,18 +168,10 @@ export class CkAutocomplete implements OnDestroy {
     return classNames(autocompleteStyles, this.class())
   })
 
-  protected readonly _position = computed(() => this._trigger()?.position())
+  protected readonly _animationState = signal<'open' | 'closed'>('closed')
 
   /** HTML Element containing the list of options. */
   private readonly _panel = viewChild<ElementRef<HTMLDivElement>>('panel')
-
-  /** Emits when the suggestion panel opening animation has finished. */
-  public readonly _animationEnd = toObservable(this._panel).pipe(
-    filter(Boolean),
-    switchMap(panel => {
-      return fromEvent<AnimationEvent>(panel.nativeElement, 'animationend')
-    }),
-  )
 
   constructor(private readonly _injector: Injector) {
     effect(this._optionsChangesEffect.bind(this), { allowSignalWrites: true })
@@ -197,7 +210,9 @@ export class CkAutocomplete implements OnDestroy {
   }
 
   public _deselectAll(except?: CkOption): void {
-    this.options().forEach(option => option !== except && option.deselect())
+    this.options().forEach(
+      option => option !== except && option.deselect(false),
+    )
   }
 
   public _navigate(event: KeyboardEvent): void
@@ -212,11 +227,13 @@ export class CkAutocomplete implements OnDestroy {
 
   public _open(trigger: CkAutocompleteTrigger): void {
     this._trigger.set(trigger)
+    this._animationState.set('open')
     this.opened.emit()
   }
 
   public _close(): void {
     this._trigger.set(null)
+    this._animationState.set('closed')
     !this.selectedOption() && this._resetActiveOption()
     this.closed.emit()
   }
@@ -227,18 +244,6 @@ export class CkAutocomplete implements OnDestroy {
     if (labelId) return `${labelId} ${this.ariaLabelledby()}`
 
     return this.ariaLabelledby() ?? null
-  }
-
-  private _initListKeyManager(
-    options: Signal<readonly CkOption[]>,
-  ): ActiveDescendantKeyManager<CkOption> {
-    return (
-      new ActiveDescendantKeyManager(options, this._injector)
-        .withWrap()
-        // We need to disallow skipping disabled options when navigating. To
-        // conform with [Developing a Keyboard Interface](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/)
-        .skipPredicate(() => false)
-    )
   }
 
   private _resetActiveOption(): void {
@@ -254,8 +259,7 @@ export class CkAutocomplete implements OnDestroy {
   /**
    * Runs when the suggestion panel opens.
    *
-   * * Marks active option as pending to be selected if autoselection is enabled (???);
-   * * Marks selected option as active and scrolls it into view.
+   * Marks selected option as active and scrolls it into view.
    */
   private _openEffect(): void {
     if (!this.isOpen()) return

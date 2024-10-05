@@ -12,17 +12,18 @@ import { CkFormField } from '@corekit/ui/form-field'
 import { CkInput, CkInputPrefix } from '@corekit/ui/input'
 import { CkLabel } from '@corekit/ui/label'
 import { CkOption } from '@corekit/ui/option'
+import { CkCode } from '@corekit/ui/typography'
 import { LucideAngularModule } from 'lucide-angular'
 
-type Framework = { name: string; stars: number; disabled: boolean }
+type Framework = { name: string; stars: number; disabled: boolean; id: string }
 
-const options: Framework[] = [
-  { name: 'Angular', stars: 95700, disabled: false },
-  { name: 'Analog.js', stars: 2500, disabled: false },
-  { name: 'Vue', stars: 22800, disabled: false },
-  { name: 'React', stars: 22800, disabled: true },
-  { name: 'Next.js', stars: 208000, disabled: false },
-  { name: 'Astro', stars: 45700, disabled: false },
+const frameworks: Framework[] = [
+  { name: 'Angular', stars: 95700, disabled: false, id: 'angular-id' },
+  { name: 'Analog.js', stars: 2500, disabled: false, id: 'analogjs-id' },
+  { name: 'Vue', stars: 22800, disabled: false, id: 'vue-id' },
+  { name: 'React', stars: 22800, disabled: true, id: 'react-id' },
+  { name: 'Next.js', stars: 208000, disabled: false, id: 'nextjs-id' },
+  { name: 'Astro', stars: 45700, disabled: false, id: 'astro-id' },
 ]
 
 @Component({
@@ -41,6 +42,7 @@ const options: Framework[] = [
     FormsModule,
     LucideAngularModule,
     JsonPipe,
+    CkCode,
   ],
   templateUrl: './autocomplete-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -49,31 +51,32 @@ const options: Framework[] = [
 export class AutocompletePageComponent {
   public readonly requireSelection = signal(true)
   public readonly autoActiveFirstOption = signal(true)
-  public readonly framework = signal<Framework | undefined>(undefined)
+  public readonly query = signal<string>('')
+  public readonly frameworkId = signal<string | undefined>(undefined)
 
-  public readonly filteredOptions = computed(() => {
-    const filterValue = this._filterValue().trim().toLowerCase()
+  public readonly frameworks = computed(() => {
+    const query = this.query().trim().toLowerCase()
 
-    return options.filter(({ name, stars }) => {
+    return frameworks.filter(({ name, stars }) => {
       return `${name} (${this._numberFormatter(stars)} stars)`
         .toLowerCase()
-        .includes(filterValue)
+        .includes(query)
     })
+  })
+
+  public readonly selectedOption = computed(() => {
+    return frameworks.find(option => option.id === this.frameworkId())
   })
 
   private readonly _numberFormatter = Intl.NumberFormat('en', {
     notation: 'compact',
   }).format
 
-  private readonly _filterValue = signal<string>('')
+  public readonly displayWith = (id: string | null): string => {
+    if (!id) return ''
 
-  public readonly displayFn = (framework: Framework | null): string => {
-    return framework?.name
-      ? `${framework.name} (${this._numberFormatter(framework.stars)} stars)`
-      : ''
-  }
+    const option = frameworks.find(framework => framework.id === id)!
 
-  public filter(value: string | null): void {
-    this._filterValue.set(value ?? '')
+    return `${option.name} (${this._numberFormatter(option.stars)} stars)`
   }
 }

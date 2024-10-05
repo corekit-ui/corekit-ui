@@ -10,7 +10,8 @@
     }"
     [attr.aria-label]="ariaLabel()"
     [attr.aria-labelledby]="_getAriaLabelledby(labelId)"
-    [attr.data-state]="isOpen() ? 'open' : 'closed'"
+    [@zoomIn]="_animationState()"
+    (@zoomIn.done)="_animationDone.next($event)"
   >
     <ng-content />
   </div>
