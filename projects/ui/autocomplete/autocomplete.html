@@ -1,0 +1,18 @@
+<ng-template #template let-labelId="labelId">
+  <div
+    #panel
+    role="listbox"
+    [class]="_class()"
+    [id]="id"
+    [ngClass]="{
+      visible: !!options().length,
+      'pointer-events-none invisible': !options().length,
+    }"
+    [attr.aria-label]="ariaLabel()"
+    [attr.aria-labelledby]="_getAriaLabelledby(labelId)"
+    [@zoomIn]="_animationState()"
+    (@zoomIn.done)="_animationDone.next($event)"
+  >
+    <ng-content />
+  </div>
+</ng-template>

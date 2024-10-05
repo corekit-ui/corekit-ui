@@ -3,6 +3,7 @@ import { CkH1 } from '@corekit/ui/typography'
 import { LucideIconConfig } from 'lucide-angular'
 import { AccordionPageComponent } from './features/components/accordion-page/accordion-page.component'
 import { AlertPageComponent } from './features/components/alert-page/alert-page.component'
+import { AutocompletePageComponent } from './features/components/autocomplete-page/autocomplete-page.component'
 import { AvatarPageComponent } from './features/components/avatar-page/avatar-page.component'
 import { BadgePageComponent } from './features/components/badge-page/badge-page.component'
 import { ButtonPageComponent } from './features/components/button-page/button-page.component'
@@ -30,7 +31,8 @@ import { TypographyPageComponent } from './features/components/typography-page/t
     CheckboxPageComponent,
     RadioPageComponent,
     InputPageComponent,
-    FormFieldPageComponent
+    FormFieldPageComponent,
+    AutocompletePageComponent
   ],
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,0 +1,69 @@
+<div>
+  <div class="flex items-center gap-2">
+    <input
+      ckCheckbox
+      id="requireSelection"
+      type="checkbox"
+      [(ngModel)]="requireSelection"
+    />
+    <label for="requireSelection">Require selection</label>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <input
+      ckCheckbox
+      id="autoActiveFirstOption"
+      type="checkbox"
+      [(ngModel)]="autoActiveFirstOption"
+    />
+    <label for="autoActiveFirstOption">Autofocus first option</label>
+  </div>
+</div>
+
+<div>
+  Selected Option value:
+  <code>{{ selectedOption() | json }}</code>
+</div>
+
+<div>
+  Form value:
+  <code>{{ frameworkId() | json }}</code>
+</div>
+
+<ck-form-field class="max-w-56">
+  <label ckLabel for="framework">Select Framework</label>
+
+  <div class="relative flex items-center">
+    <ck-input-prefix>
+      <lucide-icon name="search" />
+    </ck-input-prefix>
+
+    <!-- eslint-disable @angular-eslint/template/no-any -->
+    <input
+      #trigger="ckAutocompleteTrigger"
+      ckInput
+      id="framework"
+      type="text"
+      placeholder="Start typing..."
+      [class.ring-0]="autocomplete.isOpen()"
+      [ck-autocomplete-trigger-for]="autocomplete"
+      [(ngModel)]="frameworkId"
+      (input)="query.set($any($event.target).value ?? '')"
+      (focus)="query.set($any($event.target).value ?? '')"
+    />
+    <!-- eslint-enable @angular-eslint/template/no-any -->
+
+    <ck-autocomplete
+      #autocomplete
+      [requireSelection]="requireSelection()"
+      [autoActiveFirstOption]="autoActiveFirstOption()"
+      [displayWith]="displayWith"
+    >
+      @for (framework of frameworks(); track framework.id) {
+        <ck-option [value]="framework.id" [disabled]="framework.disabled">
+          {{ framework.name }}
+        </ck-option>
+      }
+    </ck-autocomplete>
+  </div>
+</ck-form-field>
