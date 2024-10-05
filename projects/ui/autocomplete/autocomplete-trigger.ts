@@ -19,6 +19,7 @@ import { _getEventTarget } from '@angular/cdk/platform'
 import { TemplatePortal } from '@angular/cdk/portal'
 import { DOCUMENT } from '@angular/common'
 import {
+  afterNextRender,
   booleanAttribute,
   ChangeDetectorRef,
   computed,
@@ -28,6 +29,7 @@ import {
   forwardRef,
   Host,
   Inject,
+  Injector,
   input,
   NgZone,
   numberAttribute,
@@ -54,6 +56,7 @@ import {
   Observable,
   startWith,
   switchMap,
+  take,
 } from 'rxjs'
 import { CkAutocomplete } from './autocomplete'
 import { CkAutocompleteOrigin } from './autocomplete-origin'
@@ -182,7 +185,6 @@ export class CkAutocompleteTrigger
     .flexibleConnectedTo(this._origin().host)
     .withPositions(this._getOverlayPositions(this.position()))
     .withPush(false)
-    // Apply margins to avoid clipping the dropdown by viewport
     .withFlexibleDimensions(true)
     .withGrowAfterOpen(true)
     .withViewportMargin(6)
@@ -238,6 +240,24 @@ export class CkAutocompleteTrigger
     { initialValue: false },
   )
 
+  private readonly _viewInitialized = new Observable(subscriber => {
+    afterNextRender(subscriber.next.bind(subscriber), {
+      injector: this._injector,
+    })
+  })
+
+  private readonly _optionsFirstRender = toSignal(
+    this._viewInitialized.pipe(
+      switchMap(() => {
+        return toObservable(this.autocomplete().options, {
+          injector: this._injector,
+        })
+      }),
+      filter(options => !!options.length),
+      take(1),
+    ),
+  )
+
   constructor(
     /** HTML Element of the trigger. */
     public readonly host: ElementRef<HTMLInputElement>,
@@ -255,12 +275,14 @@ export class CkAutocompleteTrigger
     private readonly _overlay: Overlay,
     private readonly _changeDetectorRef: ChangeDetectorRef,
     private readonly _zone: NgZone,
+    private readonly _injector: Injector,
   ) {
     effect(this._windowBlurEffect.bind(this), { allowSignalWrites: true })
     effect(this._originChangeEffect.bind(this))
     effect(this._originWidthChangeEffect.bind(this))
     effect(this._positionChangeEffect.bind(this))
     effect(this._outsideClickEffect.bind(this))
+    effect(this._optionsFirstRenderEffect.bind(this))
     effect(this._optionsChangesEffect.bind(this))
     effect(this._animationOutDoneEffect.bind(this), { allowSignalWrites: true })
     effect(this._optionsSelectionChangeEffect.bind(this), {
@@ -277,10 +299,8 @@ export class CkAutocompleteTrigger
 
   public writeValue(value: unknown): void {
     void firstValueFrom(this._zone.onStable).then(() => {
-      // TODO: This fixes a bug, where option is not selected when value is set
-      // programmatically. Report in Material repo.
       this.autocomplete()._selectOptionByValue(value, false)
-      this._updateNativeInputValue(value)
+      this._setTriggerValue(value)
       this._formControlValue.set(value)
     })
   }
@@ -477,10 +497,26 @@ export class CkAutocompleteTrigger
     return positions[position]
   }
 
-  private _updateNativeInputValue(value: unknown): void {
+  private _setTriggerValue(value: unknown): void {
     const displayValue = this.autocomplete().displayWith()(value)
 
     this.host.nativeElement.value = (displayValue as string | null) ?? ''
+  }
+
+  /**
+   * Sets trigger value according to the currently selected option if there's a
+   * mismatch.
+   */
+  private _updateTriggerValue(): void {
+    const selectedOption = this.autocomplete().selectedOption()
+
+    if (!selectedOption) return
+
+    const displayWith = this.autocomplete().displayWith()
+
+    if (this.host.nativeElement.value !== displayWith(selectedOption.value())) {
+      this._setTriggerValue(this._formControlValue())
+    }
   }
 
   private _coerceNumberInput(
@@ -516,7 +552,7 @@ export class CkAutocompleteTrigger
   }
 
   private _setValue(value: unknown, updateDisplayValue = true): void {
-    updateDisplayValue && this._updateNativeInputValue(value ?? null)
+    updateDisplayValue && this._setTriggerValue(value ?? null)
 
     this._onChange(value ?? null)
   }
@@ -617,6 +653,19 @@ export class CkAutocompleteTrigger
   }
 
   /**
+   * Runs once, when options were set to something other than empty array.
+   *
+   * Sets trigger value according to the currently selected option.
+   *
+   * When the form value is set programmatically, but options haven't arrived yet
+   * (asynchronously fetched), the trigger value will be empty, although form
+   * value is there and an option is selected. This effect fixes just that.
+   */
+  private _optionsFirstRenderEffect(): void {
+    if (this._optionsFirstRender()) this._updateTriggerValue()
+  }
+
+  /**
    * Runs when options change.
    *
    * `@for()` renders new DOM elements representing new options' list each time options
@@ -629,8 +678,6 @@ export class CkAutocompleteTrigger
     this.autocomplete().options()
 
     untracked(() => {
-      if (!this.autocomplete().requireSelection()) return
-
       this.autocomplete()._selectOptionByValue(this._formControlValue(), false)
     })
   }
