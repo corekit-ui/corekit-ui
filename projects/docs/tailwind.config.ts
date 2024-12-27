@@ -55,6 +55,10 @@ export default {
           DEFAULT: 'hsl(var(--muted) / <alpha-value>)',
           foreground: 'hsl(var(--muted-foreground) / <alpha-value>)',
         },
+        transitionTimingFunction: {
+          DEFAULT: 'cubic-bezier(0.25, 1, 0.5, 1)',
+        },
+        transitionDuration: { DEFAULT: '200ms' },
       },
       borderRadius: {
         lg: `var(--radius)`,

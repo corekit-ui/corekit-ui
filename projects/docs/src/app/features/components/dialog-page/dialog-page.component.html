@@ -1,0 +1,63 @@
+<ng-template #simpleDialogTemplate let-data let-dialogRef="dialogRef">
+  <ck-dialog-header>
+    <ck-dialog-title>Notifications</ck-dialog-title>
+    <ck-dialog-subtitle>You have 3 unread messages.</ck-dialog-subtitle>
+  </ck-dialog-header>
+
+  <ck-dialog-content>
+    <dl class="space-y-4 md:space-y-5">
+      <div class="relative ps-5">
+        <div
+          class="bg-accent absolute left-0 top-1.5 h-2 w-2 rounded-full"
+        ></div>
+        <dt class="font-medium">Your call has been confirmed.</dt>
+        <dd class="text-muted-foreground">1 hour ago</dd>
+      </div>
+
+      <div class="relative ps-5">
+        <div
+          class="bg-accent absolute left-0 top-1.5 h-2 w-2 rounded-full"
+        ></div>
+        <dt class="font-medium">You have a new message!</dt>
+        <dd class="text-muted-foreground">1 hour ago</dd>
+      </div>
+
+      <div class="relative ps-5">
+        <div
+          class="bg-accent absolute left-0 top-1.5 h-2 w-2 rounded-full"
+        ></div>
+        <dt class="font-medium">Your subscription is expiring soon!</dt>
+        <dd class="text-muted-foreground">2 hours ago</dd>
+      </div>
+    </dl>
+  </ck-dialog-content>
+
+  <ck-dialog-actions align="stretch">
+    <button ckButton ckDialogClose color="secondary" type="button">
+      Dismiss
+    </button>
+    <button ckButton type="button">👌 Mark all as read</button>
+  </ck-dialog-actions>
+</ng-template>
+
+<button ckButton type="button" (click)="openDialog()">Simple dialog</button>
+
+<button
+  ckButton
+  type="button"
+  (click)="openDialogWithTemplate(simpleDialogTemplate)"
+>
+  Template Dialog
+</button>
+
+<button ckButton type="button" (click)="openScrollableDialog()">
+  Scrollable content dialog
+</button>
+
+<button ckButton type="button" (click)="openDialogWithPassedData()">
+  With data passed
+</button>
+
+<button ckButton type="button" (click)="openDialogWithOutputData()">
+  With output data
+</button>
