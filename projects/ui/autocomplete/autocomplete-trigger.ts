@@ -300,7 +300,7 @@ export class CkAutocompleteTrigger
   public writeValue(value: unknown): void {
     void firstValueFrom(this._zone.onStable).then(() => {
       this.autocomplete()._selectOptionByValue(value, false)
-      this._setTriggerValue(value)
+      this._setNativeElementValue(value)
       this._formControlValue.set(value)
     })
   }
@@ -497,7 +497,7 @@ export class CkAutocompleteTrigger
     return positions[position]
   }
 
-  private _setTriggerValue(value: unknown): void {
+  private _setNativeElementValue(value: unknown): void {
     const displayValue = this.autocomplete().displayWith()(value)
 
     this.host.nativeElement.value = (displayValue as string | null) ?? ''
@@ -507,7 +507,7 @@ export class CkAutocompleteTrigger
    * Sets trigger value according to the currently selected option if there's a
    * mismatch.
    */
-  private _updateTriggerValue(): void {
+  private _updateNativeElementValue(): void {
     const selectedOption = this.autocomplete().selectedOption()
 
     if (!selectedOption) return
@@ -515,7 +515,7 @@ export class CkAutocompleteTrigger
     const displayWith = this.autocomplete().displayWith()
 
     if (this.host.nativeElement.value !== displayWith(selectedOption.value())) {
-      this._setTriggerValue(this._formControlValue())
+      this._setNativeElementValue(this._formControlValue())
     }
   }
 
@@ -552,7 +552,7 @@ export class CkAutocompleteTrigger
   }
 
   private _setValue(value: unknown, updateDisplayValue = true): void {
-    updateDisplayValue && this._setTriggerValue(value ?? null)
+    updateDisplayValue && this._setNativeElementValue(value ?? null)
 
     this._onChange(value ?? null)
   }
@@ -662,7 +662,7 @@ export class CkAutocompleteTrigger
    * value is there and an option is selected. This effect fixes just that.
    */
   private _optionsFirstRenderEffect(): void {
-    if (this._optionsFirstRender()) this._updateTriggerValue()
+    if (this._optionsFirstRender()) this._updateNativeElementValue()
   }
 
   /**
