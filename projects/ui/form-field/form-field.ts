@@ -8,11 +8,13 @@ import {
   effect,
   Injector,
   input,
+  Optional,
   runInInjectionContext,
   signal
 } from '@angular/core'
 import { FormGroupDirective, NgControl } from '@angular/forms'
 import { CkInput, CkInputPrefix, CkInputSuffix } from '@corekit/ui/input'
+import { CkLabel } from '@corekit/ui/label'
 import { ErrorStateMatcher } from '@corekit/ui/reactive-forms'
 import { classNames } from '@corekit/ui/utils'
 import { FADE_IN_DOWN } from './animations/fade-in-down.animation'
@@ -32,6 +34,7 @@ export class CkFormField implements DoCheck, AfterViewInit {
   public readonly class = input<string>()
   public readonly errorStateMatcher = input<ErrorStateMatcher>()
   public readonly errorState = computed(() => this._errorState())
+  public readonly labelId = computed(() => this._label()?.id())
 
   protected get _class(): string {
     return classNames(
@@ -41,7 +44,8 @@ export class CkFormField implements DoCheck, AfterViewInit {
     )
   }
 
-  private readonly _ngControl = contentChild.required(NgControl)
+  private readonly _ngControl = contentChild(NgControl)
+  private readonly _label = contentChild(CkLabel)
   private readonly _input = contentChild(CkInput)
   private readonly _inputPrefix = contentChild(CkInputPrefix)
   private readonly _inputSuffix = contentChild(CkInputSuffix)
@@ -50,14 +54,14 @@ export class CkFormField implements DoCheck, AfterViewInit {
   constructor(
     private readonly _injector: Injector,
     private readonly _defaultErrorStateMatcher: ErrorStateMatcher,
-    private readonly _formGroupDirective: FormGroupDirective
+    @Optional()
+    private readonly _formGroupDirective?: FormGroupDirective
   ) {}
 
   public ngDoCheck(): void {
-    // This has to be recalculated every time change detection
-    // runs due to a lot of events that we want to react, but
-    // cannot subscribe to.
-    this._calculateErrorState()
+    // This has to be recalculated every time change detection runs due to a lot
+    // of events that we want to react, but cannot subscribe to.
+    this._ngControl() && this._calculateErrorState()
   }
 
   public ngAfterViewInit(): void {
@@ -81,7 +85,7 @@ export class CkFormField implements DoCheck, AfterViewInit {
 
     const oldState = this._errorState()
     const newState = errorStateMatcher.matches(
-      this._ngControl(),
+      this._ngControl()!,
       this._formGroupDirective
     )
 

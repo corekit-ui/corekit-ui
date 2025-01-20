@@ -1,5 +1,4 @@
-@use '@angular/cdk';
-@include cdk.overlay();
+@import '@angular/cdk/overlay-prebuilt.css';
 
 @tailwind base;
 @tailwind components;
