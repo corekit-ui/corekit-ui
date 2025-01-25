@@ -1,11 +1,8 @@
 // TODO: Implement CK_AUTOCOMPLETE_DEFAULT_OPTIONS
 
-// Some public properties are calculated from private ones, so privates should be
-// higher in the code.
-/* eslint-disable @typescript-eslint/member-ordering */
 import { AnimationEvent } from '@angular/animations'
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y'
-import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common'
+import { NgClass } from '@angular/common'
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -42,7 +39,7 @@ let uniqueIdCounter = 0
   selector: 'ck-autocomplete, [ck-autocomplete]',
   exportAs: 'ckAutocomplete',
   standalone: true,
-  imports: [NgTemplateOutlet, NgClass, AsyncPipe],
+  imports: [NgClass],
   templateUrl: './autocomplete.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [ZOOM_IN_ANIMATION],

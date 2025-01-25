@@ -3,17 +3,17 @@ import { cva } from 'class-variance-authority'
 export const dialogHeaderStyles = cva(
   [
     'flex',
-    'flex-col',
-    'space-y-1',
+    'gap-2',
+    'justify-between',
     'px-6',
-    'pb-3',
+    'pb-4',
     'pt-6',
     'bg-surface/95',
     'backdrop-blur',
-    'supports-[backdrop-filter]:bg-surface/60'
+    'supports-[backdrop-filter]:bg-surface/60',
   ],
   {
     variants: { sticky: { true: 'sticky top-0' } },
-    defaultVariants: { sticky: true }
-  }
+    defaultVariants: { sticky: true },
+  },
 )

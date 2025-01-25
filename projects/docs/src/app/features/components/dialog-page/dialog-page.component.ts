@@ -1,10 +1,10 @@
 /* eslint-disable @angular-eslint/component-max-inline-declarations */
-/* eslint-disable max-classes-per-file */
+
 import {
   ChangeDetectionStrategy,
   Component,
   Inject,
-  TemplateRef
+  TemplateRef,
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { CkButton } from '@corekit/ui/button'
@@ -17,7 +17,7 @@ import {
   CkDialogHeader,
   CkDialogRef,
   CkDialogSubtitle,
-  CkDialogTitle
+  CkDialogTitle,
 } from '@corekit/ui/dialog'
 import { CkFormField } from '@corekit/ui/form-field'
 import { CkInput } from '@corekit/ui/input'
@@ -35,12 +35,20 @@ import { firstValueFrom } from 'rxjs'
     CkDialogContent,
     CkDialogActions,
     CkButton,
-    CkDialogClose
+    CkDialogClose,
   ],
   template: `
     <ck-dialog-header>
       <ck-dialog-title>Notifications</ck-dialog-title>
       <ck-dialog-subtitle>You have 3 unread messages.</ck-dialog-subtitle>
+
+      <button
+        type="button"
+        ckDialogClose
+        displayAsIcon
+        aria-label="Close"
+        title="Close"
+      ></button>
     </ck-dialog-header>
 
     <ck-dialog-content>
@@ -72,14 +80,14 @@ import { firstValueFrom } from 'rxjs'
     </ck-dialog-content>
 
     <ck-dialog-actions align="stretch">
-      <button ckButton ckDialogClose color="secondary" type="button">
+      <button ckButton color="secondary" type="button" ckDialogClose>
         Dismiss
       </button>
 
       <button ckButton type="button">👌 Mark all as read</button>
     </ck-dialog-actions>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class SimpleDialog {
   constructor(public readonly dialogRef: CkDialogRef) {}
@@ -95,7 +103,7 @@ class SimpleDialog {
     CkDialogContent,
     CkDialogActions,
     CkButton,
-    CkP
+    CkP,
   ],
   template: `
     <ck-dialog-header>
@@ -232,7 +240,7 @@ class SimpleDialog {
       <button ckButton type="button">👌 Mark all as read</button>
     </ck-dialog-actions>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class ScrollableDialog {
   constructor(public readonly dialogRef: CkDialogRef) {}
@@ -249,12 +257,12 @@ class ScrollableDialog {
 
     <ck-dialog-content>Hello, {{ data }}!</ck-dialog-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class DialogWithPassedData {
   constructor(
     @Inject(CK_DIALOG_DATA)
-    public readonly data: string
+    public readonly data: string,
   ) {}
 }
 
@@ -270,7 +278,7 @@ class DialogWithPassedData {
     CkDialogTitle,
     CkDialogContent,
     CkDialogActions,
-    CkLabel
+    CkLabel,
   ],
   template: `
     <ck-dialog-header>
@@ -298,7 +306,7 @@ class DialogWithPassedData {
       </button>
     </ck-dialog-actions>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class DialogWithOutputData {
   public readonly nameControl = new FormControl()
@@ -306,7 +314,7 @@ class DialogWithOutputData {
   constructor(
     @Inject(CK_DIALOG_DATA)
     public readonly data: string,
-    private readonly _dialog: CkDialogRef<string>
+    private readonly _dialog: CkDialogRef<string>,
   ) {}
 
   public close(name: string): void {
@@ -324,11 +332,11 @@ class DialogWithOutputData {
     CkDialogContent,
     CkDialogActions,
     CkButton,
-    CkDialogClose
+    CkDialogClose,
   ],
   templateUrl: './dialog-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'block space-y-1 space-x-3' }
+  host: { class: 'block space-y-1 space-x-3' },
 })
 export class DialogPageComponent {
   constructor(private readonly _dialog: CkDialog) {}
@@ -349,7 +357,7 @@ export class DialogPageComponent {
     const name = prompt(`What's your name?`)
 
     this._dialog.open(DialogWithPassedData, {
-      data: name || 'Mr. Bond'
+      data: name || 'Mr. Bond',
     })
   }
 

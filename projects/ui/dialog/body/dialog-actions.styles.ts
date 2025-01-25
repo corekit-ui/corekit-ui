@@ -5,17 +5,17 @@ export type CkDialogActionAlignment = VariantProps<
 >['align']
 
 export const dialogActionsStyles = cva(
-  'flex flex-col sm:flex-row items-center gap-3 px-6 pb-6 pt-3',
+  'flex flex-col sm:flex-row items-center gap-3 px-6 pb-6 pt-4',
   {
     variants: {
       align: {
         start: 'justify-start',
         center: 'justify-center',
         end: 'justify-end',
-        stretch: '[&_>_*]:w-full'
+        stretch: '[&_>_*]:w-full',
       },
-      sticky: { true: 'sticky bottom-0' }
+      sticky: { true: 'sticky bottom-0' },
     },
-    defaultVariants: { align: 'end', sticky: true }
-  }
+    defaultVariants: { align: 'end', sticky: true },
+  },
 )

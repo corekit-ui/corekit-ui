@@ -1,11 +1,19 @@
-import { booleanAttribute, computed, Directive, input } from '@angular/core'
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core'
 import { classNames } from '@corekit/ui/utils'
 import { dialogHeaderStyles } from './dialog-header.styles'
 
-@Directive({
+@Component({
   selector: '[ck-dialog-header], ck-dialog-header',
   standalone: true,
-  host: { '[class]': '_class()' }
+  templateUrl: './dialog-header.html',
+  host: { '[class]': '_class()' },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CkDialogHeader {
   public readonly class = input<string>()
@@ -16,13 +24,13 @@ export class CkDialogHeader {
    */
   public readonly isSticky = input<boolean, unknown>(true, {
     alias: 'sticky',
-    transform: booleanAttribute
+    transform: booleanAttribute,
   })
 
   protected _class = computed(() => {
     return classNames(
       dialogHeaderStyles({ sticky: this.isSticky() }),
-      this.class()
+      this.class(),
     )
   })
 }
