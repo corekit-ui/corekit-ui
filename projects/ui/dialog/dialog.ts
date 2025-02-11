@@ -7,11 +7,12 @@ import {
   OnDestroy,
   Optional,
   signal,
-  TemplateRef
+  TemplateRef,
 } from '@angular/core'
 import { toObservable, toSignal } from '@angular/core/rxjs-interop'
 import { classNames } from '@corekit/ui/utils/class-names'
 import { filter, map, mergeMap } from 'rxjs'
+import { CK_CLOSABLE } from '../close'
 import { CkDialogConfig, DialogScrollStrategy } from './dialog-config'
 import { CkDialogContainer } from './dialog-container'
 import { CkDialogRef } from './dialog-ref'
@@ -29,10 +30,10 @@ export class CkDialog implements OnDestroy {
     ScrollStrategy
   > = {
     scroll: this._overlay.scrollStrategies.reposition({
-      scrollThrottle: 200
+      scrollThrottle: 200,
     }),
     block: this._overlay.scrollStrategies.block(),
-    close: this._overlay.scrollStrategies.close()
+    close: this._overlay.scrollStrategies.close(),
   }
 
   private readonly _lastOpened = signal<CkDialogRef | null>(null)
@@ -40,8 +41,8 @@ export class CkDialog implements OnDestroy {
   private readonly _lastClosed = toSignal(
     toObservable(this._lastOpened).pipe(
       filter(Boolean),
-      mergeMap(dialogRef => dialogRef.afterClosed.pipe(map(() => dialogRef)))
-    )
+      mergeMap(dialogRef => dialogRef.afterClosed.pipe(map(() => dialogRef))),
+    ),
   )
 
   constructor(
@@ -49,7 +50,7 @@ export class CkDialog implements OnDestroy {
     private readonly _cdkDialog: Dialog,
     @Inject(CK_DIALOG_DEFAULT_CONFIG)
     @Optional()
-    private readonly _defaultConfig?: CkDialogConfig
+    private readonly _defaultConfig?: CkDialogConfig,
   ) {
     effect(this._lastOpenedEffect.bind(this), { allowSignalWrites: true })
     effect(this._lastClosedEffect.bind(this), { allowSignalWrites: true })
@@ -67,7 +68,7 @@ export class CkDialog implements OnDestroy {
    */
   public open<R = unknown, D = unknown, C = unknown>(
     component: ComponentType<C>,
-    config?: CkDialogConfig<D>
+    config?: CkDialogConfig<D>,
   ): CkDialogRef<R, D, C>
 
   /**
@@ -82,12 +83,12 @@ export class CkDialog implements OnDestroy {
    */
   public open<R = unknown, D = unknown, C = unknown>(
     template: TemplateRef<C>,
-    config?: CkDialogConfig<D>
+    config?: CkDialogConfig<D>,
   ): CkDialogRef<R, D, C>
 
   public open<R = unknown, D = unknown, C = unknown>(
     componentOrTemplateRef: ComponentType<C> | TemplateRef<C>,
-    config: CkDialogConfig<D> = {}
+    config: CkDialogConfig<D> = {},
   ): CkDialogRef<R, D, C> {
     // eslint-disable-next-line @typescript-eslint/init-declarations
     let dialogRef: CkDialogRef<R, D, C>
@@ -99,8 +100,8 @@ export class CkDialog implements OnDestroy {
       ...config,
       backdropClass: classNames(
         defaultConfig.backdropClass,
-        config.backdropClass
-      )
+        config.backdropClass,
+      ),
     }
 
     const scrollStrategy =
@@ -137,15 +138,15 @@ export class CkDialog implements OnDestroy {
 
           return [
             { provide: CkDialogConfig, useValue: finalConfig },
-            { provide: DialogConfig, useValue: finalConfig }
+            { provide: DialogConfig, useValue: finalConfig },
           ]
-        }
+        },
       },
       providers: (cdkDialogRef, cdkConfig, container) => {
         dialogRef = new CkDialogRef(
           { ...cdkConfig, ...configMergedWithDefault } as CkDialogConfig<D>,
           container as CkDialogContainer,
-          cdkDialogRef
+          cdkDialogRef,
         )
 
         dialogRef.updatePosition(configMergedWithDefault.offset)
@@ -153,9 +154,10 @@ export class CkDialog implements OnDestroy {
         return [
           { provide: CkDialogContainer, useValue: container },
           { provide: CK_DIALOG_DATA, useValue: cdkConfig.data },
-          { provide: CkDialogRef, useValue: dialogRef }
+          { provide: CkDialogRef, useValue: dialogRef },
+          { provide: CK_CLOSABLE, useValue: dialogRef },
         ]
-      }
+      },
     })
 
     this._lastOpened.set(dialogRef!)

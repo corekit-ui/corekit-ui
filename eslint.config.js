@@ -101,6 +101,7 @@ module.exports = typescript.config(
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/prefer-nullish-coalescing': 'warn',
       '@typescript-eslint/no-invalid-void-type': 'off',
+      '@typescript-eslint/consistent-type-definitions': 'off',
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
         { accessibility: 'explicit', overrides: { constructors: 'no-public' } },

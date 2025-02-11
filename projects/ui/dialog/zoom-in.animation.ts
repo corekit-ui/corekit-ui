@@ -1,5 +1,8 @@
 import { animate, state, style, transition, trigger } from '@angular/animations'
-import theme from 'tailwindcss/defaultTheme'
+import {
+  transitionDuration,
+  transitionTimingFunction,
+} from 'tailwindcss/defaultTheme'
 
 export const ZOOM_IN = trigger('zoomIn', [
   state(
@@ -10,7 +13,7 @@ export const ZOOM_IN = trigger('zoomIn', [
   transition(
     '* <=> void, opened <=> closing',
     animate(
-      `${theme.transitionDuration.DEFAULT} ${theme.transitionTimingFunction.DEFAULT}`,
+      `${transitionDuration.DEFAULT} ${transitionTimingFunction.DEFAULT}`,
     ),
   ),
 ])

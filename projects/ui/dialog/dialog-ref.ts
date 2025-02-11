@@ -3,13 +3,14 @@ import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes'
 import { GlobalPositionStrategy } from '@angular/cdk/overlay'
 import { runInInjectionContext, signal } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
+import { CkClosable } from '@corekit/ui/close'
 import { filter, merge, Subject, tap } from 'rxjs'
 import { CkDialogConfig, DialogOffset } from './dialog-config'
 import { CkDialogContainer } from './dialog-container'
 
 /** Reference of a dialog opened with `CkDialog`. */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export class CkDialogRef<R = any, D = any, T = any> {
+export class CkDialogRef<R = any, D = any, T = any> implements CkClosable<R> {
   private readonly _afterOpened = new Subject<void>()
 
   /** Emits when the dialog has finished opening. */
@@ -35,17 +36,17 @@ export class CkDialogRef<R = any, D = any, T = any> {
     this.backdropClick,
     this.keydownEvents.pipe(
       filter(event => event.keyCode === ESCAPE && !hasModifierKey(event)),
-      tap(event => event.preventDefault())
-    )
+      tap(event => event.preventDefault()),
+    ),
   ).pipe(
     filter(() => !this.config.disableClose),
-    tap(event => event.preventDefault())
+    tap(event => event.preventDefault()),
   )
 
   constructor(
     public readonly config: CkDialogConfig<D>,
     private readonly _containerInstance: CkDialogContainer,
-    private readonly _cdkDialogRef: DialogRef<R, T>
+    private readonly _cdkDialogRef: DialogRef<R, T>,
   ) {
     this._setBackdropState('opened')
 
@@ -56,7 +57,7 @@ export class CkDialogRef<R = any, D = any, T = any> {
       this._closingEvents
         .pipe(
           tap(() => this.close()),
-          takeUntilDestroyed()
+          takeUntilDestroyed(),
         )
         .subscribe()
     })
@@ -137,7 +138,7 @@ export class CkDialogRef<R = any, D = any, T = any> {
   private _setBackdropState(state: 'opened' | 'closed'): void {
     this._cdkDialogRef.overlayRef.backdropElement?.setAttribute(
       'data-state',
-      state
+      state,
     )
   }
 

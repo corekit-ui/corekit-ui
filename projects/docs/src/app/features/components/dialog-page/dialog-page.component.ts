@@ -8,11 +8,11 @@ import {
 } from '@angular/core'
 import { FormControl, ReactiveFormsModule } from '@angular/forms'
 import { CkButton } from '@corekit/ui/button'
+import { CkClose } from '@corekit/ui/close'
 import {
   CK_DIALOG_DATA,
   CkDialog,
   CkDialogActions,
-  CkDialogClose,
   CkDialogContent,
   CkDialogHeader,
   CkDialogRef,
@@ -35,7 +35,7 @@ import { firstValueFrom } from 'rxjs'
     CkDialogContent,
     CkDialogActions,
     CkButton,
-    CkDialogClose,
+    CkClose,
   ],
   template: `
     <ck-dialog-header>
@@ -44,8 +44,8 @@ import { firstValueFrom } from 'rxjs'
 
       <button
         type="button"
-        ckDialogClose
-        displayAsIcon
+        ck-close
+        ckCloseAppearance="icon"
         aria-label="Close"
         title="Close"
       ></button>
@@ -80,10 +80,7 @@ import { firstValueFrom } from 'rxjs'
     </ck-dialog-content>
 
     <ck-dialog-actions align="stretch">
-      <button ckButton color="secondary" type="button" ckDialogClose>
-        Dismiss
-      </button>
-
+      <button ckButton color="secondary" type="button" ck-close>Dismiss</button>
       <button ckButton type="button">👌 Mark all as read</button>
     </ck-dialog-actions>
   `,
@@ -104,11 +101,20 @@ class SimpleDialog {
     CkDialogActions,
     CkButton,
     CkP,
+    CkClose,
   ],
   template: `
     <ck-dialog-header>
       <ck-dialog-title>Notifications</ck-dialog-title>
       <ck-dialog-subtitle>You have 3 unread messages.</ck-dialog-subtitle>
+
+      <button
+        type="button"
+        ck-close
+        ckCloseAppearance="icon"
+        aria-label="Close"
+        title="Close"
+      ></button>
     </ck-dialog-header>
 
     <ck-dialog-content>
@@ -229,30 +235,29 @@ class SimpleDialog {
     </ck-dialog-content>
 
     <ck-dialog-actions align="stretch">
-      <button
-        ckButton
-        color="secondary"
-        type="button"
-        (click)="dialogRef.close()"
-      >
-        Dismiss
-      </button>
+      <button ckButton color="secondary" type="button" ck-close>Dismiss</button>
       <button ckButton type="button">👌 Mark all as read</button>
     </ck-dialog-actions>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-class ScrollableDialog {
-  constructor(public readonly dialogRef: CkDialogRef) {}
-}
+class ScrollableDialog {}
 
 @Component({
   selector: 'dialog-with-injected-data',
   standalone: true,
-  imports: [CkDialogHeader, CkDialogTitle, CkDialogContent],
+  imports: [CkDialogHeader, CkDialogTitle, CkDialogContent, CkClose],
   template: `
     <ck-dialog-header>
       <ck-dialog-title>Dialog with injected data</ck-dialog-title>
+
+      <button
+        type="button"
+        ck-close
+        ckCloseAppearance="icon"
+        aria-label="Close"
+        title="Close"
+      ></button>
     </ck-dialog-header>
 
     <ck-dialog-content>Hello, {{ data }}!</ck-dialog-content>
@@ -260,10 +265,7 @@ class ScrollableDialog {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class DialogWithPassedData {
-  constructor(
-    @Inject(CK_DIALOG_DATA)
-    public readonly data: string,
-  ) {}
+  constructor(@Inject(CK_DIALOG_DATA) public readonly data: string) {}
 }
 
 @Component({
@@ -279,10 +281,19 @@ class DialogWithPassedData {
     CkDialogContent,
     CkDialogActions,
     CkLabel,
+    CkClose,
   ],
   template: `
     <ck-dialog-header>
       <ck-dialog-title>Dialog with output data</ck-dialog-title>
+
+      <button
+        type="button"
+        ck-close
+        ckCloseAppearance="icon"
+        aria-label="Close"
+        title="Close"
+      ></button>
     </ck-dialog-header>
 
     <ck-dialog-content>
@@ -295,13 +306,13 @@ class DialogWithPassedData {
           ckInput
           placeholder="John Doe"
           [formControl]="nameControl"
-          (keydown.enter)="close(nameControl.value)"
+          (keydown.enter)="dialogRef.close(nameControl.value)"
         />
       </ck-form-field>
     </ck-dialog-content>
 
     <ck-dialog-actions class="!m-0">
-      <button ckButton type="button" (click)="close(nameControl.value)">
+      <button ckButton type="button" [ck-close]="nameControl.value">
         Submit
       </button>
     </ck-dialog-actions>
@@ -314,12 +325,8 @@ class DialogWithOutputData {
   constructor(
     @Inject(CK_DIALOG_DATA)
     public readonly data: string,
-    private readonly _dialog: CkDialogRef<string>,
+    public readonly dialogRef: CkDialogRef,
   ) {}
-
-  public close(name: string): void {
-    return this._dialog.close(name)
-  }
 }
 
 @Component({
@@ -332,7 +339,7 @@ class DialogWithOutputData {
     CkDialogContent,
     CkDialogActions,
     CkButton,
-    CkDialogClose,
+    CkClose,
   ],
   templateUrl: './dialog-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

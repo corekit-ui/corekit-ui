@@ -1,5 +1,4 @@
 export * from './body/dialog-actions'
-export * from './body/dialog-close'
 export * from './body/dialog-content'
 export * from './body/dialog-header'
 export * from './body/dialog-subtitle'

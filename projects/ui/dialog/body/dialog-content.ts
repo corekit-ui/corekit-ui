@@ -4,7 +4,7 @@ import { classNames } from '@corekit/ui/utils'
 @Directive({
   selector: '[ck-dialog-content], ck-dialog-content',
   standalone: true,
-  host: { '[class]': '_class' },
+  host: { '[class]': '_class()' },
 })
 export class CkDialogContent {
   public readonly class = input<string>()
