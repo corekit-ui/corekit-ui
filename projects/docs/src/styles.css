@@ -76,6 +76,11 @@
   }
 }
 
+/*
+ * TODO: Provide a better ("Tailwind-y") way for these "reset" styles to be
+ * included into consumer apps.
+ */
+
 @layer base {
   * {
     @apply border-border;

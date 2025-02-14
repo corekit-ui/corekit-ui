@@ -44,6 +44,8 @@ module.exports = typescript.config(
       'max-lines': 'off',
       'no-undefined': 'off',
       'no-void': 'off',
+      radix: 'off',
+      'max-lines-per-function': 'off',
 
       '@stylistic/semi': ['error', 'never'],
       '@stylistic/function-call-spacing': 'error',
@@ -83,6 +85,7 @@ module.exports = typescript.config(
       '@typescript-eslint/no-magic-numbers': 'off',
       '@typescript-eslint/unified-signatures': 'off',
       '@typescript-eslint/consistent-return': 'off',
+      '@typescript-eslint/no-unnecessary-type-parameters': 'off',
       '@typescript-eslint/no-confusing-void-expression': 'off',
       '@typescript-eslint/method-signature-style': ['error', 'method'],
       '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
@@ -98,6 +101,7 @@ module.exports = typescript.config(
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/prefer-nullish-coalescing': 'warn',
       '@typescript-eslint/no-invalid-void-type': 'off',
+      '@typescript-eslint/consistent-type-definitions': 'off',
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
         { accessibility: 'explicit', overrides: { constructors: 'no-public' } },
@@ -136,8 +140,7 @@ module.exports = typescript.config(
             'call-signature',
 
             // Fields
-            'public-field',
-            'private-field',
+            'field',
 
             // Static initialization
             'static-initialization',

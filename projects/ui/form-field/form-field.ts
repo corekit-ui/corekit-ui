@@ -10,7 +10,7 @@ import {
   input,
   Optional,
   runInInjectionContext,
-  signal
+  signal,
 } from '@angular/core'
 import { FormGroupDirective, NgControl } from '@angular/forms'
 import { CkInput, CkInputPrefix, CkInputSuffix } from '@corekit/ui/input'
@@ -28,7 +28,7 @@ const formField = 'relative block space-y-0.5 pb-5'
   templateUrl: './form-field.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [FADE_IN_DOWN],
-  host: { '[class]': '_class' }
+  host: { '[class]': '_class' },
 })
 export class CkFormField implements DoCheck, AfterViewInit {
   public readonly class = input<string>()
@@ -40,7 +40,7 @@ export class CkFormField implements DoCheck, AfterViewInit {
     return classNames(
       formField,
       this._errorState() && 'group/invalid',
-      this.class()
+      this.class(),
     )
   }
 
@@ -55,7 +55,7 @@ export class CkFormField implements DoCheck, AfterViewInit {
     private readonly _injector: Injector,
     private readonly _defaultErrorStateMatcher: ErrorStateMatcher,
     @Optional()
-    private readonly _formGroupDirective?: FormGroupDirective
+    private readonly _formGroupDirective?: FormGroupDirective,
   ) {}
 
   public ngDoCheck(): void {
@@ -86,7 +86,7 @@ export class CkFormField implements DoCheck, AfterViewInit {
     const oldState = this._errorState()
     const newState = errorStateMatcher.matches(
       this._ngControl()!,
-      this._formGroupDirective
+      this._formGroupDirective,
     )
 
     if (newState !== oldState) this._errorState.set(newState)
