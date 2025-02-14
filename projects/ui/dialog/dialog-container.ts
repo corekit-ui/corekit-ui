@@ -7,7 +7,7 @@ import {
   inject,
   Injector,
   OnInit,
-  signal
+  signal,
 } from '@angular/core'
 import { dialogContainerStyles } from './dialog-container.styles'
 import { ZOOM_IN } from './zoom-in.animation'
@@ -24,8 +24,8 @@ type AnimationState = 'opening' | 'opened' | 'closing' | 'closed'
   host: {
     '[class]': '_class()',
     '[@zoomIn]': '_animationState()',
-    '(@zoomIn.done)': '_setAnimationState($event)'
-  }
+    '(@zoomIn.done)': '_setAnimationState($event)',
+  },
 })
 export class CkDialogContainer extends CdkDialogContainer implements OnInit {
   public readonly injector = inject(Injector)
@@ -39,7 +39,7 @@ export class CkDialogContainer extends CdkDialogContainer implements OnInit {
   public ngOnInit(): void {
     effect(this._animationStateEffect.bind(this), {
       allowSignalWrites: true,
-      injector: this.injector
+      injector: this.injector,
     })
   }
 

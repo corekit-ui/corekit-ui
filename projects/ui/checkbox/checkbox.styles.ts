@@ -19,11 +19,10 @@ export const checkbox = cva(
     'after:bg-contain',
     'checked:after:bg-checkbox-checked',
     'indeterminate:after:bg-checkbox-indeterminate',
-    'group-[]/invalid:ring-destructive/50',
     'group-[]/invalid:after:border-destructive',
     'group-[]/invalid:checked:bg-destructive',
     'dark:checked:after:bg-checkbox-checked-dark',
-    'dark:indeterminate:after:bg-checkbox-indeterminate-dark'
+    'dark:indeterminate:after:bg-checkbox-indeterminate-dark',
   ],
   {
     variants: {
@@ -32,16 +31,16 @@ export const checkbox = cva(
           'after:border-primary',
           'checked:bg-primary',
           'indeterminate:bg-primary',
-          'ring-primary/50'
+          'outline-primary/50',
         ],
         accent: [
           'after:border-accent',
           'checked:bg-accent',
           'indeterminate:bg-accent',
-          'ring-accent/50'
-        ]
-      }
+          'outline-accent/50',
+        ],
+      },
     },
-    defaultVariants: { color: 'primary' }
-  }
+    defaultVariants: { color: 'primary' },
+  },
 )

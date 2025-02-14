@@ -22,16 +22,15 @@ export const radio = cva(
     'after:transition-transform',
     'checked:after:scale-100',
     'group-[]/invalid:border-destructive',
-    'group-[]/invalid:ring-destructive/50',
-    'group-[]/invalid:checked:after:bg-destructive'
+    'group-[]/invalid:checked:after:bg-destructive',
   ],
   {
     variants: {
       color: {
-        primary: 'border-primary checked:after:bg-primary ring-primary/50',
-        accent: 'border-accent checked:after:bg-accent ring-accent/50'
-      }
+        primary: 'border-primary checked:after:bg-primary outline-primary/50',
+        accent: 'border-accent checked:after:bg-accent outline-accent/50',
+      },
     },
-    defaultVariants: { color: 'primary' }
-  }
+    defaultVariants: { color: 'primary' },
+  },
 )

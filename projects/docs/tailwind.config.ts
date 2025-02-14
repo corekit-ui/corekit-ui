@@ -22,7 +22,6 @@ export default {
         foreground: 'hsl(var(--foreground) / <alpha-value>)',
         border: 'hsl(var(--border) / <alpha-value>)',
         input: 'hsl(var(--input) / <alpha-value>)',
-        ring: 'hsl(var(--ring) / <alpha-value>)',
         surface: {
           DEFAULT: 'hsl(var(--surface) / <alpha-value>)',
           foreground: 'hsl(var(--surface-foreground) / <alpha-value>)',

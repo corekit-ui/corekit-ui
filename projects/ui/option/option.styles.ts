@@ -13,7 +13,7 @@ export const optionStyles = cva(
     'py-1.5',
     'text-sm',
     'outline-none',
-    'motion-safe:transition-colors'
+    'motion-safe:transition-colors',
   ],
   {
     variants: {
@@ -21,21 +21,21 @@ export const optionStyles = cva(
         default: 'hover:bg-secondary',
         destructive: [
           'text-destructive',
-          'ring-destructive',
+          'outline-destructive',
           'hover:bg-destructive/5',
           'dark:hover:bg-destructive/10',
-          '[&_>_ck-icon]:text-destructive'
-        ]
+          '[&_>_ck-icon]:text-destructive',
+        ],
       },
-      state: { default: '', active: '' }
+      state: { default: '', active: '' },
     },
     compoundVariants: [
       { intent: 'default', state: 'active', class: 'bg-secondary' },
       {
         intent: 'destructive',
         state: 'active',
-        class: 'bg-destructive/5 dark:bg-destructive/10'
-      }
-    ]
-  }
+        class: 'bg-destructive/5 dark:bg-destructive/10',
+      },
+    ],
+  },
 )
