@@ -5,7 +5,7 @@ export type CkDialogActionAlignment = VariantProps<
 >['align']
 
 export const dialogActionsStyles = cva(
-  'flex flex-col sm:flex-row items-center gap-3 px-6 pb-6 pt-4',
+  'flex flex-col sm:flex-row items-center gap-3 px-6 pb-6 pt-4 bg-surface/95 backdrop-blur supports-[backdrop-filter]:bg-surface/60',
   {
     variants: {
       align: {
