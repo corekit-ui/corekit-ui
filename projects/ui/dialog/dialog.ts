@@ -10,9 +10,9 @@ import {
   TemplateRef,
 } from '@angular/core'
 import { toObservable, toSignal } from '@angular/core/rxjs-interop'
-import { classNames } from '@corekit/ui/utils/class-names'
+import { CK_CLOSABLE } from '@corekit/ui/close'
+import { classNames } from '@corekit/ui/utils'
 import { filter, map, mergeMap } from 'rxjs'
-import { CK_CLOSABLE } from '../close'
 import { CkDialogConfig, DialogScrollStrategy } from './dialog-config'
 import { CkDialogContainer } from './dialog-container'
 import { CkDialogRef } from './dialog-ref'
