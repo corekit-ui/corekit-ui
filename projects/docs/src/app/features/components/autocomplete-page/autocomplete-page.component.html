@@ -45,7 +45,7 @@
       id="framework"
       type="text"
       placeholder="Start typing..."
-      [class.ring-0]="autocomplete.isOpen()"
+      [class.outline-none]="autocomplete.isOpen()"
       [ck-autocomplete-trigger-for]="autocomplete"
       [(ngModel)]="frameworkId"
       (input)="query.set($any($event.target).value ?? '')"

@@ -3,7 +3,7 @@ import { classNames } from '@corekit/ui/utils'
 import { CkAccordionItem } from '../accordion-item/accordion-item'
 
 export const accordionItemHeader =
-  'py-3 gap-2 flex items-center w-full text-start text-base leading-relaxed font-medium [&:is([disabled])]:opacity-50 [&:is([disabled])]:pointer-events-none hover:underline underline-offset-2'
+  'py-3 gap-2 flex items-center w-full text-start text-base leading-relaxed font-medium hover:underline underline-offset-2'
 
 // OnPush change detection is not possible in this case
 // due to changes not picking up when another item toggled
@@ -25,8 +25,8 @@ export const accordionItemHeader =
     '(keydown.space)': '$event.preventDefault(); _accordionItem.toggle()',
     '(keydown.enter)': '$event.preventDefault(); _accordionItem.toggle()',
     '(keydown.arrowright)': '_accordionItem.open()',
-    '(keydown.arrowleft)': '_accordionItem.close()'
-  }
+    '(keydown.arrowleft)': '_accordionItem.close()',
+  },
 })
 export class CkAccordionItemHeader {
   public readonly class = input<string>()
@@ -35,7 +35,7 @@ export class CkAccordionItemHeader {
    * Whether the expansion indicator should be hidden.
    */
   public readonly hideToggle = input<boolean, unknown>(false, {
-    transform: booleanAttribute
+    transform: booleanAttribute,
   })
 
   protected get _class(): string {

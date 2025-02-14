@@ -39,7 +39,6 @@
 
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 240 5.9% 80%;
   }
 
   .dark {
@@ -72,7 +71,6 @@
 
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 35.9%;
   }
 }
 
@@ -93,7 +91,7 @@
   }
 
   *:focus-visible {
-    @apply ring-ring ring-offset-background rounded outline-none ring-2 ring-offset-2;
+    @apply outline-foreground/30 group-[]/invalid:outline-destructive/30 outline outline-2 outline-offset-2;
   }
 
   body {

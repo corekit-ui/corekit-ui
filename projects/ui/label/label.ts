@@ -14,7 +14,7 @@ export class CkLabel {
 
   protected get _class(): string {
     return classNames(
-      'font-medium peer-disabled:opacity-50 group-[]/invalid:text-destructive',
+      'font-medium group-[]/invalid:text-destructive',
       this.class(),
     )
   }
