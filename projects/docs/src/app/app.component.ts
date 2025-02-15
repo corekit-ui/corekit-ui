@@ -15,6 +15,7 @@ import { InputPageComponent } from './features/components/input-page/input-page.
 import { LabelPageComponent } from './features/components/label-page/label-page.component'
 import { RadioPageComponent } from './features/components/radio-page/radio-page.component'
 import { TypographyPageComponent } from './features/components/typography-page/typography-page.component'
+import { TablePageComponent } from './features/components/table-page/table-page.component'
 
 @Component({
   selector: 'app-root',
@@ -35,6 +36,7 @@ import { TypographyPageComponent } from './features/components/typography-page/t
     FormFieldPageComponent,
     AutocompletePageComponent,
     DialogPageComponent,
+    TablePageComponent,
   ],
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
