@@ -19,8 +19,6 @@ import { ErrorStateMatcher } from '@corekit/ui/reactive-forms'
 import { classNames } from '@corekit/ui/utils'
 import { FADE_IN_DOWN } from './animations/fade-in-down.animation'
 
-const formField = 'relative block space-y-0.5 pb-5'
-
 @Component({
   selector: 'ck-form-field, [ckFormField]',
   exportAs: 'ckFormField',
@@ -28,7 +26,7 @@ const formField = 'relative block space-y-0.5 pb-5'
   templateUrl: './form-field.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [FADE_IN_DOWN],
-  host: { '[class]': '_class' },
+  host: { '[class]': '_class()' },
 })
 export class CkFormField implements DoCheck, AfterViewInit {
   public readonly class = input<string>()
@@ -36,13 +34,13 @@ export class CkFormField implements DoCheck, AfterViewInit {
   public readonly errorState = computed(() => this._errorState())
   public readonly labelId = computed(() => this._label()?.id())
 
-  protected get _class(): string {
+  protected readonly _class = computed(() => {
     return classNames(
-      formField,
-      this._errorState() && 'group/invalid',
+      'relative block pb-5',
+      this._errorState() && 'ck-invalid',
       this.class(),
     )
-  }
+  })
 
   private readonly _ngControl = contentChild(NgControl)
   private readonly _label = contentChild(CkLabel)

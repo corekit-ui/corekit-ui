@@ -1,5 +1,8 @@
 import { animate, state, style, transition, trigger } from '@angular/animations'
-import theme from 'tailwindcss/defaultTheme'
+import {
+  CK_DEFAULT_TRANSITION_DURATION,
+  CK_DEFAULT_TRANSITION_TIMING_FUNCTION,
+} from '@corekit/ui/animations'
 
 export const ZOOM_IN_ANIMATION = trigger('zoomIn', [
   state(
@@ -10,7 +13,7 @@ export const ZOOM_IN_ANIMATION = trigger('zoomIn', [
   transition(
     'open <=> closed',
     animate(
-      `${theme.transitionDuration.DEFAULT} ${theme.transitionTimingFunction.DEFAULT}`,
+      `${CK_DEFAULT_TRANSITION_DURATION} ${CK_DEFAULT_TRANSITION_TIMING_FUNCTION}`,
     ),
   ),
 ])

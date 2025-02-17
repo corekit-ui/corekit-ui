@@ -1,7 +1,7 @@
 import {
   type ApplicationConfig,
   importProvidersFrom,
-  provideZoneChangeDetection
+  provideZoneChangeDetection,
 } from '@angular/core'
 import { provideClientHydration } from '@angular/platform-browser'
 import { provideAnimations } from '@angular/platform-browser/animations'
@@ -11,10 +11,12 @@ import {
   CircleX,
   Info,
   LucideAngularModule,
+  Plus,
   Search,
+  Send,
   Terminal,
   ToggleLeft,
-  TriangleAlert
+  TriangleAlert,
 } from 'lucide-angular'
 import { routes } from './app.routes'
 
@@ -32,8 +34,10 @@ export const appConfig: ApplicationConfig = {
         CircleX,
         Check,
         Search,
-        ToggleLeft
-      })
-    )
-  ]
+        ToggleLeft,
+        Send,
+        Plus,
+      }),
+    ),
+  ],
 }

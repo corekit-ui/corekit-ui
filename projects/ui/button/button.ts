@@ -5,7 +5,7 @@ import { Appearance, button, Color, Shape, Size } from './button.styles'
 @Directive({
   selector: '[ckButton]',
   standalone: true,
-  host: { '[class]': '_class' }
+  host: { '[class]': '_class' },
 })
 export class CkButton {
   public readonly class = input<string>()
@@ -20,9 +20,9 @@ export class CkButton {
         size: this.size(),
         shape: this.shape(),
         color: this.color(),
-        appearance: this.appearance()
+        appearance: this.appearance(),
       }),
-      this.class()
+      this.class(),
     )
   }
 }

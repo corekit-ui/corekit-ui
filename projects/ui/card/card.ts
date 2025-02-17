@@ -6,7 +6,7 @@ const cardStyles = `block space-y-4 rounded-lg border bg-surface p-6 text-surfac
 @Directive({
   selector: '[ckCard], ck-card',
   standalone: true,
-  host: { '[class]': '_class()' }
+  host: { '[class]': '_class()' },
 })
 export class CkCard {
   public readonly class = input<string>()

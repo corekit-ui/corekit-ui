@@ -1,100 +1,15 @@
-@import '@angular/cdk/overlay-prebuilt.css';
+@import '../../ui/styles/index.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@utility container {
+  margin-inline: auto;
+  padding-inline: 1rem;
+  max-width: none;
 
-@layer base {
-  :root {
-    --font-sans: 'Inter';
-
-    --radius: 0.5rem;
-
-    --background: 0 0% 100%;
-    --foreground: 240 5.88% 3.33%;
-
-    --surface: 0 0% 100%;
-    --surface-foreground: 240 5.88% 3.33%;
-
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-
-    --accent: 211.29 100% 50%;
-    --accent-foreground: 0 0% 98%;
-
-    --success: 128.72 50% 49%;
-    --success-foreground: 0 0% 98%;
-
-    --warning: 35.06 100% 50%;
-    --warning-foreground: 0 0% 98%;
-
-    --destructive: 3.19 100% 59.41%;
-    --destructive-foreground: 0 0% 98%;
-
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 2% 50%;
-
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
+  @media (width >= --theme(--breakpoint-sm)) {
+    padding-inline: 1.5rem;
   }
 
-  .dark {
-    --background: 240 5.88% 3.33%;
-    --foreground: 0 0% 98%;
-
-    --surface: 240 5.88% 3.33%;
-    --surface-foreground: 0 0% 98%;
-
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    --accent: 210.25 100% 52.16%;
-    --accent-foreground: 0 0% 98%;
-
-    --success: 128.72 50% 49%;
-    --success-foreground: 0 0% 98%;
-
-    --warning: 36.15deg 100% 52.16%;
-    --warning-foreground: 0 0% 98%;
-
-    --destructive: 3.35 100% 61.37%;
-    --destructive-foreground: 0 0% 98%;
-
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-  }
-}
-
-/*
- * TODO: Provide a better ("Tailwind-y") way for these "reset" styles to be
- * included into consumer apps.
- */
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  *:disabled,
-  *[disabled],
-  *[aria-disabled='true'] {
-    @apply pointer-events-none opacity-50;
-  }
-
-  *:focus-visible {
-    @apply outline-foreground/30 group-[]/invalid:outline-destructive/30 outline outline-2 outline-offset-2;
-  }
-
-  body {
-    @apply bg-background text-foreground text-sm leading-normal;
+  @media (width >= 1400px) {
+    max-width: 1400px;
   }
 }

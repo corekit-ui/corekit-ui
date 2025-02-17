@@ -1,0 +1,65 @@
+@import '@angular/cdk/overlay-prebuilt.css' layer(base);
+@import 'tailwindcss';
+
+@plugin 'tailwindcss-animate';
+
+@import './reset.css';
+@import './default-theme.css';
+
+@theme inline {
+  --font-sans: var(--ck-font-serif), ui-sans-serif, system-ui, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+  --font-serif: var(--ck-font-serif), ui-serif, Georgia, Cambria,
+    'Times New Roman', Times, serif;
+
+  --font-mono: var(--ck-font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+  --color-background: hsl(var(--ck-background));
+  --color-foreground: hsl(var(--ck-foreground));
+
+  --color-surface: hsl(var(--ck-surface));
+  --color-surface-foreground: hsl(var(--ck-surface-foreground));
+
+  --color-primary: hsl(var(--ck-primary));
+  --color-primary-foreground: hsl(var(--ck-primary-foreground));
+
+  --color-secondary: hsl(var(--ck-secondary));
+  --color-secondary-foreground: hsl(var(--ck-secondary-foreground));
+
+  --color-success: hsl(var(--ck-success));
+  --color-success-foreground: hsl(var(--ck-success-foreground));
+
+  --color-warning: hsl(var(--ck-warning));
+  --color-warning-foreground: hsl(var(--ck-warning-foreground));
+
+  --color-destructive: hsl(var(--ck-destructive));
+  --color-destructive-foreground: hsl(var(--ck-destructive-foreground));
+
+  --color-muted: hsl(var(--ck-muted));
+  --color-muted-foreground: hsl(var(--ck-muted-foreground));
+
+  --color-border: hsl(var(--ck-border));
+
+  --radius-xs: calc(var(--ck-radius) / 4);
+  --radius-sm: calc(var(--ck-radius) / 2);
+  --radius-md: calc(var(--ck-radius) / 1.33);
+  --radius-lg: var(--ck-radius);
+  --radius-xl: calc(var(--ck-radius) * 1.5);
+  --radius-2xl: calc(var(--ck-radius) * 2);
+  --radius-3xl: calc(var(--ck-radius) * 3);
+  --radius-4xl: calc(var(--ck-radius) * 4);
+
+  --default-transition-duration: var(--ck-transition-duration);
+  --default-transition-timing-function: var(--ck-transition-timing-function);
+
+  --background-image-checkbox-checked: var(--ck-icon-checkbox-checked);
+  --background-image-checkbox-indeterminate: var(
+    --ck-icon-checkbox-indeterminate
+  );
+  --background-image-select-chevron-down: var(--ck-icon-select-chevron-down);
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+@source "../";

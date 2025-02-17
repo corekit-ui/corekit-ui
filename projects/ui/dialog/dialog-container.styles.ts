@@ -8,7 +8,7 @@ export const dialogContainerStyles = cva([
   'border',
   'bg-surface',
   'text-surface-foreground',
-  'shadow-2xl',
+  'shadow-xl',
   '[&:not(:has(_:is(ck-dialog-actions,_[ck-dialog-actions])))_ck-dialog-content]:pb-6',
-  '[&:not(:has(_:is(ck-dialog-header,_[ck-dialog-header])))_ck-dialog-content]:pt-6'
+  '[&:not(:has(_:is(ck-dialog-header,_[ck-dialog-header])))_ck-dialog-content]:pt-6',
 ])

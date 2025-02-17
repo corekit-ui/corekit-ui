@@ -1,0 +1,28 @@
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    @apply border-border;
+  }
+
+  *:disabled,
+  *[disabled],
+  *[aria-disabled='true'] {
+    @apply pointer-events-none opacity-50;
+  }
+
+  *:focus-visible {
+    @apply outline-foreground/30 in-[.ck-invalid]:outline-destructive/30 outline-2 outline-offset-2;
+  }
+
+  body {
+    @apply bg-background text-foreground text-sm leading-normal;
+  }
+
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    @apply cursor-pointer;
+  }
+}
