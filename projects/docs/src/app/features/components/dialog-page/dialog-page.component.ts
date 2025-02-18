@@ -27,7 +27,6 @@ import { firstValueFrom } from 'rxjs'
 
 @Component({
   selector: 'simple-dialog',
-  standalone: true,
   imports: [
     CkDialogHeader,
     CkDialogTitle,
@@ -92,7 +91,6 @@ class SimpleDialog {
 
 @Component({
   selector: 'scrollable-dialog',
-  standalone: true,
   imports: [
     CkDialogHeader,
     CkDialogTitle,
@@ -245,7 +243,6 @@ class ScrollableDialog {}
 
 @Component({
   selector: 'dialog-with-injected-data',
-  standalone: true,
   imports: [CkDialogHeader, CkDialogTitle, CkDialogContent, CkClose],
   template: `
     <ck-dialog-header>
@@ -270,7 +267,6 @@ class DialogWithPassedData {
 
 @Component({
   selector: 'dialog-with-output-data',
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     CkButton,
@@ -331,7 +327,6 @@ class DialogWithOutputData {
 
 @Component({
   selector: 'app-dialog-page',
-  standalone: true,
   imports: [
     CkDialogHeader,
     CkDialogTitle,

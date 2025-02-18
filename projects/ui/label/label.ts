@@ -14,7 +14,7 @@ export class CkLabel {
 
   protected readonly _class = computed(() => {
     return classNames(
-      'font-medium in-[.ck-invalid]:text-destructive inline-block in-[ck-form-field]:mb-0.5',
+      'font-medium in-[.ck-invalid]:text-destructive inline-block in-[ck-form-field:has([ckInput])]:mb-0.5',
       this.class(),
     )
   })

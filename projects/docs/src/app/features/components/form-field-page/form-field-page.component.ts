@@ -12,7 +12,6 @@ import { FormSubmittedErrorStateMatcher } from './form-submitted-error-state-mat
 
 @Component({
   selector: 'app-form-field-page',
-  standalone: true,
   imports: [
     CkLabel,
     CkInput,
@@ -25,11 +24,11 @@ import { FormSubmittedErrorStateMatcher } from './form-submitted-error-state-mat
     CkRadio,
     LucideAngularModule,
     ReactiveFormsModule,
-    CkCode
+    CkCode,
   ],
   templateUrl: './form-field-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'block space-y-4' }
+  host: { class: 'block space-y-4' },
 })
 export class FormFieldPageComponent {
   public prefixVisible = true
@@ -40,7 +39,7 @@ export class FormFieldPageComponent {
   public readonly form = this._fb.group({
     email: ['', [Validators.required, Validators.email]],
     agreed: [true, Validators.requiredTrue],
-    question: ['', Validators.required]
+    question: ['', Validators.required],
   })
 
   constructor(private readonly _fb: FormBuilder) {}

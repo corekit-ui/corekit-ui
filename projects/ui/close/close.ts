@@ -15,7 +15,6 @@ import { CkCloseAppearance, closeStyles } from './close.styles'
 @Component({
   selector: '[ck-close]',
   exportAs: 'ckClose',
-  standalone: true,
   imports: [NgTemplateOutlet],
   templateUrl: './close.html',
   host: { '[class]': '_class()', '(click)': 'close()' },

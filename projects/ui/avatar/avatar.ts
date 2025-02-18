@@ -4,7 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   input,
-  signal
+  signal,
 } from '@angular/core'
 import { classNames } from '@corekit/ui/utils'
 import { avatar, Size } from './avatar.styles'
@@ -12,16 +12,15 @@ import { AVATAR_IMAGE_LOADER } from './tokens/avatar-image-loader'
 
 @Component({
   selector: '[ckAvatar], ck-avatar',
-  standalone: true,
   imports: [NgOptimizedImage],
   templateUrl: './avatar.html',
   providers: [{ provide: IMAGE_LOADER, useExisting: AVATAR_IMAGE_LOADER }],
   host: {
     '[class]': '_class',
     '[role]': 'errored() ? "img" : null',
-    '[attr.aria-label]': 'errored() ? alt() : null'
+    '[attr.aria-label]': 'errored() ? alt() : null',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CkAvatar {
   public readonly class = input<string>()
@@ -54,7 +53,7 @@ export class CkAvatar {
    * @see https://angular.dev/api/common/NgOptimizedImage#priority
    */
   public readonly priority = input<boolean, unknown>(false, {
-    transform: booleanAttribute
+    transform: booleanAttribute,
   })
 
   /**

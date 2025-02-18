@@ -38,7 +38,6 @@ let uniqueIdCounter = 0
 @Component({
   selector: 'ck-autocomplete, [ck-autocomplete]',
   exportAs: 'ckAutocomplete',
-  standalone: true,
   imports: [NgClass],
   templateUrl: './autocomplete.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -171,11 +170,9 @@ export class CkAutocomplete implements OnDestroy {
   private readonly _panel = viewChild<ElementRef<HTMLDivElement>>('panel')
 
   constructor(private readonly _injector: Injector) {
-    effect(this._optionsChangesEffect.bind(this), { allowSignalWrites: true })
+    effect(this._optionsChangesEffect.bind(this))
     effect(() => this._scrollTo(this.activeOption()))
-    effect(this._openEffect.bind(this), {
-      allowSignalWrites: true,
-    })
+    effect(this._openEffect.bind(this))
   }
 
   public ngOnDestroy(): void {

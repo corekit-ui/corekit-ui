@@ -5,7 +5,6 @@ import { LucideAngularModule } from 'lucide-angular'
 
 @Component({
   selector: 'app-button-page',
-  standalone: true,
   imports: [CkButton, CkH4, LucideAngularModule],
   templateUrl: './button-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

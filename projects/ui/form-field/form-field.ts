@@ -64,8 +64,8 @@ export class CkFormField implements DoCheck, AfterViewInit {
 
   public ngAfterViewInit(): void {
     runInInjectionContext(this._injector, () => {
-      effect(this._updateInputPadStart.bind(this), { allowSignalWrites: true })
-      effect(this._updateInputPadEnd.bind(this), { allowSignalWrites: true })
+      effect(this._updateInputPadStart.bind(this))
+      effect(this._updateInputPadEnd.bind(this))
     })
   }
 

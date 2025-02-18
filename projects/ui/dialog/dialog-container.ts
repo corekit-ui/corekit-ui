@@ -16,7 +16,6 @@ type AnimationState = 'opening' | 'opened' | 'closing' | 'closed'
 
 @Component({
   selector: 'ck-dialog-container',
-  standalone: true,
   imports: [DialogModule],
   template: '<ng-template cdkPortalOutlet />',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,10 +36,7 @@ export class CkDialogContainer extends CdkDialogContainer implements OnInit {
   private readonly _animationState = signal<AnimationState>('opening')
 
   public ngOnInit(): void {
-    effect(this._animationStateEffect.bind(this), {
-      allowSignalWrites: true,
-      injector: this.injector,
-    })
+    effect(this._animationStateEffect.bind(this), { injector: this.injector })
   }
 
   /**

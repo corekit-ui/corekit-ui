@@ -161,6 +161,8 @@ module.exports = typescript.config(
         { allowShortCircuit: true },
       ],
 
+      '@angular-eslint/prefer-standalone-component': 'off',
+      '@angular-eslint/prefer-standalone': 'off',
       '@angular-eslint/no-async-lifecycle-method': 'off',
       '@angular-eslint/no-forward-ref': 'off',
       '@angular-eslint/no-pipe-impure': 'warn',
