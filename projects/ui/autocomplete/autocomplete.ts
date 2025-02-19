@@ -197,7 +197,9 @@ export class CkAutocomplete implements OnDestroy {
     if (value == null) return this._deselectAll()
 
     const optionToSelect = this.options().find(option => {
-      return this.displayWith()(option.value()) === this.displayWith()(value)
+      const format = this.displayWith()
+
+      return format(option.value()) === format(value)
     })
 
     !optionToSelect?.isSelected() && optionToSelect?.select(emitEvent)
