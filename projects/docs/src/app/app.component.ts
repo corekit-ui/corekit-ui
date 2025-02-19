@@ -18,7 +18,6 @@ import { TypographyPageComponent } from './features/components/typography-page/t
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [
     TypographyPageComponent,
     CkH1,

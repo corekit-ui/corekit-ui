@@ -27,7 +27,6 @@ import { firstValueFrom } from 'rxjs'
 
 @Component({
   selector: 'simple-dialog',
-  standalone: true,
   imports: [
     CkDialogHeader,
     CkDialogTitle,
@@ -52,10 +51,10 @@ import { firstValueFrom } from 'rxjs'
     </ck-dialog-header>
 
     <ck-dialog-content>
-      <dl class="space-y-4 md:space-y-5">
+      <dl class="space-y-4">
         <div class="relative ps-5">
           <div
-            class="bg-accent absolute left-0 top-1.5 h-2 w-2 rounded-full"
+            class="absolute top-1.5 left-0 h-2 w-2 rounded-full bg-blue-500"
           ></div>
           <dt class="font-medium">Your call has been confirmed.</dt>
           <dd class="text-muted-foreground">1 hour ago</dd>
@@ -63,7 +62,7 @@ import { firstValueFrom } from 'rxjs'
 
         <div class="relative ps-5">
           <div
-            class="bg-accent absolute left-0 top-1.5 h-2 w-2 rounded-full"
+            class="absolute top-1.5 left-0 h-2 w-2 rounded-full bg-blue-500"
           ></div>
           <dt class="font-medium">You have a new message!</dt>
           <dd class="text-muted-foreground">1 hour ago</dd>
@@ -71,7 +70,7 @@ import { firstValueFrom } from 'rxjs'
 
         <div class="relative ps-5">
           <div
-            class="bg-accent absolute left-0 top-1.5 h-2 w-2 rounded-full"
+            class="absolute top-1.5 left-0 h-2 w-2 rounded-full bg-blue-500"
           ></div>
           <dt class="font-medium">Your subscription is expiring soon!</dt>
           <dd class="text-muted-foreground">2 hours ago</dd>
@@ -92,7 +91,6 @@ class SimpleDialog {
 
 @Component({
   selector: 'scrollable-dialog',
-  standalone: true,
   imports: [
     CkDialogHeader,
     CkDialogTitle,
@@ -245,7 +243,6 @@ class ScrollableDialog {}
 
 @Component({
   selector: 'dialog-with-injected-data',
-  standalone: true,
   imports: [CkDialogHeader, CkDialogTitle, CkDialogContent, CkClose],
   template: `
     <ck-dialog-header>
@@ -270,7 +267,6 @@ class DialogWithPassedData {
 
 @Component({
   selector: 'dialog-with-output-data',
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     CkButton,
@@ -331,7 +327,6 @@ class DialogWithOutputData {
 
 @Component({
   selector: 'app-dialog-page',
-  standalone: true,
   imports: [
     CkDialogHeader,
     CkDialogTitle,

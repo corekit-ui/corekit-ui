@@ -11,12 +11,11 @@ import {
   CkOl,
   CkP,
   CkSmall,
-  CkUl
+  CkUl,
 } from '@corekit/ui/typography'
 
 @Component({
   selector: 'app-typography-page',
-  standalone: true,
   imports: [
     CkDisplay,
     CkH1,
@@ -29,10 +28,10 @@ import {
     CkBlockquote,
     CkUl,
     CkOl,
-    CkCode
+    CkCode,
   ],
   templateUrl: './typography-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'block' }
+  host: { class: 'block' },
 })
 export class TypographyPageComponent {}

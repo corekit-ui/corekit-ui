@@ -9,7 +9,7 @@ export const dialogHeaderStyles = cva(
     'pb-4',
     'pt-6',
     'bg-surface/95',
-    'backdrop-blur',
+    'backdrop-blur-lg',
     'supports-[backdrop-filter]:bg-surface/60',
   ],
   {

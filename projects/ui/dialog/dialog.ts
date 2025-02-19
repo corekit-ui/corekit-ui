@@ -52,8 +52,8 @@ export class CkDialog implements OnDestroy {
     @Optional()
     private readonly _defaultConfig?: CkDialogConfig,
   ) {
-    effect(this._lastOpenedEffect.bind(this), { allowSignalWrites: true })
-    effect(this._lastClosedEffect.bind(this), { allowSignalWrites: true })
+    effect(this._lastOpenedEffect.bind(this))
+    effect(this._lastClosedEffect.bind(this))
   }
 
   public ngOnDestroy(): void {

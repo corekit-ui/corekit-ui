@@ -1,3 +1,7 @@
+// FIXME: There's a bug which is at least reproducible on iOS: dialog lags applying
+// correct content height on opening, which results in user seeing the content "jump".
+// Also, the backdrop is presented without transition.
+
 import { computed, Directive, input } from '@angular/core'
 import { classNames } from '@corekit/ui/utils'
 

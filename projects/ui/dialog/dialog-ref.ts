@@ -1,7 +1,7 @@
 import { DialogRef } from '@angular/cdk/dialog'
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes'
 import { GlobalPositionStrategy } from '@angular/cdk/overlay'
-import { runInInjectionContext, signal } from '@angular/core'
+import { afterNextRender, runInInjectionContext, signal } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { CkClosable } from '@corekit/ui/close'
 import { filter, merge, Subject, tap } from 'rxjs'
@@ -159,6 +159,8 @@ export class CkDialogRef<R = any, D = any, T = any> implements CkClosable<R> {
    * only triggers closing _animation_ start.
    */
   private _finishClosing(): void {
-    this._cdkDialogRef.close(this._result())
+    afterNextRender(() => this._cdkDialogRef.close(this._result()), {
+      injector: this._containerInstance.injector,
+    })
   }
 }

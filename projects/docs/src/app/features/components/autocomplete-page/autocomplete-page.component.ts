@@ -28,7 +28,6 @@ const frameworks: Framework[] = [
 
 @Component({
   selector: 'app-autocomplete-page',
-  standalone: true,
   imports: [
     CkOption,
     CkAutocomplete,

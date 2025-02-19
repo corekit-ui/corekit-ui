@@ -277,17 +277,15 @@ export class CkAutocompleteTrigger
     private readonly _zone: NgZone,
     private readonly _injector: Injector,
   ) {
-    effect(this._windowBlurEffect.bind(this), { allowSignalWrites: true })
+    effect(this._windowBlurEffect.bind(this))
     effect(this._originChangeEffect.bind(this))
     effect(this._originWidthChangeEffect.bind(this))
     effect(this._positionChangeEffect.bind(this))
     effect(this._outsideClickEffect.bind(this))
     effect(this._optionsFirstRenderEffect.bind(this))
     effect(this._optionsChangesEffect.bind(this))
-    effect(this._animationOutDoneEffect.bind(this), { allowSignalWrites: true })
-    effect(this._optionsSelectionChangeEffect.bind(this), {
-      allowSignalWrites: true,
-    })
+    effect(this._animationOutDoneEffect.bind(this))
+    effect(this._optionsSelectionChangeEffect.bind(this))
   }
 
   public ngOnDestroy(): void {

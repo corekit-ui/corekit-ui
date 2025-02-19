@@ -6,12 +6,11 @@ import {
   CkCardFooter,
   CkCardHeader,
   CkCardSubtitle,
-  CkCardTitle
+  CkCardTitle,
 } from '@corekit/ui/card'
 
 @Component({
   selector: 'app-card-page',
-  standalone: true,
   imports: [
     CkCard,
     CkCardHeader,
@@ -19,10 +18,10 @@ import {
     CkCardSubtitle,
     CkCardContent,
     CkCardFooter,
-    CkButton
+    CkButton,
   ],
   templateUrl: './card-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'flex gap-4' }
+  host: { class: 'flex gap-4' },
 })
 export class CardPageComponent {}

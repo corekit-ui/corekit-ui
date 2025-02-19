@@ -4,7 +4,7 @@ import {
   Component,
   effect,
   input,
-  signal
+  signal,
 } from '@angular/core'
 import { CkNativeValidator } from '@corekit/ui/reactive-forms'
 import { classNames } from '@corekit/ui/utils'
@@ -17,25 +17,25 @@ import { inputStyles } from './input.styles'
   template: '<ng-content />',
   hostDirectives: [CkNativeValidator],
   host: { '[class]': '_class' },
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CkInput {
   public readonly class = input<string>()
 
   public readonly commandedPadStart = input<boolean, unknown>(false, {
     alias: 'padStart',
-    transform: booleanAttribute
+    transform: booleanAttribute,
   })
 
   public readonly commandedPadEnd = input<boolean, unknown>(false, {
     alias: 'padEnd',
-    transform: booleanAttribute
+    transform: booleanAttribute,
   })
 
   protected get _class(): string {
     return classNames(
       inputStyles({ padStart: this._padStart(), padEnd: this._padEnd() }),
-      this.class()
+      this.class(),
     )
   }
 
@@ -43,13 +43,8 @@ export class CkInput {
   private readonly _padEnd = signal(this.commandedPadEnd())
 
   constructor() {
-    effect(this._reflectCommandedPadStart.bind(this), {
-      allowSignalWrites: true
-    })
-
-    effect(this._reflectCommandedPadEnd.bind(this), {
-      allowSignalWrites: true
-    })
+    effect(this._reflectCommandedPadStart.bind(this))
+    effect(this._reflectCommandedPadEnd.bind(this))
   }
 
   public padStart(pad: boolean): void {

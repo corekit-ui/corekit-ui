@@ -1,1 +1,1 @@
-export * from './easings'
+export * from './defaults'

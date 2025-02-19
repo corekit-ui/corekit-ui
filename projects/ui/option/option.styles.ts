@@ -12,13 +12,13 @@ export const optionStyles = cva(
     'px-2',
     'py-1.5',
     'text-sm',
-    'outline-none',
+    'outline-hidden',
     'motion-safe:transition-colors',
   ],
   {
     variants: {
       intent: {
-        default: 'hover:bg-secondary',
+        default: 'hover:bg-muted',
         destructive: [
           'text-destructive',
           'outline-destructive',
@@ -30,7 +30,7 @@ export const optionStyles = cva(
       state: { default: '', active: '' },
     },
     compoundVariants: [
-      { intent: 'default', state: 'active', class: 'bg-secondary' },
+      { intent: 'default', state: 'active', class: 'bg-muted' },
       {
         intent: 'destructive',
         state: 'active',

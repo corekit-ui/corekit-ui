@@ -11,7 +11,7 @@ import {
   input,
   output,
   signal,
-  viewChild
+  viewChild,
 } from '@angular/core'
 import { classNames } from '@corekit/ui/utils'
 import { optionStyles } from './option.styles'
@@ -30,7 +30,6 @@ let uniqueIdCounter = 0
 @Component({
   selector: 'ck-option, [ck-option]',
   exportAs: 'ckOption',
-  standalone: true,
   imports: [NgClass],
   templateUrl: './option.html',
   host: {
@@ -40,9 +39,9 @@ let uniqueIdCounter = 0
     '[attr.aria-selected]': 'isSelected()',
     '[attr.aria-disabled]': 'disabled',
     '(click)': 'select()',
-    '(keydown)': 'selectViaKeyboard($event)'
+    '(keydown)': 'selectViaKeyboard($event)',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CkOption<T = unknown> implements Highlightable, FocusableOption {
   public readonly class = input<string>()
@@ -55,7 +54,7 @@ export class CkOption<T = unknown> implements Highlightable, FocusableOption {
 
   /** Whether to apply alerting styles representing destructive action/value. */
   public readonly destructive = input<boolean, unknown>(false, {
-    transform: booleanAttribute
+    transform: booleanAttribute,
   })
 
   /** Whether the option is disabled. */
@@ -79,9 +78,9 @@ export class CkOption<T = unknown> implements Highlightable, FocusableOption {
     return classNames(
       optionStyles({
         intent: this.destructive() ? 'destructive' : 'default',
-        state: this.isActive() ? 'active' : 'default'
+        state: this.isActive() ? 'active' : 'default',
       }),
-      this.class()
+      this.class(),
     )
   })
 
@@ -97,7 +96,7 @@ export class CkOption<T = unknown> implements Highlightable, FocusableOption {
 
   constructor(
     /** HTML Element of this option. */
-    public readonly host: ElementRef<HTMLElement>
+    public readonly host: ElementRef<HTMLElement>,
   ) {}
 
   /** Selects the option. */

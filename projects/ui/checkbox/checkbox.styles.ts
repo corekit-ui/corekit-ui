@@ -5,6 +5,7 @@ export type Color = VariantProps<typeof checkbox>['color']
 export const checkbox = cva(
   [
     'peer',
+    'shadow-xs',
     'relative',
     'aspect-square',
     'w-4',
@@ -19,10 +20,8 @@ export const checkbox = cva(
     'after:bg-contain',
     'checked:after:bg-checkbox-checked',
     'indeterminate:after:bg-checkbox-indeterminate',
-    'group-[]/invalid:after:border-destructive',
-    'group-[]/invalid:checked:bg-destructive',
-    'dark:checked:after:bg-checkbox-checked-dark',
-    'dark:indeterminate:after:bg-checkbox-indeterminate-dark',
+    'in-[.ck-invalid]:after:border-destructive',
+    'in-[.ck-invalid]:checked:bg-destructive',
   ],
   {
     variants: {
@@ -32,12 +31,6 @@ export const checkbox = cva(
           'checked:bg-primary',
           'indeterminate:bg-primary',
           'outline-primary/50',
-        ],
-        accent: [
-          'after:border-accent',
-          'checked:bg-accent',
-          'indeterminate:bg-accent',
-          'outline-accent/50',
         ],
       },
     },

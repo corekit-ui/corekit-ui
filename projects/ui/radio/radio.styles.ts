@@ -5,6 +5,7 @@ export type Color = VariantProps<typeof radio>['color']
 export const radio = cva(
   [
     'peer',
+    'shadow-xs',
     'relative',
     'flex',
     'aspect-square',
@@ -21,14 +22,13 @@ export const radio = cva(
     'after:rounded-full',
     'after:transition-transform',
     'checked:after:scale-100',
-    'group-[]/invalid:border-destructive',
-    'group-[]/invalid:checked:after:bg-destructive',
+    'in-[.ck-invalid]:border-destructive',
+    'in-[.ck-invalid]:checked:after:bg-destructive',
   ],
   {
     variants: {
       color: {
         primary: 'border-primary checked:after:bg-primary outline-primary/50',
-        accent: 'border-accent checked:after:bg-accent outline-accent/50',
       },
     },
     defaultVariants: { color: 'primary' },
