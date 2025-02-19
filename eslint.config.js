@@ -176,6 +176,7 @@ module.exports = typescript.config(
         'error',
         { prefixes: ['on', 'is', 'has', 'had', 'was', 'been'] },
       ],
+      '@angular-eslint/no-inputs-metadata-property': 'off',
     },
   },
   {

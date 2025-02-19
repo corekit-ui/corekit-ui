@@ -5,13 +5,8 @@ import {
   CdkRow,
 } from '@angular/cdk/table'
 import { ChangeDetectionStrategy, Component, input } from '@angular/core'
-import { cva } from 'class-variance-authority'
 
 import { classNames } from '@corekit/ui/utils'
-
-export const headerRowStyles = cva('border-b')
-export const rowStyles = cva('border-b transition-colors hover:bg-muted/50')
-export const footerRowStyles = cva('border-b')
 
 const ROW_TEMPLATE = `<ng-container cdkCellOutlet />`
 
@@ -34,7 +29,7 @@ export class CkHeaderRow extends CdkHeaderRow {
   public readonly class = input<string>()
 
   protected get _class(): string {
-    return classNames(headerRowStyles(), this.class())
+    return classNames('border-b', this.class())
   }
 }
 
@@ -57,7 +52,10 @@ export class CkRow extends CdkRow {
   public readonly class = input<string>()
 
   protected get _class(): string {
-    return classNames(rowStyles(), this.class())
+    return classNames(
+      'border-b transition-colors hover:bg-muted/50',
+      this.class(),
+    )
   }
 }
 
@@ -80,6 +78,6 @@ export class CkFooterRow extends CdkFooterRow {
   public readonly class = input<string>()
 
   protected get _class(): string {
-    return classNames(footerRowStyles(), this.class())
+    return classNames('border-b', this.class())
   }
 }

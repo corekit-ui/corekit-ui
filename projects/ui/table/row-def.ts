@@ -5,7 +5,6 @@ import { CdkFooterRowDef, CdkHeaderRowDef, CdkRowDef } from '@angular/cdk/table'
   standalone: true,
   selector: '[ckHeaderRowDef]',
   providers: [{ provide: CdkHeaderRowDef, useExisting: CkHeaderRowDef }],
-  // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
   inputs: [
     { name: 'columns', alias: 'ckHeaderRowDef' },
     {
@@ -21,7 +20,6 @@ export class CkHeaderRowDef extends CdkHeaderRowDef {}
   standalone: true,
   selector: '[ckRowDef]',
   providers: [{ provide: CdkRowDef, useExisting: CkRowDef }],
-  // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
   inputs: [
     { name: 'columns', alias: 'ckRowDefColumns' },
     { name: 'when', alias: 'ckRowDefWhen' },
@@ -33,7 +31,6 @@ export class CkRowDef<T> extends CdkRowDef<T> {}
   standalone: true,
   selector: '[ckFooterRowDef]',
   providers: [{ provide: CdkFooterRowDef, useExisting: CkFooterRowDef }],
-  // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
   inputs: [
     { name: 'columns', alias: 'ckFooterRowDef' },
     {
