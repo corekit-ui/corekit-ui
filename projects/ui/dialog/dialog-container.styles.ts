@@ -6,6 +6,7 @@ export const dialogContainerStyles = cva([
   'overflow-auto',
   'rounded-lg',
   'border',
+  'text-sm',
   'bg-surface',
   'text-surface-foreground',
   'shadow-xl',

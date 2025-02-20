@@ -4,11 +4,10 @@ import {
   CkAccordionItem,
   CkAccordionItemHeader,
 } from '@corekit/ui/accordion'
-import { CkCode } from '@corekit/ui/typography'
 
 @Component({
   selector: 'app-accordion-page',
-  imports: [CkAccordion, CkAccordionItem, CkAccordionItemHeader, CkCode],
+  imports: [CkAccordion, CkAccordionItem, CkAccordionItemHeader],
   templateUrl: './accordion-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'block' },

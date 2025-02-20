@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core'
-import { CkH1 } from '@corekit/ui/typography'
 import { LucideIconConfig } from 'lucide-angular'
 import { AccordionPageComponent } from './features/components/accordion-page/accordion-page.component'
 import { AlertPageComponent } from './features/components/alert-page/alert-page.component'
@@ -20,7 +19,6 @@ import { TypographyPageComponent } from './features/components/typography-page/t
   selector: 'app-root',
   imports: [
     TypographyPageComponent,
-    CkH1,
     AccordionPageComponent,
     AlertPageComponent,
     AvatarPageComponent,
@@ -37,7 +35,9 @@ import { TypographyPageComponent } from './features/components/typography-page/t
   ],
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'block container space-y-14 py-6 pb-[600px]' },
+  host: {
+    class: 'block container xl:max-w-6/10 space-y-14 py-6 pb-[600px]',
+  },
 })
 export class AppComponent {
   constructor(private readonly _lucide: LucideIconConfig) {

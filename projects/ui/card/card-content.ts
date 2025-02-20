@@ -4,12 +4,12 @@ import { classNames } from '@corekit/ui/utils'
 @Directive({
   selector: '[ckCardContent], ck-card-content',
   standalone: true,
-  host: { '[class]': '_class' }
+  host: { '[class]': '_class' },
 })
 export class CkCardContent {
   public readonly class = input<string>()
 
   protected get _class(): string {
-    return classNames('block', this.class())
+    return classNames('block text-sm', this.class())
   }
 }

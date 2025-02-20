@@ -6,7 +6,6 @@ import { CkError, CkFormField } from '@corekit/ui/form-field'
 import { CkInput, CkInputPrefix, CkInputSuffix } from '@corekit/ui/input'
 import { CkLabel } from '@corekit/ui/label'
 import { CkRadio } from '@corekit/ui/radio'
-import { CkCode } from '@corekit/ui/typography'
 import { LucideAngularModule } from 'lucide-angular'
 import { FormSubmittedErrorStateMatcher } from './form-submitted-error-state-matcher'
 
@@ -24,11 +23,10 @@ import { FormSubmittedErrorStateMatcher } from './form-submitted-error-state-mat
     CkRadio,
     LucideAngularModule,
     ReactiveFormsModule,
-    CkCode,
   ],
   templateUrl: './form-field-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'block space-y-4' },
+  host: { class: 'block' },
 })
 export class FormFieldPageComponent {
   public prefixVisible = true

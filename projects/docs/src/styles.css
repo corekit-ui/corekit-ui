@@ -1,4 +1,9 @@
-@import '../../ui/styles/index.css';
+@import '../../ui/styles';
+@import '../../ui/styles/typography';
+
+:root {
+  --ck-font-sans: Inter;
+}
 
 @utility container {
   margin-inline: auto;

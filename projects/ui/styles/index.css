@@ -7,13 +7,16 @@
 @import './default-theme.css';
 
 @theme inline {
-  --font-sans: var(--ck-font-serif), ui-sans-serif, system-ui, sans-serif,
+  --font-sans: var(--ck-font-sans);
+  --default-sans-font-family: ui-sans-serif, system-ui, sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
-  --font-serif: var(--ck-font-serif), ui-serif, Georgia, Cambria,
-    'Times New Roman', Times, serif;
+  --font-serif: var(--ck-font-serif);
+  --default-serif-font-family: ui-serif, Georgia, Cambria, 'Times New Roman',
+    Times, serif;
 
-  --font-mono: var(--ck-font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
+  --font-mono: var(--ck-font-mono);
+  --default-mono-font-family: ui-monospace, SFMono-Regular, Menlo, Monaco,
     Consolas, 'Liberation Mono', 'Courier New', monospace;
 
   --color-background: hsl(var(--ck-background));

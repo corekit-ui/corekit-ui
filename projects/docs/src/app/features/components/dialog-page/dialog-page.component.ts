@@ -22,7 +22,6 @@ import {
 import { CkFormField } from '@corekit/ui/form-field'
 import { CkInput } from '@corekit/ui/input'
 import { CkLabel } from '@corekit/ui/label'
-import { CkP } from '@corekit/ui/typography'
 import { firstValueFrom } from 'rxjs'
 
 @Component({
@@ -98,7 +97,6 @@ class SimpleDialog {
     CkDialogContent,
     CkDialogActions,
     CkButton,
-    CkP,
     CkClose,
   ],
   template: `
@@ -338,7 +336,7 @@ class DialogWithOutputData {
   ],
   templateUrl: './dialog-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'block space-y-1 space-x-3' },
+  host: { class: 'block space-y-3 space-x-3' },
 })
 export class DialogPageComponent {
   constructor(private readonly _dialog: CkDialog) {}

@@ -10,6 +10,7 @@ export const inputStyles = cva(
     'bg-background',
     'px-3',
     'py-2',
+    'text-sm',
     'file:border-0',
     'file:bg-transparent',
     'file:font-medium',
