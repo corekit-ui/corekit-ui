@@ -22,6 +22,5 @@ import {
   ],
   templateUrl: './card-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'flex gap-4' },
 })
 export class CardPageComponent {}

@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core'
 import { CkButton } from '@corekit/ui/button'
-import { CkH4 } from '@corekit/ui/typography'
 import { LucideAngularModule } from 'lucide-angular'
 
 @Component({
   selector: 'app-button-page',
-  imports: [CkButton, CkH4, LucideAngularModule],
+  imports: [CkButton, LucideAngularModule],
   templateUrl: './button-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'space-y-4' },
+  host: { class: 'block' },
 })
 export class ButtonPageComponent {}

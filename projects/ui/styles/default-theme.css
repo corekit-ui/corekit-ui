@@ -1,7 +1,8 @@
 @layer base {
   :root {
-    --ck-font-serif: 'Inter';
-    --ck-font-mono: ui-monospace;
+    --ck-font-sans: var(--default-sans-font-family);
+    --ck-font-serif: var(--default-serif-font-family);
+    --ck-font-mono: var(--default-mono-font-family);
 
     --ck-radius: 0.625rem;
 

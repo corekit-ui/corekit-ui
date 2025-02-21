@@ -1,37 +1,11 @@
+import { NgOptimizedImage } from '@angular/common'
 import { ChangeDetectionStrategy, Component } from '@angular/core'
-import {
-  CkBlockquote,
-  CkCode,
-  CkDisplay,
-  CkH1,
-  CkH2,
-  CkH3,
-  CkH4,
-  CkLead,
-  CkOl,
-  CkP,
-  CkSmall,
-  CkUl,
-} from '@corekit/ui/typography'
 
 @Component({
   selector: 'app-typography-page',
-  imports: [
-    CkDisplay,
-    CkH1,
-    CkH2,
-    CkH3,
-    CkH4,
-    CkLead,
-    CkP,
-    CkSmall,
-    CkBlockquote,
-    CkUl,
-    CkOl,
-    CkCode,
-  ],
+  imports: [NgOptimizedImage],
   templateUrl: './typography-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'block' },
+  host: { class: 'block ck-typography' },
 })
 export class TypographyPageComponent {}

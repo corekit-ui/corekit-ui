@@ -20,15 +20,19 @@
   </div>
 </div>
 
-<div>
-  Selected Option value:
-  <code>{{ selectedOption() | json }}</code>
-</div>
+@if (selectedOption()) {
+  <div>
+    Selected Option value:
+    <pre
+      class="ck-typography mt-0 max-w-[40ch]"
+    ><code class="text-sm">{{ selectedOption() | json }}</code></pre>
+  </div>
 
-<div>
-  Form value:
-  <code>{{ frameworkId() | json }}</code>
-</div>
+  <div>
+    Form value:
+    <code class="ck-typography">{{ frameworkId() | json }}</code>
+  </div>
+}
 
 <ck-form-field class="max-w-56">
   <label ckLabel for="framework">Select Framework</label>

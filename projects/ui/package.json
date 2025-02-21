@@ -43,6 +43,9 @@
   "exports": {
     ".": {
       "style": "./styles/index.css"
+    },
+    "./typography": {
+      "style": "./styles/typography.css"
     }
   }
 }

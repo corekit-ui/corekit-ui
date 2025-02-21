@@ -1,0 +1,129 @@
+@layer components {
+  .ck-typography {
+    /*
+     * Selects `.ck-typography *`; avoids `.ck-typography .ck-typography-reset *`,
+     * `.ck-typography *.ck-typography-reset` and `*.ck-typography.ck-typography-reset`.
+     */
+    :is(*:not(.ck-typography-reset, .ck-typography-reset *:not(.ck-typography-reset .ck-typography *))),
+
+    /* Selects `*.ck-typography`. */
+    &:is(*:not(.ck-typography-reset, .ck-typography-reset *:not(.ck-typography-reset .ck-typography *))) {
+      @apply text-base;
+
+      --text-base--line-height: 1.75;
+
+      @media (width <= --theme(--breakpoint-md)) {
+        --text-4xl: 1.875rem;
+        --text-2xl: 1.375rem;
+        --text-xl: 1.125rem;
+        --text-base--line-height: 1.7;
+      }
+
+      :is(.ck-typography > :first-child) {
+        @apply mt-0;
+      }
+
+      &:is(h1, h1 *) {
+        @apply mt-18 mb-6 text-4xl font-extrabold;
+      }
+
+      &:is(h2, h2 *) {
+        @apply mt-6 mb-4 text-2xl font-bold md:mt-9;
+      }
+
+      &:is(h3, h3 *) {
+        @apply mt-8 mb-3 text-xl font-semibold;
+      }
+
+      &:is(h4, h4 *) {
+        @apply mt-6 mb-2 font-semibold;
+      }
+
+      &:is(h2) + *,
+      &:is(h3) + * {
+        @apply mt-0;
+      }
+
+      &:is(.lead) {
+        @apply text-muted-foreground text-xl leading-relaxed;
+      }
+
+      &:is(p) {
+        @apply my-4;
+      }
+
+      &:is(small) {
+        @apply text-sm;
+      }
+
+      &:is(blockquote) {
+        @apply my-6 border-l border-l-4 pl-4 italic;
+
+        p:first-of-type::before {
+          content: open-quote;
+        }
+
+        p:last-of-type::after {
+          content: close-quote;
+        }
+      }
+
+      &:is(code) {
+        @apply bg-muted rounded px-1.5 py-1 font-mono text-[.9em];
+      }
+
+      &:is(pre) {
+        @apply text-background bg-foreground dark:bg-muted dark:text-foreground my-6 overflow-x-auto rounded-md px-4 py-3 leading-6 font-normal;
+
+        code {
+          @apply bg-transparent text-base;
+        }
+      }
+
+      &:is(hr) {
+        @apply my-10;
+      }
+
+      &:is(figure) {
+        @apply my-8;
+
+        img {
+          @apply rounded-md;
+        }
+      }
+
+      &:is(figcaption) {
+        @apply text-muted-foreground mt-3 text-sm;
+      }
+
+      &:is(ul),
+      &:is(ol) {
+        @apply my-5 list-disc ps-6.5;
+
+        > li {
+          @apply my-1 ps-1.5;
+        }
+      }
+
+      &:is(ul) {
+        @apply list-disc;
+
+        > li::marker {
+          @apply text-primary/20;
+        }
+      }
+
+      &:is(ol) {
+        @apply list-decimal;
+
+        > li::marker {
+          @apply text-muted-foreground;
+        }
+      }
+
+      &:is(a) {
+        @apply text-primary font-medium underline underline-offset-2 hover:no-underline;
+      }
+    }
+  }
+}

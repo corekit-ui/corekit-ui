@@ -12,7 +12,6 @@ import { CkFormField } from '@corekit/ui/form-field'
 import { CkInput, CkInputPrefix } from '@corekit/ui/input'
 import { CkLabel } from '@corekit/ui/label'
 import { CkOption } from '@corekit/ui/option'
-import { CkCode } from '@corekit/ui/typography'
 import { LucideAngularModule } from 'lucide-angular'
 
 type Framework = { name: string; stars: number; disabled: boolean; id: string }
@@ -41,7 +40,6 @@ const frameworks: Framework[] = [
     FormsModule,
     LucideAngularModule,
     JsonPipe,
-    CkCode,
   ],
   templateUrl: './autocomplete-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
