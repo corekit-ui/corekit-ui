@@ -3,8 +3,14 @@ import { classNames } from '@corekit/ui/utils'
 
 let uniqueIdCounter = 0
 
-const labelStyles =
-  'text-sm font-medium in-[.ck-invalid]:text-destructive inline-block in-[ck-form-field:has([ckInput])]:mb-0.5'
+const labelStyles = [
+  'text-sm',
+  'pointer-coarse:max-lg:text-base',
+  'font-medium',
+  'in-[.ck-invalid]:text-destructive',
+  'inline-block',
+  'in-[ck-form-field:has([ckInput])]:mb-1',
+]
 
 @Directive({
   selector: '[ckLabel], label',

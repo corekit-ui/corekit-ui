@@ -10,7 +10,9 @@ export const inputStyles = cva(
     'bg-background',
     'px-3',
     'py-2',
+    'pointer-coarse:max-lg:px-3.5',
     'text-sm',
+    'pointer-coarse:max-lg:text-base',
     'file:border-0',
     'file:bg-transparent',
     'file:font-medium',
@@ -25,9 +27,15 @@ export const inputStyles = cva(
     '[&:is(select)]:!bg-[right_.5rem_center]',
     '[&:is(select)]:bg-no-repeat',
     '[&:not(textarea)]:h-10',
+    '[&:not(textarea)]:pointer-coarse:max-lg:h-11',
     '[&[readonly]]:bg-muted/50',
     'disabled:bg-muted',
     'disabled:shadow-none',
   ],
-  { variants: { padStart: { true: 'ps-9' }, padEnd: { true: 'pe-9' } } },
+  {
+    variants: {
+      padStart: { true: 'ps-9 pointer-coarse:max-lg:ps-9.5' },
+      padEnd: { true: 'pe-9 pointer-coarse:max-lg:pe-9.5' },
+    },
+  },
 )

@@ -23,7 +23,6 @@
         shape="square"
         size="sm"
         type="button"
-        class="right-1 rounded-sm"
         appearance="ghost"
         title="Toggle prefix"
         (click)="prefixVisible = !prefixVisible"
@@ -44,6 +43,7 @@
   <ck-form-field [errorStateMatcher]="formSubmittedErrorStateMatcher">
     <div class="flex items-center gap-2">
       <input ckCheckbox id="agreed" type="checkbox" formControlName="agreed" />
+
       <label for="agreed">
         Accept terms and conditions (with custom
         <code class="ck-typography">ErrorStateMatcher</code>
@@ -59,26 +59,28 @@
   <ck-form-field>
     <label for="#">Question?</label>
 
-    <div class="flex items-center gap-2">
-      <input
-        ckRadio
-        id="yes"
-        type="radio"
-        value="yes"
-        formControlName="question"
-      />
-      <label for="yes">Yes</label>
-    </div>
+    <div class="space-y-1">
+      <div class="flex items-center gap-2">
+        <input
+          ckRadio
+          id="yes"
+          type="radio"
+          value="yes"
+          formControlName="question"
+        />
+        <label for="yes">Yes</label>
+      </div>
 
-    <div class="flex items-center gap-2">
-      <input
-        ckRadio
-        id="no"
-        type="radio"
-        value="no"
-        formControlName="question"
-      />
-      <label for="no">No</label>
+      <div class="flex items-center gap-2">
+        <input
+          ckRadio
+          id="no"
+          type="radio"
+          value="no"
+          formControlName="question"
+        />
+        <label for="no">No</label>
+      </div>
     </div>
 
     @if (form.controls.question.errors?.['required']) {

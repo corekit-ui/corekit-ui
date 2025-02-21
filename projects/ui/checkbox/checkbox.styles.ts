@@ -1,14 +1,16 @@
 import { cva, VariantProps } from 'class-variance-authority'
 
-export type Color = VariantProps<typeof checkbox>['color']
+export type Color = VariantProps<typeof checkboxStyles>['color']
 
-export const checkbox = cva(
+export const checkboxStyles = cva(
   [
     'peer',
     'shadow-xs',
     'relative',
-    'aspect-square',
     'w-4',
+    'h-4',
+    'pointer-coarse:max-lg:w-4.5',
+    'pointer-coarse:max-lg:h-4.5',
     'shrink-0',
     'appearance-none',
     'rounded-sm',
