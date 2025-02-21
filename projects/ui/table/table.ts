@@ -26,9 +26,6 @@ import { classNames } from '@corekit/ui/utils'
   standalone: true,
   selector: 'ck-table, table[ck-table]',
   exportAs: 'ckTable',
-  // Note that according to MDN, the `caption` element has to be projected as the **first**
-  // element in the table. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/caption
-  // We can't reuse `CDK_TABLE_TEMPLATE` because it's incompatible with local compilation mode.
   templateUrl: './table.html',
   // See note on CdkTable for explanation on why this uses the default change detection strategy.
   // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
