@@ -53,20 +53,9 @@ import { classNames } from '@corekit/ui/utils'
 })
 export class CkTable<T> extends CdkTable<T> {
   public readonly class = input<string>()
-  public readonly tFootClass = input<string>()
 
   protected readonly _class = computed(() => classNames('w-full', this.class()))
 
-  protected readonly _tFootClass = computed(() =>
-    classNames(
-      'bg-muted/50 border-t font-medium [&>tr]:last:border-b-0',
-      this.tFootClass(),
-    ),
-  )
-
-  // CSS class added to any row or cell that has sticky positioning applied
   protected override stickyCssClass = 'sticky'
-
-  // Overrides the need to add position: sticky on every sticky cell element in `CdkTable`
   protected override needsPositionStickyOnElement = false
 }

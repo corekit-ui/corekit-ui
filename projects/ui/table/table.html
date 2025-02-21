@@ -16,7 +16,10 @@
     <ng-container rowOutlet />
     <ng-container noDataRowOutlet />
   </tbody>
-  <tfoot role="rowgroup" [class]="_tFootClass()">
+  <tfoot
+    role="rowgroup"
+    class="bg-muted/50 border-t font-medium [&>tr]:last:border-b-0"
+  >
     <ng-container footerRowOutlet />
   </tfoot>
 } @else {
