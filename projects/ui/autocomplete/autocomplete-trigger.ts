@@ -20,6 +20,7 @@ import { TemplatePortal } from '@angular/cdk/portal'
 import { DOCUMENT } from '@angular/common'
 import {
   afterNextRender,
+  afterRenderEffect,
   booleanAttribute,
   ChangeDetectorRef,
   computed,
@@ -283,7 +284,10 @@ export class CkAutocompleteTrigger
     effect(this._positionChangeEffect.bind(this))
     effect(this._outsideClickEffect.bind(this))
     effect(this._optionsFirstRenderEffect.bind(this))
-    effect(this._optionsChangesEffect.bind(this))
+    // This particular effect must be executed only after Angular finishes
+    // rendering as it tries to access `CkOption.value` input, which is required,
+    // but is not provided until the option is actually rendered.
+    afterRenderEffect({ read: this._optionsChangesEffect.bind(this) })
     effect(this._animationOutDoneEffect.bind(this))
     effect(this._optionsSelectionChangeEffect.bind(this))
   }
