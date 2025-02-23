@@ -78,6 +78,9 @@ export class CkFooterRow extends CdkFooterRow {
   public readonly class = input<string>()
 
   protected get _class(): string {
-    return classNames('border-b', this.class())
+    return classNames(
+      'bg-muted/50 border-b font-medium last:border-b-0',
+      this.class(),
+    )
   }
 }
