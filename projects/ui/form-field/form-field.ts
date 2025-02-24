@@ -36,7 +36,7 @@ export class CkFormField implements DoCheck, AfterViewInit {
 
   protected readonly _class = computed(() => {
     return classNames(
-      'relative block pb-5',
+      'relative block pb-5 pointer-coarse:max-lg:pb-5.5',
       this._errorState() && 'ck-invalid',
       this.class(),
     )

@@ -1,7 +1,7 @@
 import { computed, Directive, input, output } from '@angular/core'
 import { CkNativeValidator } from '@corekit/ui/reactive-forms'
 import { classNames } from '@corekit/ui/utils'
-import { checkbox } from './checkbox.styles'
+import { checkboxStyles } from './checkbox.styles'
 
 @Directive({
   selector: '[ckCheckbox]',
@@ -18,6 +18,6 @@ export class CkCheckbox {
   public readonly checked = output<boolean>()
 
   protected readonly _class = computed(() => {
-    return classNames(checkbox(), this.class())
+    return classNames(checkboxStyles(), this.class())
   })
 }
