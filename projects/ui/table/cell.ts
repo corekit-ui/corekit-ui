@@ -1,5 +1,5 @@
 import { CdkCell, CdkFooterCell, CdkHeaderCell } from '@angular/cdk/table'
-import { Directive, input } from '@angular/core'
+import { computed, Directive, input } from '@angular/core'
 
 import { classNames } from '@corekit/ui/utils'
 
@@ -14,12 +14,12 @@ import { classNames } from '@corekit/ui/utils'
 export class CkHeaderCell extends CdkHeaderCell {
   public readonly class = input<string>()
 
-  protected get _class(): string {
-    return classNames(
+  protected readonly _class = computed(() =>
+    classNames(
       'h-12 px-4 text-left align-middle font-medium text-muted-foreground',
       this.class(),
-    )
-  }
+    ),
+  )
 }
 
 @Directive({
@@ -32,9 +32,9 @@ export class CkHeaderCell extends CdkHeaderCell {
 export class CkCell extends CdkCell {
   public readonly class = input<string>()
 
-  protected get _class(): string {
-    return classNames('p-4 align-middle', this.class())
-  }
+  protected readonly _class = computed(() =>
+    classNames('p-4 align-middle', this.class()),
+  )
 }
 
 @Directive({
@@ -47,7 +47,7 @@ export class CkCell extends CdkCell {
 export class CkFooterCell extends CdkFooterCell {
   public readonly class = input<string>()
 
-  protected get _class(): string {
-    return classNames('p-4 align-middle', this.class())
-  }
+  protected readonly _class = computed(() =>
+    classNames('p-4 align-middle', this.class()),
+  )
 }

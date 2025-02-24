@@ -4,7 +4,12 @@ import {
   CdkHeaderRow,
   CdkRow,
 } from '@angular/cdk/table'
-import { ChangeDetectionStrategy, Component, input } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core'
 
 import { classNames } from '@corekit/ui/utils'
 
@@ -28,9 +33,9 @@ const ROW_TEMPLATE = `<ng-container cdkCellOutlet />`
 export class CkHeaderRow extends CdkHeaderRow {
   public readonly class = input<string>()
 
-  protected get _class(): string {
-    return classNames('border-b', this.class())
-  }
+  protected readonly _class = computed(() =>
+    classNames('border-b', this.class()),
+  )
 }
 
 @Component({
@@ -51,12 +56,9 @@ export class CkHeaderRow extends CdkHeaderRow {
 export class CkRow extends CdkRow {
   public readonly class = input<string>()
 
-  protected get _class(): string {
-    return classNames(
-      'border-b transition-colors hover:bg-muted/50',
-      this.class(),
-    )
-  }
+  protected readonly _class = computed(() =>
+    classNames('border-b transition-colors hover:bg-muted/50', this.class()),
+  )
 }
 
 @Component({
@@ -77,10 +79,10 @@ export class CkRow extends CdkRow {
 export class CkFooterRow extends CdkFooterRow {
   public readonly class = input<string>()
 
-  protected get _class(): string {
-    return classNames(
+  protected readonly _class = computed(() =>
+    classNames(
       'bg-muted/50 border-b font-medium last:border-b-0',
       this.class(),
-    )
-  }
+    ),
+  )
 }
