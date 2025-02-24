@@ -1,0 +1,35 @@
+<table ck-table [dataSource]="dataSource">
+  <ng-container ckColumnDef="name">
+    <th *ckHeaderCellDef ck-header-cell>Name</th>
+    <td *ckCellDef="let person" ck-cell>{{ person.name }}</td>
+    <td *ckFooterCellDef ck-footer-cell>Total</td>
+  </ng-container>
+
+  <ng-container ckColumnDef="email">
+    <th *ckHeaderCellDef ck-header-cell>Email</th>
+    <td *ckCellDef="let person" ck-cell>{{ person.email }}</td>
+    <td *ckFooterCellDef ck-footer-cell></td>
+  </ng-container>
+
+  <ng-container ckColumnDef="age">
+    <th *ckHeaderCellDef ck-header-cell>Age</th>
+    <td *ckCellDef="let person" ck-cell>{{ person.age }}</td>
+    <td *ckFooterCellDef ck-footer-cell></td>
+  </ng-container>
+
+  <ng-container ckColumnDef="gender">
+    <th *ckHeaderCellDef ck-header-cell>Gender</th>
+    <td *ckCellDef="let person" ck-cell>{{ person.gender }}</td>
+    <td *ckFooterCellDef ck-footer-cell></td>
+  </ng-container>
+
+  <ng-container ckColumnDef="phone">
+    <th *ckHeaderCellDef ck-header-cell>Phone</th>
+    <td *ckCellDef="let person" ck-cell>{{ person.phone }}</td>
+    <td *ckFooterCellDef ck-footer-cell>{{ dataSource.length }}</td>
+  </ng-container>
+
+  <tr *ckHeaderRowDef="displayedColumns" ck-header-row></tr>
+  <tr *ckRowDef="let row; columns: displayedColumns" ck-row></tr>
+  <tr *ckFooterRowDef="displayedColumns" ck-footer-row></tr>
+</table>
