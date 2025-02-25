@@ -8,7 +8,7 @@ import { classNames } from '@corekit/ui/utils'
   selector: 'ck-header-cell, th[ck-header-cell]',
   host: {
     role: 'columnheader',
-    '[class]': '_class',
+    '[class]': '_class()',
   },
 })
 export class CkHeaderCell extends CdkHeaderCell {
@@ -26,7 +26,7 @@ export class CkHeaderCell extends CdkHeaderCell {
   standalone: true,
   selector: 'ck-cell, td[ck-cell]',
   host: {
-    '[class]': '_class',
+    '[class]': '_class()',
   },
 })
 export class CkCell extends CdkCell {
@@ -41,7 +41,7 @@ export class CkCell extends CdkCell {
   standalone: true,
   selector: 'ck-footer-cell, td[ck-footer-cell]',
   host: {
-    '[class]': '_class',
+    '[class]': '_class()',
   },
 })
 export class CkFooterCell extends CdkFooterCell {
