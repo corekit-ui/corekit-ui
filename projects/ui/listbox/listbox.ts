@@ -1,15 +1,14 @@
-import { Directive, forwardRef, input } from '@angular/core'
+import { computed, Directive, forwardRef, input } from '@angular/core'
+import { NG_VALUE_ACCESSOR } from '@angular/forms'
 import { CdkListbox } from '@angular/cdk/listbox'
 
 import { classNames } from '@corekit/ui/utils'
-import { listboxStyles } from './listbox.styles'
-import { NG_VALUE_ACCESSOR } from '@angular/forms'
 
 @Directive({
   selector: 'ck-listbox, [ckListbox]',
   exportAs: 'ckListbox',
   standalone: true,
-  host: { '[class]': '_class', role: 'list' },
+  host: { '[class]': '_class()', role: 'list' },
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -21,11 +20,12 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms'
       useExisting: CkListbox,
     },
   ],
+  inputs: ['disabled', 'multiple'],
 })
 export class CkListbox<T = unknown> extends CdkListbox<T> {
   public readonly class = input<string>()
 
-  protected get _class(): string {
-    return classNames(listboxStyles(), this.class())
-  }
+  protected readonly _class = computed(() =>
+    classNames('flex flex-col gap-xs', this.class()),
+  )
 }
