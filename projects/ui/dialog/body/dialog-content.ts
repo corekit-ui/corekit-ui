@@ -13,5 +13,7 @@ import { classNames } from '@corekit/ui/utils'
 export class CkDialogContent {
   public readonly class = input<string>()
 
-  protected _class = computed(() => classNames('block px-6', this.class()))
+  protected _class = computed(() => {
+    return classNames('block px-6 max-h-[65dvh] overflow-y-auto', this.class())
+  })
 }

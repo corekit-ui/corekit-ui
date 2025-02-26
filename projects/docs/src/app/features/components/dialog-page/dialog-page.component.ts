@@ -113,7 +113,7 @@ class SimpleDialog {
       ></button>
     </ck-dialog-header>
 
-    <ck-dialog-content>
+    <ck-dialog-content class="ck-typography">
       <p>
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae at
         voluptatem recusandae ea quaerat soluta, odio cum amet? Minima suscipit
