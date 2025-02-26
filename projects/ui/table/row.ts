@@ -22,7 +22,7 @@ const ROW_TEMPLATE = `<ng-container cdkCellOutlet />`
   template: ROW_TEMPLATE,
   host: {
     role: 'row',
-    '[class]': '_class',
+    '[class]': '_class()',
   },
   // See note on CdkTable for explanation on why this uses the default change detection strategy.
   // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
@@ -45,7 +45,7 @@ export class CkHeaderRow extends CdkHeaderRow {
   template: ROW_TEMPLATE,
   host: {
     role: 'row',
-    '[class]': '_class',
+    '[class]': '_class()',
   },
   // See note on CdkTable for explanation on why this uses the default change detection strategy.
   // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
@@ -68,7 +68,7 @@ export class CkRow extends CdkRow {
   template: ROW_TEMPLATE,
   host: {
     role: 'row',
-    '[class]': '_class',
+    '[class]': '_class()',
   },
   // See note on CdkTable for explanation on why this uses the default change detection strategy.
   // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
