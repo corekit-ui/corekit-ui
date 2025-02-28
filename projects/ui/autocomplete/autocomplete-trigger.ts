@@ -533,6 +533,7 @@ export class CkAutocompleteTrigger
    * Depending on the provided option, decides whether to set specific value or
    * reset everything and closes the dropdown.
    */
+  // eslint-disable-next-line max-statements
   private _setValueAndClose(optionToSelect: CkOption | null): void {
     if (optionToSelect?.isSelected()) {
       this.autocomplete()._deselectAll(optionToSelect)
@@ -541,13 +542,21 @@ export class CkAutocompleteTrigger
       return this.closePanel()
     }
 
-    const typedValueUnacceptable =
-      this.host.nativeElement.value !== this._displayValueOnOpen() &&
+    const isTriggerValueChanged =
+      this.host.nativeElement.value !== this._displayValueOnOpen()
+    const isTriggerValueFormatted =
       this.host.nativeElement.value !== this._formControlValue()
 
-    if (typedValueUnacceptable) {
+    if (isTriggerValueChanged && isTriggerValueFormatted) {
       this.autocomplete()._deselectAll()
       this._setValue(null)
+    } else if (!optionToSelect?.isSelected()) {
+      // We have to select the option again after this option was deselected
+      // because we don't want to support deselection yet.
+      // It happened because we added deselection feature to `CkOption`
+      // and it requires a bit more work to make it work properly.
+      // TODO: https://github.com/corekit-ui/corekit-ui/issues/42
+      optionToSelect?.select(false)
     }
 
     if (!optionToSelect) return this.closePanel()
