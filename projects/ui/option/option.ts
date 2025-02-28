@@ -40,7 +40,7 @@ let uniqueIdCounter = 0
     '[attr.aria-selected]': 'isSelected()',
     '[attr.aria-disabled]': 'disabled',
     '(click)': 'toggle()',
-    '(keydown)': 'selectViaKeyboard($event)',
+    '(keydown)': 'toggleViaKeyboard($event)',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -155,7 +155,7 @@ export class CkOption<T = unknown> implements Highlightable, FocusableOption {
   }
 
   /** Selects the option when selection requested with keyboard. */
-  protected selectViaKeyboard(event: KeyboardEvent): void {
+  protected toggleViaKeyboard(event: KeyboardEvent): void {
     if (
       (event.keyCode !== ENTER && event.keyCode !== SPACE) ||
       hasModifierKey(event)
