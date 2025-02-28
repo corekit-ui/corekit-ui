@@ -1,12 +1,17 @@
 <label class="flex items-center gap-2">
+  <input ckCheckbox type="checkbox" [(ngModel)]="multiple" />
+  multiple
+</label>
+
+<label class="flex items-center gap-2">
   <input ckCheckbox type="checkbox" [(ngModel)]="disabled" />
   disabled
 </label>
 
-<ck-listbox [disabled]="disabled()" [multiple]="false">
+<ck-listbox [disabled]="disabled()" [multiple]="multiple()">
   @for (option of options; track option) {
-    <ck-listbox-option [value]="option.value">
+    <ck-option [value]="option.value" [disabled]="option.disabled">
       {{ option.label }}
-    </ck-listbox-option>
+    </ck-option>
   }
 </ck-listbox>
