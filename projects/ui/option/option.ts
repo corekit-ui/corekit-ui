@@ -128,11 +128,7 @@ export class CkOption<T = unknown> implements Highlightable, FocusableOption {
   }
 
   public toggle(emitEvent = true): void {
-    if (this.isSelected()) {
-      this.deselect(emitEvent)
-    } else {
-      this.select(emitEvent)
-    }
+    return this.isSelected() ? this.deselect(emitEvent) : this.select(emitEvent)
   }
 
   /** Sets focus onto this option. */
