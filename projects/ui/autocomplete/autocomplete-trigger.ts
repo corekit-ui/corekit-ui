@@ -557,6 +557,8 @@ export class CkAutocompleteTrigger
       // and it requires a bit more work to make it work properly.
       // TODO: https://github.com/corekit-ui/corekit-ui/issues/42
       optionToSelect?.select(false)
+
+      return this.closePanel()
     }
 
     if (!optionToSelect) return this.closePanel()
