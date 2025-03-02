@@ -1,82 +1,59 @@
-import { AnimationEvent } from '@angular/animations'
 import { CdkDialogContainer, DialogModule } from '@angular/cdk/dialog'
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
   inject,
   Injector,
-  OnInit,
   signal,
 } from '@angular/core'
+import { Subject } from 'rxjs'
 import { dialogContainerStyles } from './dialog-container.styles'
-import { ZOOM_IN } from './zoom-in.animation'
-
-type AnimationState = 'opening' | 'opened' | 'closing' | 'closed'
 
 @Component({
   selector: 'ck-dialog-container',
   imports: [DialogModule],
   template: '<ng-template cdkPortalOutlet />',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [ZOOM_IN],
   host: {
-    '[class]': '_class()',
-    '[@zoomIn]': '_animationState()',
-    '(@zoomIn.done)': '_setAnimationState($event)',
+    '[class]': '_class',
+    '[attr.data-state]': '_state()',
+    '(animationend)': '_handleAnimationEnd($event)',
   },
 })
-export class CkDialogContainer extends CdkDialogContainer implements OnInit {
+export class CkDialogContainer extends CdkDialogContainer {
   public readonly injector = inject(Injector)
+
+  /** Event that is emit right after enter animation completion. */
+  public readonly enterAnimationComplete = new Subject<void>()
+
+  /** Event that is emit right after exit animation completion. */
+  public readonly exitAnimationComplete = new Subject<void>()
 
   /** CSS classes to be applied to the container host element. */
   protected readonly _class = dialogContainerStyles
 
-  /** Reflects current animation state. */
-  private readonly _animationState = signal<AnimationState>('opening')
+  /** Reflects current dialog state. */
+  protected readonly _state = signal<'open' | 'closed'>('open')
 
-  public ngOnInit(): void {
-    effect(this._animationStateEffect.bind(this), { injector: this.injector })
+  /**
+   * Starts exit animation. Actual close of the dialog should happen after the
+   * animation is finished.
+   * {@link exitAnimationComplete `CkDialogContainer.exitAnimationComplete$`}
+   * notifies about that.
+   */
+  public _startExitAnimation(): void {
+    this._state.set('closed')
   }
 
-  /**
-   * Callback to be executed right after dialog has finished opening animation.
-   */
-  public onAfterOpened: (...args: unknown[]) => void = () => null
+  protected _handleAnimationEnd(event: AnimationEvent): void {
+    if (event.target !== this._elementRef.nativeElement) return
 
-  /**
-   * Callback to be executed right after dialog has finished closing animation.
-   */
-  public onAfterClosed: (...args: unknown[]) => void = () => null
-
-  /**
-   * Starts closing animation. Actual close happens after animation is finished,
-   * in {@link CkDialogRef.close `CkDialogRef.close`}
-   */
-  public _close(): void {
-    this._animationState.set('closing')
-  }
-
-  /** Translates animation event into understandable animation status. */
-  protected _setAnimationState(event: AnimationEvent): void {
-    if (event.fromState === 'void' && event.toState === 'opening') {
-      this._animationState.set('opened')
+    if (event.animationName === 'enter') {
+      return this.enterAnimationComplete.next()
     }
 
-    if (event.fromState === 'opened' && event.toState === 'closing') {
-      this._animationState.set('closed')
+    if (event.animationName === 'exit') {
+      return this.exitAnimationComplete.next()
     }
-  }
-
-  /**
-   * Runs when animation state changes.
-   *
-   * Runs callbacks provided by the consumer depending on the animation state.
-   */
-  private _animationStateEffect(): void {
-    const animationState = this._animationState()
-
-    if (animationState === 'opened') return this.onAfterOpened()
-    if (animationState === 'closed') return this.onAfterClosed()
   }
 }

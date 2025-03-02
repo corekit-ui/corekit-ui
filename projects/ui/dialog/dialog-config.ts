@@ -30,7 +30,7 @@ export class CkDialogConfig<D = any> {
 
   /** CSS classes applied to the Overlay backdrop. */
   public backdropClass? =
-    'bg-black/10 dark:bg-black/30 data-[state=opened]:animate-in data-[state=opened]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 transition-none'
+    'bg-black/10 dark:bg-black/30 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:fade-out transition-none'
 
   /** CSS classes applied to the Overlay panel. */
   public panelClass?: string
@@ -51,7 +51,7 @@ export class CkDialogConfig<D = any> {
   public maxWidth? = '90dvw'
 
   /** Max height of the dialog. */
-  public maxHeight? = '94dvh'
+  public maxHeight? = '96dvh'
 
   /** Dialog offset from screen edges. */
   public offset?: DialogOffset

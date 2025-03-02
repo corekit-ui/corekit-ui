@@ -48,18 +48,20 @@ export class CkDialogRef<R = any, D = any, T = any> implements CkClosable<R> {
     private readonly _containerInstance: CkDialogContainer,
     private readonly _cdkDialogRef: DialogRef<R, T>,
   ) {
-    this._setBackdropState('opened')
-
-    this._containerInstance.onAfterOpened = this._notifyOpened.bind(this)
-    this._containerInstance.onAfterClosed = this._finishClosing.bind(this)
+    this._setBackdropState('open')
 
     runInInjectionContext(this._containerInstance.injector, () => {
       this._closingEvents
-        .pipe(
-          tap(() => this.close()),
-          takeUntilDestroyed(),
-        )
-        .subscribe()
+        .pipe(takeUntilDestroyed())
+        .subscribe(() => this.close())
+
+      this._containerInstance.enterAnimationComplete
+        .pipe(takeUntilDestroyed())
+        .subscribe(() => this._notifyOpened())
+
+      this._containerInstance.exitAnimationComplete
+        .pipe(takeUntilDestroyed())
+        .subscribe(() => this._finishClosing())
     })
   }
 
@@ -125,7 +127,7 @@ export class CkDialogRef<R = any, D = any, T = any> implements CkClosable<R> {
   public close(result?: R): void {
     this._result.set(result)
     this._notifyClosing()
-    this._containerInstance._close()
+    this._containerInstance._startExitAnimation()
     this._setBackdropState('closed')
   }
 
@@ -135,7 +137,7 @@ export class CkDialogRef<R = any, D = any, T = any> implements CkClosable<R> {
    *
    * @param state New state.
    */
-  private _setBackdropState(state: 'opened' | 'closed'): void {
+  private _setBackdropState(state: 'open' | 'closed'): void {
     this._cdkDialogRef.overlayRef.backdropElement?.setAttribute(
       'data-state',
       state,

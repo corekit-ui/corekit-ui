@@ -1,9 +1,6 @@
-import { cva } from 'class-variance-authority'
-
-export const dialogContainerStyles = cva([
+export const dialogContainerStyles = [
   'block',
   'w-full',
-  'overflow-auto',
   'rounded-lg',
   'border',
   'text-sm',
@@ -12,4 +9,12 @@ export const dialogContainerStyles = cva([
   'shadow-xl',
   '[&:not(:has(_:is(ck-dialog-actions,_[ck-dialog-actions])))_ck-dialog-content]:pb-6',
   '[&:not(:has(_:is(ck-dialog-header,_[ck-dialog-header])))_ck-dialog-content]:pt-6',
-])
+  'data-[state=open]:animate-in',
+  'data-[state=open]:fade-in',
+  'data-[state=open]:motion-safe:zoom-in-95',
+  'data-[state=open]:motion-safe:slide-in-from-bottom-2',
+  'data-[state=closed]:animate-out',
+  'data-[state=closed]:fade-out',
+  'data-[state=closed]:motion-safe:zoom-out-95',
+  'data-[state=closed]:motion-safe:slide-out-to-bottom-2',
+]
