@@ -9,6 +9,7 @@ import {
   ElementRef,
   Input,
   input,
+  linkedSignal,
   output,
   signal,
   viewChild,
@@ -33,18 +34,21 @@ let uniqueIdCounter = 0
   imports: [NgClass],
   templateUrl: './option.html',
   host: {
-    role: 'option',
+    '[attr.role]': '_role()',
     '[id]': 'id()',
     '[class]': '_class()',
     '[attr.aria-selected]': 'isSelected()',
     '[attr.aria-disabled]': 'disabled',
-    '(click)': 'select()',
-    '(keydown)': 'selectViaKeyboard($event)',
+    '(click)': 'toggle()',
+    '(keydown)': 'toggleViaKeyboard($event)',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CkOption<T = unknown> implements Highlightable, FocusableOption {
   public readonly class = input<string>()
+  public readonly role = input<string>()
+
+  protected readonly _role = linkedSignal(() => this.role() ?? 'option')
 
   /** The unique ID of the option. */
   public readonly id = input(`ck-option-${uniqueIdCounter++}`)
@@ -99,9 +103,13 @@ export class CkOption<T = unknown> implements Highlightable, FocusableOption {
     public readonly host: ElementRef<HTMLElement>,
   ) {}
 
+  public setRole(role: string): void {
+    if (!this.role()) this._role.set(role)
+  }
+
   /** Selects the option. */
   public select(emitEvent = true): void {
-    if (this.disabled) return
+    if (this.isSelected() || this.disabled) return
 
     this._isSelected.set(true)
 
@@ -117,6 +125,10 @@ export class CkOption<T = unknown> implements Highlightable, FocusableOption {
 
     if (!emitEvent) return
     this.selectionChange.emit(new CkOptionSelectionChange<T>(this))
+  }
+
+  public toggle(emitEvent = true): void {
+    return this.isSelected() ? this.deselect(emitEvent) : this.select(emitEvent)
   }
 
   /** Sets focus onto this option. */
@@ -139,7 +151,7 @@ export class CkOption<T = unknown> implements Highlightable, FocusableOption {
   }
 
   /** Selects the option when selection requested with keyboard. */
-  protected selectViaKeyboard(event: KeyboardEvent): void {
+  protected toggleViaKeyboard(event: KeyboardEvent): void {
     if (
       (event.keyCode !== ENTER && event.keyCode !== SPACE) ||
       hasModifierKey(event)
@@ -147,7 +159,7 @@ export class CkOption<T = unknown> implements Highlightable, FocusableOption {
       return
     }
 
-    this.select()
+    this.toggle()
 
     // Prevent form submission (Enter) and page scrolling (Space).
     event.preventDefault()
