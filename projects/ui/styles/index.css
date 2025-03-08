@@ -1,10 +1,9 @@
 @import '@angular/cdk/overlay-prebuilt.css' layer(base);
 @import 'tailwindcss';
 
-@plugin 'tailwindcss-animate';
-
 @import './reset.css';
 @import './default-theme.css';
+@import './animations.css';
 
 @theme inline {
   --font-sans: var(--ck-font-sans);
@@ -53,9 +52,6 @@
   --radius-2xl: calc(var(--ck-radius) * 2);
   --radius-3xl: calc(var(--ck-radius) * 3);
   --radius-4xl: calc(var(--ck-radius) * 4);
-
-  --default-transition-duration: var(--ck-transition-duration);
-  --default-transition-timing-function: var(--ck-transition-timing-function);
 
   --background-image-checkbox-checked: var(--ck-icon-checkbox-checked);
   --background-image-checkbox-indeterminate: var(

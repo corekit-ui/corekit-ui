@@ -13,7 +13,7 @@ export const optionStyles = cva(
     'py-1.5',
     'text-sm',
     'outline-hidden',
-    'motion-safe:transition-colors',
+    'transition-colors',
   ],
   {
     variants: {
