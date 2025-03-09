@@ -24,6 +24,7 @@ import {
   booleanAttribute,
   ChangeDetectorRef,
   computed,
+  DestroyRef,
   Directive,
   effect,
   ElementRef,
@@ -35,6 +36,7 @@ import {
   NgZone,
   numberAttribute,
   OnDestroy,
+  OnInit,
   Optional,
   signal,
   untracked,
@@ -42,6 +44,7 @@ import {
 } from '@angular/core'
 import {
   outputToObservable,
+  takeUntilDestroyed,
   toObservable,
   toSignal,
 } from '@angular/core/rxjs-interop'
@@ -96,7 +99,7 @@ const CONTROL_VALUE_ACCESSOR_PROVIDER = {
   },
 })
 export class CkAutocompleteTrigger
-  implements OnDestroy, ControlValueAccessor, CkAutocompleteOrigin
+  implements OnInit, OnDestroy, ControlValueAccessor, CkAutocompleteOrigin
 {
   /** Whether the autocomplete feature is disabled. */
   public readonly autocompleteDisabled = input<boolean, unknown>(false, {
@@ -277,6 +280,7 @@ export class CkAutocompleteTrigger
     private readonly _changeDetectorRef: ChangeDetectorRef,
     private readonly _zone: NgZone,
     private readonly _injector: Injector,
+    private readonly _destroyRef: DestroyRef,
   ) {
     effect(this._windowBlurEffect.bind(this))
     effect(this._originChangeEffect.bind(this))
@@ -288,8 +292,13 @@ export class CkAutocompleteTrigger
     // rendering as it tries to access `CkOption.value` input, which is required,
     // but is not provided until the option is actually rendered.
     afterRenderEffect({ read: this._optionsChangesEffect.bind(this) })
-    effect(this._animationOutDoneEffect.bind(this))
     effect(this._optionsSelectionChangeEffect.bind(this))
+  }
+
+  public ngOnInit(): void {
+    this.autocomplete()
+      .exitAnimationEnd.pipe(takeUntilDestroyed(this._destroyRef))
+      .subscribe(() => void this._overlayRef()!.detach())
   }
 
   public ngOnDestroy(): void {
@@ -463,7 +472,7 @@ export class CkAutocompleteTrigger
         overlayX: 'start',
         overlayY: 'top',
         offsetY,
-        panelClass: 'group/ck-position-below',
+        panelClass: 'ck-position-below',
       },
       {
         originX: 'end',
@@ -471,7 +480,7 @@ export class CkAutocompleteTrigger
         overlayX: 'end',
         overlayY: 'top',
         offsetY,
-        panelClass: 'group/ck-position-below',
+        panelClass: 'ck-position-below',
       },
     ]
 
@@ -482,7 +491,7 @@ export class CkAutocompleteTrigger
         overlayX: 'start',
         overlayY: 'bottom',
         offsetY: -offsetY,
-        panelClass: 'group/ck-position-above',
+        panelClass: 'ck-position-above',
       },
       {
         originX: 'end',
@@ -490,7 +499,7 @@ export class CkAutocompleteTrigger
         overlayX: 'end',
         overlayY: 'bottom',
         offsetY: -offsetY,
-        panelClass: 'group/ck-position-above',
+        panelClass: 'ck-position-above',
       },
     ]
 
@@ -720,14 +729,5 @@ export class CkAutocompleteTrigger
     if (!this._outsideClick() || !untracked(this._overlayAttached)) return
 
     untracked(() => this._setValueAndClose(null))
-  }
-
-  /**
-   * Runs when suggestion panel closing animation finishes.
-   *
-   * Detaches the overlay.
-   */
-  private _animationOutDoneEffect(): void {
-    if (this.autocomplete()._animationOutDone()) this._overlayRef()!.detach()
   }
 }

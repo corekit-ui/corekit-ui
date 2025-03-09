@@ -17,7 +17,6 @@ import { CkInput, CkInputPrefix, CkInputSuffix } from '@corekit/ui/input'
 import { CkLabel } from '@corekit/ui/label'
 import { ErrorStateMatcher } from '@corekit/ui/reactive-forms'
 import { classNames } from '@corekit/ui/utils'
-import { FADE_IN_DOWN } from './animations/fade-in-down.animation'
 
 @Component({
   selector: 'ck-form-field, [ckFormField]',
@@ -25,7 +24,6 @@ import { FADE_IN_DOWN } from './animations/fade-in-down.animation'
   standalone: true,
   templateUrl: './form-field.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [FADE_IN_DOWN],
   host: { '[class]': '_class()' },
 })
 export class CkFormField implements DoCheck, AfterViewInit {

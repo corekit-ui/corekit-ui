@@ -1,12 +1,22 @@
 <ng-content select="ck-accordion-item-header, [ckAccordionItemHeader]" />
 
 <div
-  role="region"
-  class="text-sm"
-  [class.pb-3]="expanded"
-  [@contentExpansion]="expanded ? 'expanded' : 'collapsed'"
-  [id]="id"
-  [attr.aria-labelledby]="id + '-header'"
+  class="grid transition-[grid-template-rows]"
+  [class.grid-rows-[1fr]]="expanded"
+  [class.animate-in]="expanded"
+  [class.fade-in]="expanded"
+  [class.slide-in-from-top-2]="expanded"
+  [class.grid-rows-[0fr]]="!expanded"
+  [class.animate-out]="!expanded"
+  [class.fade-out]="!expanded"
+  [class.slide-out-to-top-2]="!expanded"
 >
-  <ng-content />
+  <div
+    role="region"
+    class="overflow-hidden"
+    [id]="id"
+    [attr.aria-labelledby]="id + '-header'"
+  >
+    <ng-content />
+  </div>
 </div>

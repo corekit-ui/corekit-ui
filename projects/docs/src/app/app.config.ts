@@ -4,7 +4,6 @@ import {
   provideZoneChangeDetection,
 } from '@angular/core'
 import { provideClientHydration } from '@angular/platform-browser'
-import { provideAnimations } from '@angular/platform-browser/animations'
 import { provideRouter } from '@angular/router'
 import {
   Check,
@@ -25,7 +24,6 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(),
-    provideAnimations(),
     importProvidersFrom(
       LucideAngularModule.pick({
         Terminal,

@@ -1,8 +1,6 @@
 // TODO: Implement CK_AUTOCOMPLETE_DEFAULT_OPTIONS
 
-import { AnimationEvent } from '@angular/animations'
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y'
-import { NgClass } from '@angular/common'
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -27,10 +25,9 @@ import {
 } from '@angular/core/rxjs-interop'
 import { CkOption } from '@corekit/ui/option'
 import { classNames, getScrollPosition } from '@corekit/ui/utils'
-import { filter, map, merge, Subject, switchMap } from 'rxjs'
+import { map, merge, Subject, switchMap } from 'rxjs'
 import { CkAutocompleteTrigger } from './autocomplete-trigger'
 import { autocompleteStyles } from './autocomplete.styles'
-import { ZOOM_IN_ANIMATION } from './zoom-in.animation'
 
 let uniqueIdCounter = 0
 
@@ -38,10 +35,8 @@ let uniqueIdCounter = 0
 @Component({
   selector: 'ck-autocomplete, [ck-autocomplete]',
   exportAs: 'ckAutocomplete',
-  imports: [NgClass],
   templateUrl: './autocomplete.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [ZOOM_IN_ANIMATION],
   host: { class: 'hidden' },
 })
 export class CkAutocomplete implements OnDestroy {
@@ -142,17 +137,10 @@ export class CkAutocomplete implements OnDestroy {
     ),
   )
 
-  /** Stream of animation completion events. */
-  public readonly _animationDone = new Subject<AnimationEvent>()
-
   /** Stream of closing animation completion events. */
-  public readonly _animationOutDone = toSignal(
-    this._animationDone.pipe(
-      filter(event => {
-        return event.fromState === 'open' && event.toState === 'closed'
-      }),
-    ),
-  )
+  protected readonly _exitAnimationEnd = new Subject<AnimationEvent>()
+
+  public readonly exitAnimationEnd = this._exitAnimationEnd.asObservable()
 
   /**
    * CSS classes to be applied to the suggestion panel.
@@ -164,7 +152,8 @@ export class CkAutocomplete implements OnDestroy {
     return classNames(autocompleteStyles, this.class())
   })
 
-  protected readonly _animationState = signal<'open' | 'closed'>('closed')
+  /** Reflects current panel state. */
+  protected readonly _state = signal<'open' | 'closed'>('closed')
 
   /** HTML Element containing the list of options. */
   private readonly _panel = viewChild<ElementRef<HTMLDivElement>>('panel')
@@ -223,13 +212,13 @@ export class CkAutocomplete implements OnDestroy {
 
   public _open(trigger: CkAutocompleteTrigger): void {
     this._trigger.set(trigger)
-    this._animationState.set('open')
+    this._state.set('open')
     this.opened.emit()
   }
 
   public _close(): void {
     this._trigger.set(null)
-    this._animationState.set('closed')
+    this._state.set('closed')
     !this.selectedOption() && this._resetActiveOption()
     this.closed.emit()
   }

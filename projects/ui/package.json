@@ -45,6 +45,9 @@
     },
     "./typography": {
       "style": "./styles/typography.css"
+    },
+    "./animations": {
+      "style": "./styles/animations.css"
     }
   }
 }

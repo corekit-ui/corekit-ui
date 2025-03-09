@@ -1,7 +1,15 @@
 <ng-content />
 
 @if (errorState()) {
-  <div class="absolute mt-0.5" @fadeInDown>
+  <div
+    class="absolute mt-0.5"
+    [class.animate-in]="errorState()"
+    [class.fade-in]="errorState()"
+    [class.slide-in-from-top-1]="errorState()"
+    [class.animate-out]="!errorState()"
+    [class.fade-out]="!errorState()"
+    [class.slide-out-to-top-1]="!errorState()"
+  >
     <ng-content select="ck-error, [ckError]" />
   </div>
 }
