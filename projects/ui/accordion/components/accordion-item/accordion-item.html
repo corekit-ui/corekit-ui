@@ -1,16 +1,6 @@
 <ng-content select="ck-accordion-item-header, [ckAccordionItemHeader]" />
 
-<div
-  class="grid transition-[grid-template-rows]"
-  [class.grid-rows-[1fr]]="expanded"
-  [class.animate-in]="expanded"
-  [class.fade-in]="expanded"
-  [class.slide-in-from-top-2]="expanded"
-  [class.grid-rows-[0fr]]="!expanded"
-  [class.animate-out]="!expanded"
-  [class.fade-out]="!expanded"
-  [class.slide-out-to-top-2]="!expanded"
->
+<div [class]="_contentClass">
   <div
     role="region"
     class="overflow-hidden"

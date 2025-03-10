@@ -4,12 +4,8 @@
     role="listbox"
     [id]="id"
     [class]="_class()"
-    [class.visible]="!!options().length"
-    [class.invisible]="!options().length"
-    [class.pointer-events-none]="!options().length"
     [attr.aria-label]="ariaLabel()"
     [attr.aria-labelledby]="_getAriaLabelledby(labelId)"
-    [attr.data-state]="_state()"
     (animationend)="
       $event.animationName === 'exit' && _exitAnimationEnd.next($event)
     "

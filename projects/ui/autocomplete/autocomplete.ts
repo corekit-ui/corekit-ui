@@ -27,7 +27,7 @@ import { CkOption } from '@corekit/ui/option'
 import { classNames, getScrollPosition } from '@corekit/ui/utils'
 import { map, merge, Subject, switchMap } from 'rxjs'
 import { CkAutocompleteTrigger } from './autocomplete-trigger'
-import { autocompleteStyles } from './autocomplete.styles'
+import { autocompletePanelStyles } from './autocomplete.styles'
 
 let uniqueIdCounter = 0
 
@@ -149,7 +149,11 @@ export class CkAutocomplete implements OnDestroy {
    * token.
    */
   protected readonly _class = computed(() => {
-    return classNames(autocompleteStyles, this.class())
+    return classNames(
+      autocompletePanelStyles({ state: this._state() }),
+      this.options().length ? 'visible' : 'invisible pointer-events-none',
+      this.class(),
+    )
   })
 
   /** Reflects current panel state. */

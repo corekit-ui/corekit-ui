@@ -7,9 +7,10 @@ import {
 } from '@angular/core'
 import { classNames } from '@corekit/ui/utils'
 import { CkAccordion } from '../../directives/accordion'
-
-export const accordionItem =
-  'block border-b [&[aria-expanded="true"]]:pb-3 transition-[padding-bottom]'
+import {
+  accordionItemContentStyles,
+  accordionItemStyles,
+} from './accordion-item.styles'
 
 @Component({
   selector: 'ck-accordion-item, [ckAccordionItem]',
@@ -31,6 +32,15 @@ export class CkAccordionItem extends CdkAccordionItem {
   public readonly class = input<string>()
 
   protected readonly _class = computed(() => {
-    return classNames(accordionItem, this.class())
+    return classNames(accordionItemStyles, this.class())
   })
+
+  // Cannot be a computed signal because `CdkAccordionItem.expanded` is a getter
+  protected get _contentClass(): string {
+    return classNames(
+      accordionItemContentStyles({
+        state: this.expanded ? 'expanded' : 'collapsed',
+      }),
+    )
+  }
 }
