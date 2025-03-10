@@ -17,7 +17,7 @@ export const button = cva(
     'border',
     'border-transparent',
     'whitespace-nowrap',
-    'motion-safe:transition-colors',
+    'transition-colors',
   ],
   {
     variants: {

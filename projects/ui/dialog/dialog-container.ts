@@ -38,7 +38,7 @@ export class CkDialogContainer extends CdkDialogContainer {
   /**
    * Starts exit animation. Actual close of the dialog should happen after the
    * animation is finished.
-   * {@link exitAnimationComplete `CkDialogContainer.exitAnimationComplete$`}
+   * {@link exitAnimationComplete `CkDialogContainer.exitAnimationComplete`}
    * notifies about that.
    */
   public _startExitAnimation(): void {

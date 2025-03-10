@@ -1,12 +1,12 @@
 <ng-content select="ck-accordion-item-header, [ckAccordionItemHeader]" />
 
-<div
-  role="region"
-  class="text-sm"
-  [class.pb-3]="expanded"
-  [@contentExpansion]="expanded ? 'expanded' : 'collapsed'"
-  [id]="id"
-  [attr.aria-labelledby]="id + '-header'"
->
-  <ng-content />
+<div [class]="_contentClass">
+  <div
+    role="region"
+    class="overflow-hidden"
+    [id]="id"
+    [attr.aria-labelledby]="id + '-header'"
+  >
+    <ng-content />
+  </div>
 </div>

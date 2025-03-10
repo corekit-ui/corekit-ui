@@ -6,7 +6,7 @@ export const closeStyles = cva(null, {
   variants: {
     appearance: {
       native: null,
-      icon: 'inline-flex aspect-square h-7 items-center justify-center rounded-full bg-muted text-muted-foreground hover:opacity-80 motion-safe:transition-opacity',
+      icon: 'inline-flex aspect-square h-7 items-center justify-center rounded-full bg-muted text-muted-foreground hover:opacity-80 transition-opacity',
     },
   },
 })

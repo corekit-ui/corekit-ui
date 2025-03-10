@@ -1,0 +1,203 @@
+@utility animate-in {
+  animation-name: enter;
+  animation-duration: var(
+    --ck-animation-duration,
+    var(--default-transition-duration)
+  );
+  animation-delay: var(--ck-animation-delay, 0);
+  --ck-animation-enter-opacity: initial;
+  --ck-animation-enter-scale: initial;
+  --ck-animation-enter-rotate: initial;
+  --ck-animation-enter-translate-x: initial;
+  --ck-animation-enter-translate-y: initial;
+}
+
+@utility animate-out {
+  animation-name: exit;
+  animation-duration: var(
+    --ck-animation-duration,
+    var(--default-transition-duration)
+  );
+  animation-delay: var(--ck-animation-delay, 0);
+  --ck-animation-exit-opacity: initial;
+  --ck-animation-exit-scale: initial;
+  --ck-animation-exit-rotate: initial;
+  --ck-animation-exit-translate-x: initial;
+  --ck-animation-exit-translate-y: initial;
+}
+
+@utility duration-* {
+  --ck-animation-duration: calc(--value(number) * 1ms);
+}
+
+@utility delay-* {
+  --ck-animation-delay: calc(--value(number) * 1ms);
+}
+
+@utility running {
+  animation-play-state: running;
+}
+
+@utility paused {
+  animation-play-state: paused;
+}
+
+@utility fill-mode-none {
+  animation-fill-mode: none;
+}
+
+@utility fill-mode-forwards {
+  animation-fill-mode: forwards;
+}
+
+@utility fill-mode-backwards {
+  animation-fill-mode: backwards;
+}
+
+@utility fill-mode-both {
+  animation-fill-mode: both;
+}
+
+@utility fill-mode-both {
+  animation-fill-mode: both;
+}
+
+@utility direction-normal {
+  animation-direction: normal;
+}
+
+@utility direction-reverse {
+  animation-direction: reverse;
+}
+
+@utility direction-alternate {
+  animation-direction: alternate;
+}
+
+@utility direction-alternate-reverse {
+  animation-direction: alternate-reverse;
+}
+
+@utility repeat-* {
+  animation-iteration-count: --value(integer);
+}
+
+@utility repeat-infinite {
+  animation-iteration-count: infinite;
+}
+
+@utility fade-in {
+  --ck-animation-enter-opacity: 0;
+}
+
+@utility fade-out {
+  --ck-animation-exit-opacity: 0;
+}
+
+@utility zoom-in-* {
+  --ck-animation-enter-scale: calc(--value(integer) * 0.01);
+}
+
+@utility zoom-out-* {
+  --ck-animation-exit-scale: calc(--value(integer) * 0.01);
+}
+
+@utility spin-in-* {
+  --ck-animation-enter-rotate: calc(--value(number) * 1deg);
+}
+
+@utility spin-out-* {
+  --ck-animation-exit-rotate: calc(--value(number) * 1deg);
+}
+
+@utility slide-in-from-top-* {
+  --ck-animation-enter-translate-y: calc(var(--spacing) * --value(number) * -1);
+}
+
+@utility slide-in-from-bottom-* {
+  --ck-animation-enter-translate-y: calc(var(--spacing) * --value(number));
+}
+
+@utility slide-in-from-left-* {
+  --ck-animation-enter-translate-x: calc(var(--spacing) * --value(number) * -1);
+}
+
+@utility slide-in-from-right-* {
+  --ck-animation-enter-translate-x: calc(var(--spacing) * --value(number));
+}
+
+@utility slide-out-to-top-* {
+  --ck-animation-exit-translate-y: calc(var(--spacing) * --value(number) * -1);
+}
+
+@utility slide-out-to-bottom-* {
+  --ck-animation-exit-translate-y: calc(var(--spacing) * --value(number));
+}
+
+@utility slide-out-to-left-* {
+  --ck-animation-exit-translate-x: calc(var(--spacing) * --value(number) * -1);
+}
+
+@utility slide-out-to-right-* {
+  --ck-animation-exit-translate-x: calc(var(--spacing) * --value(number));
+}
+
+@keyframes enter {
+  from {
+    opacity: var(--ck-animation-enter-opacity, 1);
+    transform: translate3d(
+        var(--ck-animation-enter-translate-x, 0),
+        var(--ck-animation-enter-translate-y, 0),
+        0
+      )
+      rotate(var(--ck-animation-enter-rotate, 0));
+    scale: var(--ck-animation-enter-scale, 1);
+  }
+
+  to {
+    opacity: initial;
+    transform: initial;
+    scale: initial;
+  }
+}
+
+@keyframes exit {
+  from {
+    opacity: initial;
+    transform: initial;
+    scale: initial;
+  }
+
+  to {
+    opacity: var(--ck-animation-exit-opacity, 1);
+    transform: translate3d(
+        var(--ck-animation-exit-translate-x, 0),
+        var(--ck-animation-exit-translate-y, 0),
+        0
+      )
+      rotate(var(--ck-animation-exit-rotate, 0));
+    scale: var(--ck-animation-exit-scale, 1);
+  }
+}
+
+@media (prefers-reduced-motion) {
+  @keyframes enter {
+    from {
+      opacity: var(--ck-animation-enter-opacity, 1);
+    }
+
+    to {
+      opacity: initial;
+    }
+  }
+
+  @keyframes exit {
+    from {
+      opacity: initial;
+    }
+
+    to {
+      opacity: var(--ck-animation-exit-opacity, 1);
+    }
+  }
+}
