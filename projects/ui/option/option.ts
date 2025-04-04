@@ -36,6 +36,7 @@ let uniqueIdCounter = 0
   host: {
     '[attr.role]': '_role()',
     '[id]': 'id()',
+    '[attr.tabindex]': '_tabindex()',
     '[class]': '_class()',
     '[attr.aria-selected]': 'isSelected()',
     '[attr.aria-disabled]': 'disabled',
@@ -148,6 +149,13 @@ export class CkOption<T = unknown> implements Highlightable, FocusableOption {
 
   public setInactiveStyles(): void {
     this._isActive.set(false)
+  }
+
+  /** Get the tabindex for this option. */
+  protected _tabindex(): number {
+    if (this.disabled) return -1
+
+    return this.isActive() ? 0 : -1
   }
 
   /** Selects the option when selection requested with keyboard. */

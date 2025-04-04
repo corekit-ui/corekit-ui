@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, model } from '@angular/core'
+import { JsonPipe } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 
 import { CkListbox } from '@corekit/ui/listbox'
@@ -8,13 +9,14 @@ import { CkCheckbox } from '@corekit/ui/checkbox'
 @Component({
   selector: 'app-listbox-page',
   standalone: true,
-  imports: [CkListbox, CkOption, CkCheckbox, FormsModule],
+  imports: [CkListbox, CkOption, CkCheckbox, FormsModule, JsonPipe],
   templateUrl: './listbox-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListboxPageComponent {
-  public multiple = model(false)
+  public multiple = model(true)
   public disabled = model(false)
+  public selected = model(['angular', 'vue'])
 
   public readonly options = [
     { value: 'angular', label: 'Angular', disabled: false },

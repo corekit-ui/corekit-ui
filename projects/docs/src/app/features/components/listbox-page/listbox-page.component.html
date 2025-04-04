@@ -8,10 +8,16 @@
   disabled
 </label>
 
-<ck-listbox [disabled]="disabled()" [multiple]="multiple()">
+<ck-listbox
+  [disabled]="disabled()"
+  [multiple]="multiple()"
+  [(ngModel)]="selected"
+>
   @for (option of options; track option) {
     <ck-option [value]="option.value" [disabled]="option.disabled">
       {{ option.label }}
     </ck-option>
   }
 </ck-listbox>
+
+<p>Value: {{ selected() | json }}</p>

@@ -9,7 +9,8 @@
     "start": "ng serve",
     "lint": "ng lint",
     "build:ui": "ng build ui",
-    "watch:ui": "npm run build:ui -- --watch --configuration development"
+    "watch:ui": "npm run build:ui -- --watch --configuration development",
+    "test:ui": "ng test ui --browsers=ChromeHeadless"
   },
   "dependencies": {
     "@angular/animations": "^19.1.6",
