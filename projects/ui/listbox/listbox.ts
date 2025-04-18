@@ -1,7 +1,7 @@
+import { DOCUMENT } from '@angular/common'
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y'
 import { Directionality } from '@angular/cdk/bidi'
 import { coerceArray } from '@angular/cdk/coercion'
-import { SelectionModel } from '@angular/cdk/collections'
 import {
   AfterContentInit,
   afterRenderEffect,
@@ -28,51 +28,16 @@ import {
   toSignal,
 } from '@angular/core/rxjs-interop'
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
-import { merge, switchMap } from 'rxjs'
+import { fromEvent, merge, switchMap } from 'rxjs'
 
 import { CkOption } from '@corekit/ui/option'
 import { classNames } from '@corekit/ui/utils'
-
-/**
- * An implementation of SelectionModel that internally always represents the selection as a
- * multi-selection. This is necessary so that we can recover the full selection if the user
- * switches the listbox from single-selection to multi-selection after initialization.
- *
- * This selection model may report multiple selected values, even if it is in single-selection
- * mode. It is up to the user (CkListbox) to check for invalid selections.
- */
-class ListboxSelectionModel<T> extends SelectionModel<T> {
-  constructor(
-    public multiple = false,
-    initiallySelectedValues?: T[],
-    emitChanges = true,
-    compareWith?: (o1: T, o2: T) => boolean,
-  ) {
-    super(true, initiallySelectedValues, emitChanges, compareWith)
-  }
-
-  public override isMultipleSelection(): boolean {
-    return this.multiple
-  }
-
-  public override select(...values: T[]): boolean | void {
-    // The super class is always in multi-selection mode, so we need to override the behavior if
-    // this selection model actually belongs to a single-selection listbox.
-    if (this.multiple) {
-      return super.select(...values)
-    }
-
-    return super.setSelection(...values)
-  }
-}
+import { ListboxSelectionModel } from './listbox-selection-model'
 
 /** Change event that is fired whenever the value of the listbox changes. */
 export interface ListboxValueChangeEvent<T> {
   /** The new value of the listbox. */
   readonly value: readonly T[]
-
-  /** Reference to the listbox that emitted the event. */
-  readonly listbox: CkListbox<T>
 
   /** Reference to the option that was triggered. */
   readonly option: CkOption<T> | null
@@ -88,10 +53,9 @@ let uniqueIdCounter = 0
     role: 'list',
     '[class]': '_class()',
     '[id]': 'id()',
-    '[attr.tabindex]': '_tabindex()',
+    '[attr.tabindex]': '_tabindex',
     '[attr.aria-disabled]': '_disabled()',
     '[attr.aria-multiselectable]': 'multiple()',
-    '[attr.aria-activedescendant]': '_getAriaActiveDescendant()',
     '(focus)': '_handleFocus()',
     '(keydown)': '_handleKeydown($event)',
     '(focusout)': '_handleFocusOut($event)',
@@ -104,7 +68,8 @@ let uniqueIdCounter = 0
     },
   ],
 })
-export class CkListbox<T = unknown>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export class CkListbox<T = any>
   implements AfterContentInit, OnDestroy, ControlValueAccessor
 {
   public readonly class = input<string>()
@@ -113,7 +78,7 @@ export class CkListbox<T = unknown>
 
   /** The value selected in the listbox, represented as an array of option values. */
   @Input()
-  public get value(): readonly T[] {
+  public get value(): ReadonlyArray<T | undefined> {
     return this.selectionModel.selected
   }
 
@@ -135,11 +100,15 @@ export class CkListbox<T = unknown>
 
   /** The function used to compare option values. */
   @Input()
-  public get compareWith(): undefined | ((o1: T, o2: T) => boolean) {
+  public get compareWith():
+    | undefined
+    | ((a: T | undefined, b: T | undefined) => boolean) {
     return this.selectionModel.compareWith
   }
 
-  public set compareWith(fn: undefined | ((o1: T, o2: T) => boolean)) {
+  public set compareWith(
+    fn: undefined | ((a: T | undefined, b: T | undefined) => boolean),
+  ) {
     this.selectionModel.compareWith = fn
   }
 
@@ -160,28 +129,31 @@ export class CkListbox<T = unknown>
     ),
   )
 
-  /** The change detector for this listbox. */
-  protected readonly _cdr = inject(ChangeDetectorRef)
-
-  /** The host element of the listbox. */
-  protected readonly element = inject(ElementRef).nativeElement as HTMLElement
-
-  /** The directionality of the page. */
-  protected readonly _dir = inject(Directionality, { optional: true })
-
-  protected readonly _injector = inject(Injector)
-
   protected readonly _class = computed(() =>
-    classNames('flex flex-col gap-xs', this.class()),
+    classNames('flex flex-col', this.class()),
   )
 
   protected readonly _disabled = linkedSignal(() => this.disabled())
 
   /** The selection model used by the listbox. */
-  protected selectionModel = new ListboxSelectionModel<T>()
+  protected selectionModel = new ListboxSelectionModel<T | undefined>()
+
+  /** The change detector for this listbox. */
+  private readonly _cdr = inject(ChangeDetectorRef)
+
+  /** The host element of the listbox. */
+  private readonly _element =
+    inject<ElementRef<HTMLElement>>(ElementRef).nativeElement
+
+  /** The directionality of the page. */
+  private readonly _dir = inject(Directionality, { optional: true })
+
+  private readonly _injector = inject(Injector)
+
+  private readonly _document = inject(DOCUMENT)
 
   /** The key manager that manages keyboard navigation for the listbox. */
-  protected _keyManager = new ActiveDescendantKeyManager(
+  private readonly _keyManager = new ActiveDescendantKeyManager(
     this.options,
     this._injector,
   )
@@ -194,9 +166,20 @@ export class CkListbox<T = unknown>
 
   private readonly _keyManagerChange = toSignal(this._keyManager.change)
 
-  private readonly _selectionModelChanged = toSignal(
-    this.selectionModel.changed,
+  private readonly _selectionModelChange = toSignal(this.selectionModel.changed)
+
+  /** A reference to the option that was active before the listbox lost focus. */
+  private _previousActiveOption: CkOption<T> | null = null
+
+  private readonly _windowBlur = toSignal(
+    fromEvent<FocusEvent>(this._document.defaultView ?? window, 'blur'),
   )
+
+  protected get _tabindex(): number {
+    if (this.disabled()) return -1
+
+    return this._keyManager.activeItem ? -1 : (this.tabindex() ?? 0)
+  }
 
   constructor() {
     effect(this._multipleChangeEffect.bind(this))
@@ -205,6 +188,7 @@ export class CkListbox<T = unknown>
     afterRenderEffect(this._selectionModelChangeEffect.bind(this))
     afterRenderEffect(this._optionsChangeEffect.bind(this))
     effect(this._setActiveOptionEffect.bind(this))
+    effect(this._windowBlurEffect.bind(this))
   }
 
   public ngAfterContentInit(): void {
@@ -215,41 +199,9 @@ export class CkListbox<T = unknown>
     this._keyManager.destroy()
   }
 
-  /**
-   * Set the selected state of all options.
-   * @param isSelected The new selected state to set
-   */
-  public setAllSelected(isSelected: boolean): void {
-    if (isSelected) {
-      this.selectionModel.select(
-        ...this.options().map(option => option.value()),
-      )
-    } else {
-      this.selectionModel.clear()
-    }
-  }
-
-  public writeValue(value: readonly T[] | null | undefined): void {
-    this._setSelection(value ?? [])
-    this._verifyOptionValues()
-  }
-
-  public registerOnChange(fn: (value: readonly T[]) => void): void {
-    this._onChange = fn
-  }
-
-  public registerOnTouched(fn: () => null): void {
-    this._onTouched = fn
-  }
-
-  public setDisabledState(isDisabled: boolean): void {
-    this._disabled.set(isDisabled)
-    this._cdr.markForCheck()
-  }
-
   /** Focus the listbox's host element. */
   public focus(): void {
-    this.element.focus()
+    this._element.focus()
   }
 
   /**
@@ -276,15 +228,38 @@ export class CkListbox<T = unknown>
     this.selectionModel.deselect(option.value())
   }
 
-  protected _tabindex(): number {
-    if (this.disabled()) return -1
-
-    return this._keyManager.activeItem ? -1 : (this.tabindex() ?? 0)
+  /**
+   * Set the selected state of all options.
+   */
+  public selectAll(): void {
+    this.selectionModel.select(...this.options().map(option => option.value()))
   }
 
-  /** Get the id of the active option if active descendant is being used. */
-  protected _getAriaActiveDescendant(): string | null | undefined {
-    return this.useActiveDescendant() ? this._keyManager.activeItem?.id() : null
+  /**
+   * Set the deselected state of all options.
+   */
+  public deselectAll(): void {
+    this.selectionModel.clear()
+  }
+
+  public writeValue(value: readonly T[] | null | undefined): void {
+    this._setSelection(value ?? [])
+    this._verifyOptionValues()
+  }
+
+  public registerOnChange(
+    fn: (value: ReadonlyArray<T | undefined>) => void,
+  ): void {
+    this._onChange = fn
+  }
+
+  public registerOnTouched(fn: () => null): void {
+    this._onTouched = fn
+  }
+
+  public setDisabledState(isDisabled: boolean): void {
+    this._disabled.set(isDisabled)
+    this._cdr.markForCheck()
   }
 
   /** Called when the listbox receives focus. */
@@ -314,20 +289,28 @@ export class CkListbox<T = unknown>
    * @param option The option to trigger
    */
   protected triggerOption(option: CkOption<T> | null | undefined): void {
-    if (option && !option.disabled) {
-      const changed = this.multiple()
-        ? this.selectionModel.toggle(option.value())
-        : this.selectionModel.select(option.value())
+    if (!option || option.disabled || this._disabled()) return
 
-      if (changed) {
-        this._onChange(this.value)
-        this.valueChange.emit({
-          value: this.value,
-          listbox: this,
-          option,
-        })
-      }
+    const changed = this.multiple()
+      ? this.selectionModel.toggle(option.value())
+      : this.selectionModel.select(option.value())
+
+    if (!changed) {
+      // If user clicks already selected option in single-selection mode,
+      // we need to select it again because option removes selection by itself
+      option.select(false)
+
+      return
     }
+
+    this._onChange(this.value)
+    this.valueChange.emit({
+      // option value might be undefined and this applies as type for event value
+      // we use type casting here to filter out undefined
+      // consumer will work with their own type only
+      value: this.value as T[],
+      option,
+    })
   }
 
   /**
@@ -338,10 +321,14 @@ export class CkListbox<T = unknown>
     // Some browsers (e.g. Chrome and Firefox) trigger the focusout event when the user returns back to the document.
     // To prevent losing the active option in this case, we store it in `_previousActiveOption` and restore it on the window `blur` event
     // This ensures that the `activeItem` matches the actual focused element when the user returns to the document.
+    this._previousActiveOption = this._keyManager.activeItem
 
     const otherElement = event.relatedTarget as Element
 
-    if (this.element !== otherElement && !this.element.contains(otherElement)) {
+    if (
+      this._element !== otherElement &&
+      !this._element.contains(otherElement)
+    ) {
       this._onTouched()
       this._keyManager.setActiveItem(-1)
     }
@@ -349,7 +336,8 @@ export class CkListbox<T = unknown>
 
   /** Sets form control value */
   // Will be assigned later via `ControlValueAccessor`.
-  protected _onChange: (value: readonly T[]) => void = () => null
+  protected _onChange: (value: ReadonlyArray<T | undefined>) => void = () =>
+    null
 
   /** Marks form control as touched. */
   // Will be assigned later via `ControlValueAccessor`.
@@ -381,7 +369,7 @@ export class CkListbox<T = unknown>
   /** Called when the disabled input changes. */
   private _disabledChangeEffect(): void {
     this.options().forEach(option => {
-      option.disabled = this._disabled()
+      option._parentDisabled.set(this._disabled())
     })
   }
 
@@ -392,13 +380,8 @@ export class CkListbox<T = unknown>
    */
   private _selectionChangeEffect(): void {
     const source = this._selectionChange()?.source
-    const value = source?.value()
 
-    if (!value) return
-
-    untracked(() => {
-      this.triggerOption(source)
-    })
+    untracked(() => this.triggerOption(source))
   }
 
   /** Called when the selection model changes.
@@ -407,7 +390,7 @@ export class CkListbox<T = unknown>
    *
    */
   private _selectionModelChangeEffect(): void {
-    this._selectionModelChanged()
+    this._selectionModelChange()
 
     untracked(() =>
       this.options().forEach(option =>
@@ -450,21 +433,21 @@ export class CkListbox<T = unknown>
 
   /** Verifies that the option values are valid. */
   private _verifyOptionValues(): void {
-    if (this.options().length) {
-      const { selected } = this.selectionModel
-      const invalidValues = this._getInvalidOptionValues(selected)
+    if (!this.options().length) return
 
-      if (!this.multiple() && selected.length > 1) {
-        throw Error(
-          'Listbox cannot have more than one selected value in single-selection mode.',
-        )
-      }
+    const { selected } = this.selectionModel
+    const invalidValues = this._getInvalidOptionValues(selected)
 
-      if (invalidValues.length) {
-        throw Error(
-          'Listbox has selected values that do not match any of its options.',
-        )
-      }
+    if (!this.multiple() && selected.length > 1) {
+      throw Error(
+        'Listbox cannot have more than one selected value in single-selection mode.',
+      )
+    }
+
+    if (invalidValues.length) {
+      throw Error(
+        'Listbox has selected values that do not match any of its options.',
+      )
     }
   }
 
@@ -473,7 +456,9 @@ export class CkListbox<T = unknown>
    * @param values The list of values
    * @return The sublist of values that are not valid option values
    */
-  private _getInvalidOptionValues(values: readonly T[]): T[] {
+  private _getInvalidOptionValues(
+    values: ReadonlyArray<T | undefined>,
+  ): Array<T | undefined> {
     const isEqual = this.compareWith ?? Object.is
     const validValues = this.options().map(option => option.value)
 
@@ -499,5 +484,19 @@ export class CkListbox<T = unknown>
     this._keyManager.activeItem?.focus()
     this._keyManager.setActiveItem(option)
     this._cdr.markForCheck()
+  }
+
+  /**
+   * Runs when user leaves the browser tab.
+   *
+   * This is used to set the active option to the previous active option.
+   */
+  private _windowBlurEffect(): void {
+    this._windowBlur()
+
+    untracked(() => {
+      this._setActiveOption(this._previousActiveOption!)
+      this._previousActiveOption = null
+    })
   }
 }

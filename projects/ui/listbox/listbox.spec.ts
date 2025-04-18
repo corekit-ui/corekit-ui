@@ -1,7 +1,6 @@
 /* eslint-disable space-before-function-paren */
 /* eslint-disable max-statements */
 /* eslint-disable @angular-eslint/component-max-inline-declarations */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable id-length */
 /* eslint-disable @angular-eslint/use-component-selector */
 import { ChangeDetectionStrategy, Component, signal, Type } from '@angular/core'
@@ -21,6 +20,7 @@ import {
   V,
 } from '@angular/cdk/keycodes'
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function setupComponent<T, O = string>(
   component: Type<T>,
   imports: unknown[] = [],
@@ -91,37 +91,6 @@ describe('ListboxComponent', () => {
       expect(listboxEl.getAttribute('tabindex')).toBe('-1')
       expect(optionEls[0].getAttribute('tabindex')).toBe('0')
     })
-
-    // it('should respect user given tabindex for focusable elements', () => {
-    //   const {testComponent, fixture, listbox, listboxEl, optionEls} =
-    //     setupComponent(ListboxWithOptions);
-    //   testComponent.listboxTabindex = 10;
-    //   testComponent.appleTabindex = 20;
-    //   fixture.changeDetectorRef.markForCheck();
-    //   fixture.detectChanges();
-    //   expect(listboxEl.getAttribute('tabindex')).toBe('10');
-    //   expect(optionEls[0].getAttribute('tabindex')).toBe('-1');
-    //   listbox.focus();
-    //   fixture.detectChanges();
-    //   expect(listboxEl.getAttribute('tabindex')).toBe('-1');
-    //   expect(optionEls[0].getAttribute('tabindex')).toBe('20');
-    // });
-
-    // it('should use listbox tabindex for focusable options', () => {
-    //   const { testComponent, fixture, listbox, optionEls } =
-    //     setupComponent(ListboxWithOptions)
-
-    //   testComponent.listboxTabindex.set(10)
-    //   fixture.changeDetectorRef.markForCheck()
-    //   fixture.detectChanges()
-
-    //   expect(optionEls[0].getAttribute('tabindex')).toBe('-1')
-
-    //   listbox.focus()
-    //   fixture.detectChanges()
-
-    //   expect(optionEls[0].getAttribute('tabindex')).toBe('10')
-    // })
 
     it('should reset the tabindex if the active option is destroyed', () => {
       const { fixture, listbox, listboxEl } =
@@ -214,6 +183,24 @@ describe('ListboxComponent', () => {
       expect(listbox.value).toEqual(['vue'])
       expect(options[0].isSelected()).toBeFalse()
     })
+
+    it('should keep the same selection state if already selected option clicked', () => {
+      const { testComponent, fixture, listbox, options, optionEls } =
+        setupComponent(ListboxWithOptions)
+
+      testComponent.value.set(['angular'])
+      fixture.detectChanges()
+
+      expect(listbox.value).toEqual(['angular'])
+      expect(options[0].isSelected()).toBeTrue()
+
+      dispatchMouseEvent(optionEls[0], 'click')
+      fixture.detectChanges()
+
+      expect(listbox.value).toEqual(['angular'])
+      expect(options[0].isSelected()).toBeTrue()
+      expect(testComponent.changedOption).toBeUndefined()
+    })
   })
 
   describe('with multiple selection', () => {
@@ -244,7 +231,7 @@ describe('ListboxComponent', () => {
       fixture.changeDetectorRef.markForCheck()
       fixture.detectChanges()
 
-      listbox.setAllSelected(true)
+      listbox.selectAll()
       fixture.detectChanges()
 
       expect(listbox.value).toEqual([
@@ -254,6 +241,23 @@ describe('ListboxComponent', () => {
         'svelte',
         'solid',
       ])
+    })
+
+    it('should deselect all options programmatically', () => {
+      const { testComponent, fixture, listbox } =
+        setupComponent(ListboxWithOptions)
+
+      testComponent.multiple.set(true)
+      testComponent.value.set(['angular', 'react'])
+      fixture.changeDetectorRef.markForCheck()
+      fixture.detectChanges()
+
+      expect(listbox.value).toEqual(['angular', 'react'])
+
+      listbox.deselectAll()
+      fixture.detectChanges()
+
+      expect(listbox.value).toEqual([])
     })
   })
 
@@ -376,6 +380,28 @@ describe('ListboxComponent', () => {
     expect(options.map(o => o.isSelected())).toEqual([true, false, false, true])
   })
 
+  it('should allow to select option with value `null`', async () => {
+    const { fixture, listbox, options, optionEls } = setupComponent<
+      ListboxWithNullOption,
+      string | null
+    >(ListboxWithNullOption)
+
+    await fixture.whenStable()
+    fixture.changeDetectorRef.markForCheck()
+    optionEls[1].click()
+    fixture.detectChanges()
+
+    expect(listbox.value).toEqual(['angular'])
+    expect(options[1].isSelected()).toBeTrue()
+
+    optionEls[0].click()
+    fixture.detectChanges()
+
+    expect(listbox.value).toEqual([null])
+    expect(options[0].isSelected()).toBeTrue()
+    expect(fixture.componentInstance.eventValue).toEqual([null])
+  })
+
   describe('with disabled', () => {
     it('should be able to toggle listbox disabled state', () => {
       const { fixture, testComponent, listbox, listboxEl, options, optionEls } =
@@ -388,7 +414,7 @@ describe('ListboxComponent', () => {
       expect(listboxEl.getAttribute('aria-disabled')).toBe('true')
 
       for (let i = 0; i < options.length; i++) {
-        expect(options[i].disabled).toBeTrue()
+        expect(options[i]._parentDisabled()).toBeTrue()
         expect(optionEls[i].getAttribute('aria-disabled')).toBe('true')
       }
     })
@@ -774,9 +800,11 @@ class ListboxWithOptions {
   public readonly isSvetleDisabled = signal(false)
   public readonly molRender = signal(false)
   public readonly options = ['angular', 'react', 'vue', 'svelte', 'solid']
-  public changedOption!: CkOption<string> | null
+  public changedOption!: CkOption<string | undefined> | null
 
-  public selectionChange(event: ListboxValueChangeEvent<string>): void {
+  public selectionChange(
+    event: ListboxValueChangeEvent<string | undefined>,
+  ): void {
     this.changedOption = event.option
   }
 }
@@ -801,6 +829,34 @@ class ListboxWithOptions {
 class ListboxWithMolOption {
   public readonly molRender = signal(false)
   public readonly options = ['angular', 'react', 'vue', 'svelte', 'solid']
+}
+
+@Component({
+  template: `
+    <ck-listbox
+      [value]="value()"
+      [multiple]="false"
+      (valueChange)="selectionChange($event)"
+    >
+      <ck-option [value]="null">none</ck-option>
+      @for (option of options; track option) {
+        <ck-option [value]="option">
+          {{ option }}
+        </ck-option>
+      }
+    </ck-listbox>
+  `,
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+class ListboxWithNullOption {
+  public readonly value = signal<Array<string | null>>([])
+  public readonly options = ['angular', 'react', 'vue', 'svelte', 'solid']
+  public eventValue!: Array<string | null>
+
+  public selectionChange(event: ListboxValueChangeEvent<string>): void {
+    this.eventValue = Array.from(event.value)
+  }
 }
 
 @Component({
@@ -941,6 +997,8 @@ class ListboxWithObjectValues {
     { name: 'solid' },
   ]
 
-  public readonly compare = (a: { name: string }, b: { name: string }) =>
-    a.name === b.name
+  public readonly compare = (
+    a: { name: string },
+    b: { name: string },
+  ): boolean => a.name === b.name
 }
