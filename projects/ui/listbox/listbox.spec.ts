@@ -600,13 +600,13 @@ describe('ListboxComponent', () => {
       fixture.detectChanges()
 
       expect(document.activeElement).toEqual(optionEls[0])
-      expect(listboxEl.hasAttribute('aria-activedescendant')).toBeFalse()
+      expect(listboxEl.hasAttribute('aria-activedescendant')).toBeTrue()
 
       dispatchKeyboardEvent(listboxEl, 'keydown', DOWN_ARROW)
       fixture.detectChanges()
 
       expect(document.activeElement).toEqual(optionEls[1])
-      expect(listboxEl.hasAttribute('aria-activedescendant')).toBeFalse()
+      expect(listboxEl.hasAttribute('aria-activedescendant')).toBeTrue()
     })
 
     it('should focus first option on listbox focus', () => {

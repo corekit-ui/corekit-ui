@@ -20,6 +20,7 @@ import {
   linkedSignal,
   OnDestroy,
   output,
+  signal,
   untracked,
 } from '@angular/core'
 import {
@@ -56,6 +57,8 @@ let uniqueIdCounter = 0
     '[attr.tabindex]': '_tabindex',
     '[attr.aria-disabled]': '_disabled()',
     '[attr.aria-multiselectable]': 'multiple()',
+    '[attr.aria-activedescendant]':
+      '_hasFocus() ? _keyManager.activeItem?.id() : null',
     '(focus)': '_handleFocus()',
     '(keydown)': '_handleKeydown($event)',
     '(focusout)': '_handleFocusOut($event)',
@@ -91,10 +94,6 @@ export class CkListbox<T = any>
   })
 
   public readonly multiple = input<boolean, unknown>(false, {
-    transform: booleanAttribute,
-  })
-
-  public readonly useActiveDescendant = input<boolean, unknown>(false, {
     transform: booleanAttribute,
   })
 
@@ -174,6 +173,8 @@ export class CkListbox<T = any>
   private readonly _windowBlur = toSignal(
     fromEvent<FocusEvent>(this._document.defaultView ?? window, 'blur'),
   )
+
+  protected readonly _hasFocus = signal(false)
 
   protected get _tabindex(): number {
     if (this.disabled()) return -1
@@ -264,10 +265,14 @@ export class CkListbox<T = any>
 
   /** Called when the listbox receives focus. */
   protected _handleFocus(): void {
-    if (this.selectionModel.selected.length > 0) {
-      this._setNextFocusToSelectedOption()
-    } else {
-      this._keyManager.setNextItemActive()
+    this._hasFocus.set(true)
+
+    if (!this._keyManager.activeItem?.id()) {
+      if (this.selectionModel.selected.length > 0) {
+        this._setNextFocusToSelectedOption()
+      } else {
+        this._keyManager.setNextItemActive()
+      }
     }
 
     this._setActiveOption(this._keyManager.activeItem!)
@@ -329,6 +334,7 @@ export class CkListbox<T = any>
       this._element !== otherElement &&
       !this._element.contains(otherElement)
     ) {
+      this._hasFocus.set(false)
       this._onTouched()
       this._keyManager.setActiveItem(-1)
     }
