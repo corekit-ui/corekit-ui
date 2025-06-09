@@ -9,3 +9,18 @@
     Content 4
   </ck-tab>
 </ck-tab-group>
+
+<nav ck-tab-nav-bar [tabPanel]="tabPanel">
+  @for (link of links; track link) {
+    <a
+      ck-tab-link
+      href="#"
+      [active]="activeLink === link"
+      (click)="activeLink = link"
+    >
+      {{ link }}
+    </a>
+  }
+  <a ck-tab-link disabled>Disabled Link</a>
+</nav>
+<ck-tab-nav-panel #tabPanel />
