@@ -1,8 +1,8 @@
 <div
   #content
   cdkScrollable
-  [class.visible]="_isActive()"
-  [class.invisible]="!_isActive()"
+  [class.visible]="isActive()"
+  [class.invisible]="!isActive()"
 >
   <ng-template ckTabBodyHost />
 </div>

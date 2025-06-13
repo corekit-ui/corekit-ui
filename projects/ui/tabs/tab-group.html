@@ -31,7 +31,7 @@
     <ck-tab-body
       role="tabpanel"
       [attr.aria-hidden]="selectedIndex() !== $index"
-      [content]="tab.content"
+      [content]="tab.content()"
       [position]="tab.position!"
     />
   }

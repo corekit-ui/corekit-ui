@@ -3,10 +3,10 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
+  computed,
   contentChild,
   inject,
   input,
-  OnInit,
   signal,
   TemplateRef,
   viewChild,
@@ -27,7 +27,7 @@ import { CkTabGroup } from './tab-group'
     '[attr.id]': 'null',
   },
 })
-export class CkTab implements OnInit {
+export class CkTab {
   public readonly textLabel = input<string>('', { alias: 'label' })
   public readonly disabled = input<boolean, unknown>(false, {
     transform: booleanAttribute,
@@ -62,30 +62,18 @@ export class CkTab implements OnInit {
    */
   public readonly isActive = signal(false)
 
-  public get content(): TemplatePortal | null {
-    return this._contentPortal
-  }
+  public readonly content = computed(() => {
+    const explicit = this._explicitContent()
+    const implicit = this._implicitContent()
+    const template = explicit ?? implicit
 
-  private _contentPortal: TemplatePortal | null = null
+    return template && new TemplatePortal(template, this._viewContainerRef)
+  })
+
   private readonly _explicitContent = contentChild(CkTabContent, {
     read: TemplateRef,
   })
 
   private readonly _implicitContent = viewChild(TemplateRef)
   private readonly _viewContainerRef = inject(ViewContainerRef)
-
-  public ngOnInit(): void {
-    this._initContent()
-  }
-
-  private _initContent(): void {
-    const explicit = this._explicitContent()
-    const implicit = this._implicitContent()
-
-    const template = explicit ?? implicit
-
-    if (template) {
-      this._contentPortal = new TemplatePortal(template, this._viewContainerRef)
-    }
-  }
 }

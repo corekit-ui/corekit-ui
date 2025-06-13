@@ -57,17 +57,17 @@ export class CkTabBody {
   public readonly class = input<string>()
 
   /** The tab body content to display. */
-  public readonly content = input<TemplatePortal | null>(null)
+  public readonly content = input<TemplatePortal | null | undefined>(null)
 
   /** The shifted index position of the tab body, where zero represents the active center tab. */
   public readonly position = input<number>()
 
-  public readonly _isActive = signal<boolean>(false)
+  public readonly isActive = signal<boolean>(false)
 
   protected _class = computed(() => {
     return classNames(
       styles({
-        state: this._isActive() ? 'active' : 'default',
+        state: this.isActive() ? 'active' : 'default',
       }),
       this.class(),
     )

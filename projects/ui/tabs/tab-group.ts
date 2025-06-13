@@ -57,7 +57,7 @@ export class CkTabGroup {
 
   public _tabs = new QueryList<CkTab>()
 
-  protected _isServer = !inject(Platform).isBrowser
+  protected readonly _isServer = !inject(Platform).isBrowser
   protected readonly _selectedIndex = linkedSignal(() => this.selectedIndex())
 
   private readonly _cdr = inject(ChangeDetectorRef)
@@ -84,7 +84,7 @@ export class CkTabGroup {
    */
   protected _setActiveTabEffect(): void {
     this._tabBodies().forEach((body, index) => {
-      body._isActive.set(index === this._selectedIndex())
+      body.isActive.set(index === this._selectedIndex())
     })
     this._cdr.markForCheck()
   }
