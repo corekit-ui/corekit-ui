@@ -310,14 +310,14 @@ describe('ListboxComponent', () => {
     fixture.detectChanges()
 
     options[0].toggle()
-    listbox.toggle(options[1])
+    listbox.toggle(options[1].value())
     fixture.detectChanges()
 
     expect(options[0].isSelected()).toBeTrue()
     expect(options[1].isSelected()).toBeTrue()
 
     options[0].toggle()
-    listbox.toggle(options[1])
+    listbox.toggle(options[1].value())
     fixture.detectChanges()
 
     expect(options[0].isSelected()).toBeFalse()
@@ -333,14 +333,14 @@ describe('ListboxComponent', () => {
     fixture.detectChanges()
 
     options[0].select()
-    listbox.select(options[1])
+    listbox.select(options[1].value())
     fixture.detectChanges()
 
     expect(options[0].isSelected()).toBeTrue()
     expect(options[1].isSelected()).toBeTrue()
 
     options[0].deselect()
-    listbox.deselect(options[1])
+    listbox.deselect(options[1].value())
     fixture.detectChanges()
 
     expect(options[0].isSelected()).toBeFalse()

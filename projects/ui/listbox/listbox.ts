@@ -44,6 +44,8 @@ export interface ListboxValueChangeEvent<T> {
   readonly option: CkOption<T> | null
 }
 
+type ListboxModelValue<T> = T | null | undefined
+
 let uniqueIdCounter = 0
 
 @Directive({
@@ -81,7 +83,7 @@ export class CkListbox<T = any>
 
   /** The value selected in the listbox, represented as an array of option values. */
   @Input()
-  public get value(): ReadonlyArray<T | undefined> {
+  public get value(): ReadonlyArray<ListboxModelValue<T>> {
     return this.selectionModel.selected
   }
 
@@ -101,12 +103,14 @@ export class CkListbox<T = any>
   @Input()
   public get compareWith():
     | undefined
-    | ((a: T | undefined, b: T | undefined) => boolean) {
+    | ((a: ListboxModelValue<T>, b: ListboxModelValue<T>) => boolean) {
     return this.selectionModel.compareWith
   }
 
   public set compareWith(
-    fn: undefined | ((a: T | undefined, b: T | undefined) => boolean),
+    fn:
+      | undefined
+      | ((a: ListboxModelValue<T>, b: ListboxModelValue<T>) => boolean),
   ) {
     this.selectionModel.compareWith = fn
   }
@@ -135,7 +139,7 @@ export class CkListbox<T = any>
   protected readonly _disabled = linkedSignal(() => this.disabled())
 
   /** The selection model used by the listbox. */
-  protected selectionModel = new ListboxSelectionModel<T | undefined>()
+  protected selectionModel = new ListboxSelectionModel<ListboxModelValue<T>>()
 
   /** The change detector for this listbox. */
   private readonly _cdr = inject(ChangeDetectorRef)
@@ -209,24 +213,24 @@ export class CkListbox<T = any>
    * Toggle the selected state of the given option.
    * @param option The option to toggle
    */
-  public toggle(option: CkOption<T>): void {
-    this.selectionModel.toggle(option.value())
+  public toggle(value: ListboxModelValue<T>): void {
+    this.selectionModel.toggle(value)
   }
 
   /**
    * Select the given option.
    * @param option The option to select
    */
-  public select(option: CkOption<T>): void {
-    this.selectionModel.select(option.value())
+  public select(value: ListboxModelValue<T>): void {
+    this.selectionModel.select(value)
   }
 
   /**
    * Deselect the given option.
    * @param option The option to deselect
    */
-  public deselect(option: CkOption<T>): void {
-    this.selectionModel.deselect(option.value())
+  public deselect(value: ListboxModelValue<T>): void {
+    this.selectionModel.deselect(value)
   }
 
   /**
@@ -249,7 +253,7 @@ export class CkListbox<T = any>
   }
 
   public registerOnChange(
-    fn: (value: ReadonlyArray<T | undefined>) => void,
+    fn: (value: ReadonlyArray<ListboxModelValue<T>>) => void,
   ): void {
     this._onChange = fn
   }
@@ -342,8 +346,8 @@ export class CkListbox<T = any>
 
   /** Sets form control value */
   // Will be assigned later via `ControlValueAccessor`.
-  protected _onChange: (value: ReadonlyArray<T | undefined>) => void = () =>
-    null
+  protected _onChange: (value: ReadonlyArray<ListboxModelValue<T>>) => void =
+    () => null
 
   /** Marks form control as touched. */
   // Will be assigned later via `ControlValueAccessor`.
@@ -463,8 +467,8 @@ export class CkListbox<T = any>
    * @return The sublist of values that are not valid option values
    */
   private _getInvalidOptionValues(
-    values: ReadonlyArray<T | undefined>,
-  ): Array<T | undefined> {
+    values: ReadonlyArray<ListboxModelValue<T>>,
+  ): Array<ListboxModelValue<T>> {
     const isEqual = this.compareWith ?? Object.is
     const validValues = this.options().map(option => option.value)
 
