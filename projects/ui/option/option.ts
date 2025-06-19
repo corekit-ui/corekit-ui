@@ -36,9 +36,10 @@ let uniqueIdCounter = 0
   host: {
     '[attr.role]': '_role()',
     '[id]': 'id()',
+    '[attr.tabindex]': '_tabindex',
     '[class]': '_class()',
     '[attr.aria-selected]': 'isSelected()',
-    '[attr.aria-disabled]': 'disabled',
+    '[attr.aria-disabled]': '_parentDisabled() || disabled',
     '(click)': 'toggle()',
     '(keydown)': 'toggleViaKeyboard($event)',
   },
@@ -54,7 +55,7 @@ export class CkOption<T = unknown> implements Highlightable, FocusableOption {
   public readonly id = input(`ck-option-${uniqueIdCounter++}`)
 
   /** The value of the option. */
-  public readonly value = input.required<T>()
+  public readonly value = input<T>()
 
   /** Whether to apply alerting styles representing destructive action/value. */
   public readonly destructive = input<boolean, unknown>(false, {
@@ -78,6 +79,11 @@ export class CkOption<T = unknown> implements Highlightable, FocusableOption {
   /** Whether the option is selected. */
   public readonly isSelected = computed(() => this._isSelected())
 
+  /** Whether the parent component is disabled.
+   * Should be applied from parent component directly. (e.g. `CkListbox`)
+   */
+  public readonly _parentDisabled = signal(false)
+
   protected readonly _class = computed(() => {
     return classNames(
       optionStyles({
@@ -98,6 +104,13 @@ export class CkOption<T = unknown> implements Highlightable, FocusableOption {
   private readonly _content =
     viewChild.required<ElementRef<HTMLElement>>('content')
 
+  /** Get the tabindex for this option. */
+  protected get _tabindex(): number {
+    if (this._parentDisabled() || this.disabled) return -1
+
+    return this.isActive() ? 0 : -1
+  }
+
   constructor(
     /** HTML Element of this option. */
     public readonly host: ElementRef<HTMLElement>,
@@ -109,7 +122,7 @@ export class CkOption<T = unknown> implements Highlightable, FocusableOption {
 
   /** Selects the option. */
   public select(emitEvent = true): void {
-    if (this.isSelected() || this.disabled) return
+    if (this.isSelected() || this._parentDisabled() || this.disabled) return
 
     this._isSelected.set(true)
 
