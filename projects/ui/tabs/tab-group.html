@@ -1,0 +1,42 @@
+<ck-tab-header>
+  @for (tab of _tabs; track tab) {
+    <button
+      role="tab"
+      type="button"
+      ckTabLabelWrapper
+      [attr.aria-label]="tab.ariaLabel()"
+      [attr.aria-labelledby]="
+        !tab.ariaLabel() && tab.ariaLabelledby() ? tab.ariaLabelledby() : null
+      "
+      [active]="_selectedIndex() === $index"
+      [disabled]="tab.disabled()"
+      (click)="_selectTab(tab, $index)"
+      (keydown.enter)="_selectTab(tab, $index)"
+    >
+      @if (tab.templateLabel()) {
+        <ng-template [cdkPortalOutlet]="tab.templateLabel()" />
+      } @else {
+        {{ tab.textLabel() }}
+      }
+    </button>
+  }
+</ck-tab-header>
+
+@if (_isServer) {
+  <ng-content />
+}
+
+<div class="relative flex overflow-hidden">
+  @for (tab of _tabs; track tab) {
+    <ck-tab-body
+      role="tabpanel"
+      [attr.tabindex]="
+        contentTabIndex() !== null && selectedIndex() === $index
+          ? contentTabIndex
+          : null
+      "
+      [attr.aria-hidden]="selectedIndex() !== $index"
+      [content]="tab.content()"
+    />
+  }
+</div>
