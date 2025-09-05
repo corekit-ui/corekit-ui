@@ -20,11 +20,13 @@ import { CkTab } from './tab'
 import { CkTabBody } from './tab-body'
 import { CkTabLabelWrapper } from './tab-label-wrapper'
 
-export interface CkTabChangeEvent {
-  /** Index of the currently-selected tab. */
-  readonly index: number
-  /** Reference to the currently-selected tab. */
-  readonly tab: CkTab
+export class CkTabChangeEvent {
+  constructor(
+    /** Index of the currently-selected tab. */
+    public readonly index: number,
+    /** Reference to the currently-selected tab. */
+    public readonly tab: CkTab,
+  ) {}
 }
 
 @Component({
@@ -34,10 +36,12 @@ export interface CkTabChangeEvent {
   imports: [CkTabHeader, CkTabBody, CdkPortalOutlet, CkTabLabelWrapper],
 })
 export class CkTabGroup {
+  /** The index of the active tab. */
   public readonly selectedIndex = input<number, unknown>(0, {
     transform: numberAttribute,
   })
 
+  /** `tabindex` to be set on the inner element that wraps the tab content. */
   public readonly contentTabIndex = input<number | null, unknown>(null, {
     transform: numberAttribute,
   })
@@ -55,15 +59,15 @@ export class CkTabGroup {
   /** Output to enable support for two-way binding on `[(selectedIndex)]` */
   public readonly selectedIndexChange = output<CkTabChangeEvent>()
 
-  public _tabs = new QueryList<CkTab>()
+  public readonly _tabs = new QueryList<CkTab>()
 
   protected readonly _isServer = !inject(Platform).isBrowser
   protected readonly _selectedIndex = linkedSignal(() => this.selectedIndex())
 
-  private readonly _cdr = inject(ChangeDetectorRef)
-
   private readonly _allTabs = contentChildren(CkTab, { descendants: true })
   private readonly _tabBodies = viewChildren(CkTabBody)
+
+  private readonly _cdr = inject(ChangeDetectorRef)
 
   constructor() {
     effect(this._allTabsChangesEffect.bind(this))
@@ -71,7 +75,7 @@ export class CkTabGroup {
   }
 
   /** Handle click events, setting new selected index if appropriate. */
-  public _tabClick(tab: CkTab, index: number): void {
+  public _selectTab(tab: CkTab, index: number): void {
     if (!tab.disabled()) {
       this._selectedIndex.set(index)
       this.selectedIndexChange.emit(this._createChangeEvent(index))
@@ -103,9 +107,6 @@ export class CkTabGroup {
   private _createChangeEvent(index: number): CkTabChangeEvent {
     const tab = this._tabs.toArray()[index]
 
-    return {
-      index,
-      tab,
-    }
+    return new CkTabChangeEvent(index, tab)
   }
 }

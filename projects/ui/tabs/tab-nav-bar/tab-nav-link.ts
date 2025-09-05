@@ -25,8 +25,8 @@ import { labelWrapperStyles } from '../styles'
     '[attr.aria-controls]': '_getAriaControls()',
     '[attr.aria-current]': '_getAriaCurrent()',
     '[attr.aria-selected]': '_getAriaSelected()',
-    '[attr.aria-disabled]': 'disabled',
-    '[attr.id]': 'id',
+    '[attr.aria-disabled]': 'disabled()',
+    '[attr.id]': 'id()',
   },
 })
 export class CkTabLink {

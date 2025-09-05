@@ -1,4 +1,3 @@
-import { TemplatePortal } from '@angular/cdk/portal'
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -52,12 +51,6 @@ export class CkTab {
   public _closestTabGroup = inject(CkTabGroup, { optional: true })
 
   /**
-   * The relatively indexed position where 0 represents the center, negative is left, and positive
-   * represents the right.
-   */
-  public position: number | null = null
-
-  /**
    * Whether the tab is currently active.
    */
   public readonly isActive = signal(false)
@@ -67,7 +60,7 @@ export class CkTab {
     const implicit = this._implicitContent()
     const template = explicit ?? implicit
 
-    return template && new TemplatePortal(template, this._viewContainerRef)
+    return template as TemplateRef<unknown> | null
   })
 
   private readonly _explicitContent = contentChild(CkTabContent, {
