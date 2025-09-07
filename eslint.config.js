@@ -29,7 +29,7 @@ module.exports = typescript.config(
         'error',
         {
           anonymous: 'always',
-          named: 'always',
+          named: 'never',
           asyncArrow: 'ignore',
         },
       ],
