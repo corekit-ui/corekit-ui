@@ -25,7 +25,14 @@ module.exports = typescript.config(
       'no-console': 'warn',
       'one-var': 'off',
       'func-style': ['error', 'declaration'],
-      'space-before-function-paren': ['error', 'never'],
+      'space-before-function-paren': [
+        'error',
+        {
+          anonymous: 'always',
+          named: 'always',
+          asyncArrow: 'ignore',
+        },
+      ],
       'new-cap': 'off',
       'sort-keys': 'off',
       'sort-imports': 'off',
@@ -46,6 +53,7 @@ module.exports = typescript.config(
       'no-void': 'off',
       radix: 'off',
       'max-lines-per-function': 'off',
+      'id-length': 'off',
 
       '@stylistic/semi': ['error', 'never'],
       '@stylistic/function-call-spacing': 'error',
