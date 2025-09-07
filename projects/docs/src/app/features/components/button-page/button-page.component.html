@@ -1,23 +1,113 @@
-<div>
-  <h3>Color</h3>
+<h3>Overview</h3>
 
-  <div class="flex flex-wrap gap-2">
-    <button ckButton type="button">Primary</button>
-    <button ckButton color="secondary" type="button">Secondary</button>
-    <button ckButton color="success" type="button">Success</button>
-    <button ckButton color="warning" type="button">Warning</button>
-    <button ckButton color="destructive" type="button">Destructive</button>
-  </div>
+<div class="flex items-center gap-2">
+  <input
+    ckCheckbox
+    id="disable-checkbox"
+    type="checkbox"
+    [(ngModel)]="disabled"
+  />
+  <label for="disable-checkbox">Disabled</label>
 </div>
 
-<div>
-  <h3>Appearance</h3>
+<div class="flex flex-wrap gap-2">
+  <button ckButton type="button" [disabled]="disabled()">Primary</button>
+  <button ckButton color="secondary" type="button" [disabled]="disabled()">
+    Secondary
+  </button>
+  <button ckButton color="success" type="button" [disabled]="disabled()">
+    Success
+  </button>
+  <button ckButton color="warning" type="button" [disabled]="disabled()">
+    Warning
+  </button>
+  <button ckButton color="destructive" type="button" [disabled]="disabled()">
+    Destructive
+  </button>
+</div>
 
-  <div class="flex flex-wrap gap-2">
-    <button ckButton type="button">Solid</button>
-    <button ckButton appearance="outline" type="button">Outline</button>
-    <button ckButton appearance="ghost" type="button">Ghost</button>
-  </div>
+<div class="flex flex-wrap gap-2">
+  <button ckButton type="button" appearance="outline" [disabled]="disabled()">
+    Primary
+  </button>
+  <button
+    ckButton
+    color="secondary"
+    appearance="outline"
+    type="button"
+    [disabled]="disabled()"
+  >
+    Secondary
+  </button>
+  <button
+    ckButton
+    color="success"
+    appearance="outline"
+    type="button"
+    [disabled]="disabled()"
+  >
+    Success
+  </button>
+  <button
+    ckButton
+    color="warning"
+    appearance="outline"
+    type="button"
+    [disabled]="disabled()"
+  >
+    Warning
+  </button>
+  <button
+    ckButton
+    color="destructive"
+    appearance="outline"
+    type="button"
+    [disabled]="disabled()"
+  >
+    Destructive
+  </button>
+</div>
+
+<div class="flex flex-wrap gap-2">
+  <button ckButton type="button" appearance="ghost" [disabled]="disabled()">
+    Primary
+  </button>
+  <button
+    ckButton
+    color="secondary"
+    appearance="ghost"
+    type="button"
+    [disabled]="disabled()"
+  >
+    Secondary
+  </button>
+  <button
+    ckButton
+    color="success"
+    appearance="ghost"
+    type="button"
+    [disabled]="disabled()"
+  >
+    Success
+  </button>
+  <button
+    ckButton
+    color="warning"
+    appearance="ghost"
+    type="button"
+    [disabled]="disabled()"
+  >
+    Warning
+  </button>
+  <button
+    ckButton
+    color="destructive"
+    appearance="ghost"
+    type="button"
+    [disabled]="disabled()"
+  >
+    Destructive
+  </button>
 </div>
 
 <div>

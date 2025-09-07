@@ -53,7 +53,7 @@ export const button = cva(
       },
       { shape: ['pill', 'circle'], class: 'rounded-full' },
       { appearance: 'solid', class: 'shadow-xs active:shadow-none' },
-
+      // primary
       {
         color: 'primary',
         appearance: 'solid',
@@ -70,7 +70,6 @@ export const button = cva(
         color: 'primary',
         appearance: ['outline', 'ghost'],
         class: [
-          'bg-transparent',
           'text-primary',
           'hover:bg-primary/5',
           'active:bg-primary/10',
@@ -78,22 +77,37 @@ export const button = cva(
           'dark:active:bg-primary/5',
         ],
       },
-
+      // secondary
       {
         color: 'secondary',
         appearance: 'solid',
         class: [
-          'border-secondary-foreground/10',
           'bg-secondary',
           'text-secondary-foreground',
-          'hover:bg-secondary-foreground/2',
+          'hover:bg-secondary/80',
           'active:bg-secondary',
           'dark:border-transparent',
           'dark:hover:bg-secondary/80',
           'dark:active:bg-secondary/70',
         ],
       },
-
+      {
+        color: 'secondary',
+        appearance: 'outline',
+        class: 'border-secondary',
+      },
+      {
+        color: 'secondary',
+        appearance: ['outline', 'ghost'],
+        class: [
+          'text-foreground-secondary',
+          'hover:bg-secondary/80',
+          'active:bg-secondary/75',
+          'dark:hover:bg-secondary/30',
+          'dark:active:bg-secondary/20',
+        ],
+      },
+      // success
       {
         color: 'success',
         appearance: 'solid',
@@ -110,14 +124,13 @@ export const button = cva(
         color: 'success',
         appearance: ['outline', 'ghost'],
         class: [
-          'bg-transparent',
           'text-success',
           'hover:bg-success/5',
           'active:bg-success/10',
           'dark:hover:bg-success/10 dark:active:bg-success/5',
         ],
       },
-
+      // warning
       {
         color: 'warning',
         appearance: 'solid',
@@ -134,7 +147,6 @@ export const button = cva(
         color: 'warning',
         appearance: ['outline', 'ghost'],
         class: [
-          'bg-transparent',
           'text-warning',
           'hover:bg-warning/5',
           'active:bg-warning/10',
@@ -142,7 +154,7 @@ export const button = cva(
           'dark:active:bg-warning/5',
         ],
       },
-
+      // destructive
       {
         color: 'destructive',
         appearance: 'solid',
@@ -163,7 +175,6 @@ export const button = cva(
         color: 'destructive',
         appearance: ['outline', 'ghost'],
         class: [
-          'bg-transparent',
           'text-destructive',
           'hover:bg-destructive/5',
           'active:bg-destructive/10',
