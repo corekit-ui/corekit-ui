@@ -3,11 +3,13 @@
     @for (item of componentsMenu; track $index) {
       <li>
         <a
+          #rla="routerLinkActive"
           ckButton
+          routerLinkActive
           size="sm"
-          appearance="ghost"
           class="w-full justify-start"
-          routerLinkActive="bg-muted"
+          [appearance]="rla.isActive ? 'solid' : 'ghost'"
+          [color]="rla.isActive ? 'secondary' : 'primary'"
           [routerLink]="item.link"
         >
           {{ item.title }}

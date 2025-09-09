@@ -7,6 +7,6 @@ import { LucideAngularModule } from 'lucide-angular'
   imports: [CkButton, LucideAngularModule],
   templateUrl: './button-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'block' },
+  host: { class: 'block ck-typography' },
 })
 export class ButtonPageComponent {}

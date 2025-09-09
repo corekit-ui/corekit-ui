@@ -70,6 +70,7 @@ export const button = cva(
         color: 'primary',
         appearance: ['outline', 'ghost'],
         class: [
+          'bg-transparent',
           'text-primary',
           'hover:bg-primary/5',
           'active:bg-primary/10',
@@ -109,6 +110,7 @@ export const button = cva(
         color: 'success',
         appearance: ['outline', 'ghost'],
         class: [
+          'bg-transparent',
           'text-success',
           'hover:bg-success/5',
           'active:bg-success/10',
@@ -132,6 +134,7 @@ export const button = cva(
         color: 'warning',
         appearance: ['outline', 'ghost'],
         class: [
+          'bg-transparent',
           'text-warning',
           'hover:bg-warning/5',
           'active:bg-warning/10',
@@ -160,6 +163,7 @@ export const button = cva(
         color: 'destructive',
         appearance: ['outline', 'ghost'],
         class: [
+          'bg-transparent',
           'text-destructive',
           'hover:bg-destructive/5',
           'active:bg-destructive/10',
