@@ -1,0 +1,18 @@
+export const COMPONENTS_PATHS = {
+  root: 'components',
+  typography: 'typography',
+  accordion: 'accordion',
+  alert: 'alert',
+  autocomplete: 'autocomplete',
+  avatar: 'avatar',
+  badge: 'badge',
+  button: 'button',
+  card: 'card',
+  checkbox: 'checkbox',
+  dialog: 'dialog',
+  formField: 'form-field',
+  input: 'input',
+  label: 'label',
+  radio: 'radio',
+  table: 'table',
+}

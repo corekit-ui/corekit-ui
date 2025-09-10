@@ -1,0 +1,20 @@
+<nav class="max-h-full p-2">
+  <ul class="space-y-1">
+    @for (item of componentsMenu; track $index) {
+      <li>
+        <a
+          #rla="routerLinkActive"
+          ckButton
+          routerLinkActive
+          size="sm"
+          class="w-full justify-start"
+          [appearance]="rla.isActive ? 'solid' : 'ghost'"
+          [color]="rla.isActive ? 'secondary' : 'primary'"
+          [routerLink]="item.link"
+        >
+          {{ item.title }}
+        </a>
+      </li>
+    }
+  </ul>
+</nav>
