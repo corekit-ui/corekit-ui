@@ -13,6 +13,7 @@ export const COMPONENTS_PATHS = {
   formField: 'form-field',
   input: 'input',
   label: 'label',
+  popover: 'popover',
   radio: 'radio',
   table: 'table',
 }

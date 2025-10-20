@@ -57,6 +57,10 @@ export const COMPONENTS_MENU_RAW: MenuItem[] = [
     link: `${COMPONENTS_PATHS.root}/${COMPONENTS_PATHS.label}`,
   },
   {
+    title: 'Popover',
+    link: `${COMPONENTS_PATHS.root}/${COMPONENTS_PATHS.popover}`,
+  },
+  {
     title: 'Radio',
     link: `${COMPONENTS_PATHS.root}/${COMPONENTS_PATHS.radio}`,
   },
