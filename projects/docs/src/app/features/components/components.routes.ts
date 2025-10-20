@@ -103,6 +103,13 @@ export const COMPONENTS_ROUTES: Routes = [
           ),
       },
       {
+        path: COMPONENTS_PATHS.popover,
+        loadComponent: async () =>
+          import('./popover-page/popover-page.component').then(
+            c => c.PopoverPageComponent,
+          ),
+      },
+      {
         path: COMPONENTS_PATHS.radio,
         loadComponent: async () =>
           import('./radio-page/radio-page.component').then(
