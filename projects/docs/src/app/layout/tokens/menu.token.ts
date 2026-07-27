@@ -61,6 +61,10 @@ export const COMPONENTS_MENU_RAW: MenuItem[] = [
     link: `${COMPONENTS_PATHS.root}/${COMPONENTS_PATHS.radio}`,
   },
   {
+    title: 'Select',
+    link: `${COMPONENTS_PATHS.root}/${COMPONENTS_PATHS.select}`,
+  },
+  {
     title: 'Table',
     link: `${COMPONENTS_PATHS.root}/${COMPONENTS_PATHS.table}`,
   },

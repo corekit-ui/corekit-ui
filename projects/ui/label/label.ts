@@ -1,4 +1,4 @@
-import { computed, Directive, input } from '@angular/core'
+import { computed, Directive, ElementRef, input } from '@angular/core'
 import { classNames } from '@corekit/ui/utils'
 
 let uniqueIdCounter = 0
@@ -9,7 +9,7 @@ const labelStyles = [
   'font-medium',
   'in-[.ck-invalid]:text-destructive',
   'inline-block',
-  'in-[ck-form-field:has([ckInput])]:mb-1',
+  'in-[ck-form-field:has([ckInput],ck-select)]:mb-1',
 ]
 
 @Directive({
@@ -24,4 +24,9 @@ export class CkLabel {
   protected readonly _class = computed(() => {
     return classNames(labelStyles, this.class())
   })
+
+  constructor(
+    /** HTML Element of this label. */
+    public readonly host: ElementRef<HTMLElement>,
+  ) {}
 }

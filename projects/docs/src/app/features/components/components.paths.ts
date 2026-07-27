@@ -14,5 +14,6 @@ export const COMPONENTS_PATHS = {
   input: 'input',
   label: 'label',
   radio: 'radio',
+  select: 'select',
   table: 'table',
 }

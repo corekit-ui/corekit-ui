@@ -178,7 +178,7 @@ export class CkAutocompleteTrigger
 
   private readonly _overlayConfig = new OverlayConfig({
     positionStrategy: this._getOverlayPositionStrategy(),
-    scrollStrategy: this._scrollStrategy,
+    scrollStrategy: this._scrollStrategy(),
     width: this._dropdownOriginWidth(),
     maxHeight: 170,
     direction: this._directionality,
@@ -274,7 +274,7 @@ export class CkAutocompleteTrigger
     @Inject(DOCUMENT)
     private readonly _document: Document,
     @Inject(CK_AUTOCOMPLETE_SCROLL_STRATEGY)
-    private readonly _scrollStrategy: ScrollStrategy,
+    private readonly _scrollStrategy: () => ScrollStrategy,
     private readonly _viewContainerRef: ViewContainerRef,
     private readonly _overlay: Overlay,
     private readonly _changeDetectorRef: ChangeDetectorRef,

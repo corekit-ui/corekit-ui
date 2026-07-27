@@ -1,0 +1,70 @@
+<div class="flex items-center gap-2">
+  <input ckCheckbox id="disabled" type="checkbox" [(ngModel)]="disabled" />
+  <label for="disabled">Disabled</label>
+</div>
+
+<div class="flex flex-wrap items-center gap-2">
+  <button
+    ckButton
+    size="sm"
+    type="button"
+    (click)="frameworkId.set('astro-id')"
+  >
+    Preselect Astro
+  </button>
+
+  <button
+    ckButton
+    size="sm"
+    type="button"
+    appearance="outline"
+    (click)="frameworkId.set(null)"
+  >
+    Clear
+  </button>
+</div>
+
+@if (selectedFramework()) {
+  <div>
+    Selected framework:
+    <code class="ck-typography">{{ selectedFramework() | json }}</code>
+  </div>
+}
+
+<ck-form-field class="md:max-w-56">
+  <label ckLabel for="framework">Framework</label>
+
+  <ck-select
+    id="framework"
+    placeholder="Select framework"
+    [disabled]="disabled()"
+    [(ngModel)]="frameworkId"
+  >
+    <ck-option [value]="null">Not selected</ck-option>
+
+    @for (framework of frameworks; track framework.id) {
+      <ck-option [value]="framework.id" [disabled]="framework.disabled">
+        {{ framework.name }}
+      </ck-option>
+    }
+  </ck-select>
+</ck-form-field>
+
+<ck-form-field class="md:max-w-56">
+  <label ckLabel for="required-framework">Required framework</label>
+
+  <ck-select
+    required
+    id="required-framework"
+    placeholder="Select framework"
+    [formControl]="requiredFramework"
+  >
+    @for (framework of frameworks; track framework.id) {
+      <ck-option [value]="framework.id" [disabled]="framework.disabled">
+        {{ framework.name }}
+      </ck-option>
+    }
+  </ck-select>
+
+  <span ckError>Framework is required</span>
+</ck-form-field>

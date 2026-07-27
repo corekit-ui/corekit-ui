@@ -30,7 +30,11 @@ export class CkFormField implements DoCheck, AfterViewInit {
   public readonly class = input<string>()
   public readonly errorStateMatcher = input<ErrorStateMatcher>()
   public readonly errorState = computed(() => this._errorState())
-  public readonly labelId = computed(() => this._label()?.id())
+
+  /** Label of the field, if any. */
+  public readonly label = contentChild(CkLabel)
+
+  public readonly labelId = computed(() => this.label()?.id())
 
   protected readonly _class = computed(() => {
     return classNames(
@@ -41,7 +45,6 @@ export class CkFormField implements DoCheck, AfterViewInit {
   })
 
   private readonly _ngControl = contentChild(NgControl)
-  private readonly _label = contentChild(CkLabel)
   private readonly _input = contentChild(CkInput)
   private readonly _inputPrefix = contentChild(CkInputPrefix)
   private readonly _inputSuffix = contentChild(CkInputSuffix)
