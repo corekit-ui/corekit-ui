@@ -110,6 +110,13 @@ export const COMPONENTS_ROUTES: Routes = [
           ),
       },
       {
+        path: COMPONENTS_PATHS.select,
+        loadComponent: async () =>
+          import('./select-page/select-page.component').then(
+            c => c.SelectPageComponent,
+          ),
+      },
+      {
         path: COMPONENTS_PATHS.table,
         loadComponent: async () =>
           import('./table-page/table-page.component').then(
