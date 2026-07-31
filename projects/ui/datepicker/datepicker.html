@@ -1,0 +1,21 @@
+<ng-template #template>
+  <div
+    cdkTrapFocus
+    role="dialog"
+    aria-modal="false"
+    [id]="id"
+    [class]="_class()"
+    (animationend)="_animationEnd($event)"
+  >
+    <ck-calendar
+      [startAt]="_startAt()"
+      [startView]="startView()"
+      [weekdayStyle]="weekdayStyle()"
+      [selected]="_selected()"
+      [min]="_min()"
+      [max]="_max()"
+      [dateFilter]="_dateFilter()"
+      (userSelection)="_dateSelected($event)"
+    />
+  </div>
+</ng-template>

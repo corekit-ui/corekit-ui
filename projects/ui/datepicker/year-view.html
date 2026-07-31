@@ -1,0 +1,28 @@
+<table role="grid" [class]="_tableClass">
+  <tbody>
+    @for (row of _rows(); track $index) {
+      <tr [class]="_rowClass">
+        @for (cell of row; track $index) {
+          <td
+            role="gridcell"
+            [attr.aria-selected]="cell.isSelected"
+            [class]="_cellClass"
+          >
+            <button
+              type="button"
+              [tabindex]="cell.isActive ? 0 : -1"
+              [attr.data-active]="cell.isActive || null"
+              [attr.aria-label]="cell.ariaLabel"
+              [attr.aria-disabled]="cell.isDisabled || null"
+              [class]="cell.class"
+              (click)="_selectCell(cell)"
+              (keydown)="_handleKeydown($event)"
+            >
+              {{ cell.displayValue }}
+            </button>
+          </td>
+        }
+      </tr>
+    }
+  </tbody>
+</table>
