@@ -76,14 +76,27 @@ export class CkCalendar<D> {
   private readonly _elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
   private readonly _injector = inject(Injector)
 
+  /** Valid `min` boundary, `null` when absent or invalid. */
+  private readonly _min = computed(() => {
+    return this._dateAdapter.getValidDateOrNull(this.min())
+  })
+
+  /** Valid `max` boundary, `null` when absent or invalid. */
+  private readonly _max = computed(() => {
+    return this._dateAdapter.getValidDateOrNull(this.max())
+  })
+
   /**
    * The date defining the currently displayed period. Navigation moves it,
    * selection and focus will be anchored to it.
+   *
+   * Always stays within the boundaries, so that the calendar never opens on a
+   * period holding nothing to pick.
    */
   protected readonly _activeDate = linkedSignal(() => {
-    return (
+    return this._clampDate(
       this._dateAdapter.getValidDateOrNull(this.startAt()) ??
-      this._dateAdapter.today()
+        this._dateAdapter.today(),
     )
   })
 
@@ -143,8 +156,8 @@ export class CkCalendar<D> {
     const pageStart = getMultiYearPageStart(
       this._dateAdapter,
       this._activeDate(),
-      this._dateAdapter.getValidDateOrNull(this.min()),
-      this._dateAdapter.getValidDateOrNull(this.max()),
+      this._min(),
+      this._max(),
     )
 
     const yearName = (year: number): string => {
@@ -165,7 +178,7 @@ export class CkCalendar<D> {
 
   /** Whether the entire previous period is before the `min` date. */
   protected readonly _previousDisabled = computed(() => {
-    const min = this._dateAdapter.getValidDateOrNull(this.min())
+    const min = this._min()
 
     if (!min) return false
 
@@ -179,7 +192,7 @@ export class CkCalendar<D> {
 
   /** Whether the entire next period is after the `max` date. */
   protected readonly _nextDisabled = computed(() => {
-    const max = this._dateAdapter.getValidDateOrNull(this.max())
+    const max = this._max()
 
     if (!max) return false
 
@@ -199,8 +212,8 @@ export class CkCalendar<D> {
           getMultiYearPageStart(
             this._dateAdapter,
             this._activeDate(),
-            this._dateAdapter.getValidDateOrNull(this.min()),
-            this._dateAdapter.getValidDateOrNull(this.max()),
+            this._min(),
+            this._max(),
           ),
           0,
           1,
@@ -242,7 +255,7 @@ export class CkCalendar<D> {
       this.selected.set(date)
     }
 
-    this._activeDate.set(date)
+    this._setActiveDate(date)
     this.userSelection.emit(date)
   }
 
@@ -259,16 +272,21 @@ export class CkCalendar<D> {
 
   /** Moves the calendar to the year and descends into the year view. */
   protected _yearSelected(year: D): void {
-    this._activeDate.set(year)
+    this._setActiveDate(year)
     this._currentView.set('year')
     this._focusActiveCellAfterRender()
   }
 
   /** Moves the calendar to the month and returns to the month view. */
   protected _monthSelected(month: D): void {
-    this._activeDate.set(month)
+    this._setActiveDate(month)
     this._currentView.set('month')
     this._focusActiveCellAfterRender()
+  }
+
+  /** Moves the browsing position, keeping it within the boundaries. */
+  protected _setActiveDate(date: D): void {
+    this._activeDate.set(this._clampDate(date))
   }
 
   /** Moves the calendar to the previous month or year. */
@@ -285,12 +303,12 @@ export class CkCalendar<D> {
   private _navigate(amount: number): void {
     switch (this._currentView()) {
       case 'year':
-        return this._activeDate.set(
+        return this._setActiveDate(
           this._dateAdapter.addCalendarYears(this._activeDate(), amount),
         )
 
       case 'multi-year':
-        return this._activeDate.set(
+        return this._setActiveDate(
           this._dateAdapter.addCalendarYears(
             this._activeDate(),
             amount * YEARS_PER_PAGE,
@@ -298,10 +316,15 @@ export class CkCalendar<D> {
         )
 
       default:
-        return this._activeDate.set(
+        return this._setActiveDate(
           this._dateAdapter.addCalendarMonths(this._activeDate(), amount),
         )
     }
+  }
+
+  /** Keeps the date within the `[min, max]` range. */
+  private _clampDate(date: D): D {
+    return this._dateAdapter.clampDate(date, this._min(), this._max())
   }
 
   /**

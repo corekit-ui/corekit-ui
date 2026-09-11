@@ -20,7 +20,7 @@
       [dateFilter]="dateFilter()"
       [weekdayStyle]="weekdayStyle()"
       (selectedChange)="_dateSelected($event)"
-      (activeDateChange)="_activeDate.set($event)"
+      (activeDateChange)="_setActiveDate($event)"
     />
   }
   @case ('year') {
@@ -30,7 +30,7 @@
       [min]="min()"
       [max]="max()"
       (selectedChange)="_monthSelected($event)"
-      (activeDateChange)="_activeDate.set($event)"
+      (activeDateChange)="_setActiveDate($event)"
     />
   }
   @default {
@@ -40,7 +40,7 @@
       [min]="min()"
       [max]="max()"
       (selectedChange)="_yearSelected($event)"
-      (activeDateChange)="_activeDate.set($event)"
+      (activeDateChange)="_setActiveDate($event)"
     />
   }
 }

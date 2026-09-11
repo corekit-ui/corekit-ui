@@ -88,10 +88,13 @@ export class CkDatepicker<D> {
   /** The currently selected date. */
   protected readonly _selected = computed(() => this._model.selection())
 
-  /** The date the calendar opens at, falling back to the selected one. */
-  protected readonly _startAt = computed(() => {
-    return this.startAt() ?? this._selected()
-  })
+  /**
+   * The date the calendar opens at, captured when the popup opens.
+   *
+   * Browsing is state of its own: were this derived from the selection, every
+   * change of it would throw the open calendar back to the selected period.
+   */
+  protected readonly _startAtOnOpen = signal<D | null>(null)
 
   // Boundaries and the filter belong to the input, as they also drive its
   // validation.
@@ -129,6 +132,7 @@ export class CkDatepicker<D> {
   }
 
   public _open(): void {
+    this._startAtOnOpen.set(this.startAt() ?? this._selected())
     this._isOpen.set(true)
   }
 
