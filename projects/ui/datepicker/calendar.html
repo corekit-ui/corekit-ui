@@ -1,0 +1,46 @@
+<ck-calendar-header
+  [label]="_periodLabel()"
+  [previousButtonLabel]="_previousButtonLabel()"
+  [nextButtonLabel]="_nextButtonLabel()"
+  [periodButtonLabel]="_periodButtonLabel()"
+  [previousDisabled]="_previousDisabled()"
+  [nextDisabled]="_nextDisabled()"
+  (previous)="_previousClicked()"
+  (next)="_nextClicked()"
+  (periodClicked)="_periodClicked()"
+/>
+
+@switch (_currentView()) {
+  @case ('month') {
+    <ck-month-view
+      [activeDate]="_activeDate()"
+      [selected]="selected()"
+      [min]="min()"
+      [max]="max()"
+      [dateFilter]="dateFilter()"
+      [weekdayStyle]="weekdayStyle()"
+      (selectedChange)="_dateSelected($event)"
+      (activeDateChange)="_setActiveDate($event)"
+    />
+  }
+  @case ('year') {
+    <ck-year-view
+      [activeDate]="_activeDate()"
+      [selected]="selected()"
+      [min]="min()"
+      [max]="max()"
+      (selectedChange)="_monthSelected($event)"
+      (activeDateChange)="_setActiveDate($event)"
+    />
+  }
+  @default {
+    <ck-multi-year-view
+      [activeDate]="_activeDate()"
+      [selected]="selected()"
+      [min]="min()"
+      [max]="max()"
+      (selectedChange)="_yearSelected($event)"
+      (activeDateChange)="_setActiveDate($event)"
+    />
+  }
+}

@@ -75,6 +75,13 @@ export const COMPONENTS_ROUTES: Routes = [
           ),
       },
       {
+        path: COMPONENTS_PATHS.datepicker,
+        loadComponent: async () =>
+          import('./datepicker-page/datepicker-page.component').then(
+            c => c.DatepickerPageComponent,
+          ),
+      },
+      {
         path: COMPONENTS_PATHS.dialog,
         loadComponent: async () =>
           import('./dialog-page/dialog-page.component').then(

@@ -9,6 +9,7 @@ export const COMPONENTS_PATHS = {
   button: 'button',
   card: 'card',
   checkbox: 'checkbox',
+  datepicker: 'datepicker',
   dialog: 'dialog',
   formField: 'form-field',
   input: 'input',

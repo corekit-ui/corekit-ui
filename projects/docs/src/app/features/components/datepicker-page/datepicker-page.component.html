@@ -1,0 +1,168 @@
+<div>
+  <h3>Basic</h3>
+
+  <ck-form-field class="max-w-72">
+    <label ckLabel for="date">Choose a date</label>
+
+    <div class="relative flex items-center">
+      <input
+        id="date"
+        ckInput
+        placeholder="Pick a date"
+        [ckDatepicker]="picker"
+      />
+
+      <ck-datepicker-toggle ckInputSuffix [for]="picker" />
+    </div>
+
+    <ck-datepicker #picker />
+  </ck-form-field>
+</div>
+
+<div>
+  <h3>Reactive form, boundaries and validation</h3>
+
+  <form [formGroup]="form">
+    <ck-form-field class="max-w-72">
+      <label ckLabel for="form-date">
+        Choose a date (July 5 – August 20, no Sundays)
+      </label>
+
+      <div class="relative flex items-center">
+        <input
+          id="form-date"
+          ckInput
+          placeholder="Pick a date"
+          formControlName="date"
+          [ckDatepicker]="formPicker"
+          [min]="minDate"
+          [max]="maxDate"
+          [ckDatepickerFilter]="noSundays"
+        />
+
+        <ck-datepicker-toggle ckInputSuffix [for]="formPicker" />
+      </div>
+
+      <!-- An unparsable value is also an empty one, so the errors are shown by
+      priority: the most specific one wins. -->
+      @if (form.controls.date.errors?.['ckDatepickerParse']) {
+        <ck-error>This doesn't look like a date</ck-error>
+      } @else if (form.controls.date.errors?.['ckDatepickerMin']) {
+        <ck-error>The date is before July 5</ck-error>
+      } @else if (form.controls.date.errors?.['ckDatepickerMax']) {
+        <ck-error>The date is after August 20</ck-error>
+      } @else if (form.controls.date.errors?.['ckDatepickerFilter']) {
+        <ck-error>Sundays are not available</ck-error>
+      } @else if (form.controls.date.errors?.['required']) {
+        <ck-error>This field is required</ck-error>
+      }
+
+      <ck-datepicker #formPicker />
+    </ck-form-field>
+  </form>
+
+  <div class="flex items-center gap-2">
+    <input
+      ckCheckbox
+      id="disabled"
+      type="checkbox"
+      [checked]="isFormDisabled()"
+      (change)="toggleFormDisabled()"
+    />
+
+    <label for="disabled">Disable the form control</label>
+  </div>
+
+  <dl class="mt-4 space-y-1">
+    <div>
+      <dt class="inline font-medium">Value:</dt>
+      <dd class="inline">
+        <code>{{ form.controls.date.value }}</code>
+      </dd>
+    </div>
+
+    <div>
+      <dt class="inline font-medium">Errors:</dt>
+      <dd class="inline">
+        <code>{{ form.controls.date.errors | json }}</code>
+      </dd>
+    </div>
+  </dl>
+</div>
+
+<div>
+  <h3>Opening view</h3>
+
+  <p>
+    Use
+    <code>startView</code>
+    to open the calendar at the year selection, handy for dates of birth, and
+    <code>startAt</code>
+    to open it at a specific period.
+  </p>
+
+  <ck-form-field class="max-w-72">
+    <label ckLabel for="birthday">Date of birth</label>
+
+    <div class="relative flex items-center">
+      <input
+        id="birthday"
+        ckInput
+        placeholder="Pick a date"
+        [ckDatepicker]="birthdayPicker"
+      />
+
+      <ck-datepicker-toggle ckInputSuffix [for]="birthdayPicker" />
+    </div>
+
+    <ck-datepicker
+      #birthdayPicker
+      startView="multi-year"
+      [startAt]="birthdayStartAt"
+    />
+  </ck-form-field>
+</div>
+
+<div>
+  <h3>Inline calendar</h3>
+
+  <p>
+    The calendar works on its own, with
+    <code>min</code>
+    ,
+    <code>max</code>
+    and
+    <code>dateFilter</code>
+    limiting the selection.
+  </p>
+
+  <div class="flex flex-wrap gap-6">
+    <ck-calendar [(selected)]="inlineDate" />
+
+    <ck-calendar
+      [min]="minDate"
+      [max]="maxDate"
+      [dateFilter]="noSundays"
+      [(selected)]="inlineDate"
+    />
+  </div>
+
+  <p class="mt-4">
+    Selected:
+    <code>{{ inlineDate() }}</code>
+  </p>
+</div>
+
+<div>
+  <h3>Right-to-left</h3>
+
+  <p>
+    Wrap the calendar into an element with the
+    <code>dir</code>
+    attribute to mirror the layout and the arrow keys.
+  </p>
+
+  <div dir="rtl">
+    <ck-calendar />
+  </div>
+</div>

@@ -41,6 +41,10 @@ export const COMPONENTS_MENU_RAW: MenuItem[] = [
     link: `${COMPONENTS_PATHS.root}/${COMPONENTS_PATHS.checkbox}`,
   },
   {
+    title: 'Datepicker',
+    link: `${COMPONENTS_PATHS.root}/${COMPONENTS_PATHS.datepicker}`,
+  },
+  {
     title: 'Dialog',
     link: `${COMPONENTS_PATHS.root}/${COMPONENTS_PATHS.dialog}`,
   },

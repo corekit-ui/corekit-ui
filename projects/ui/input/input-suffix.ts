@@ -7,8 +7,8 @@ const inputSuffixStyles = [
   'absolute',
   'right-3',
   'pointer-coarse:max-lg:right-3.5',
-  '[&:is([ckButton])]:right-1',
-  '[&:is([ckButton])]:pointer-coarse:max-lg:right-1.5',
+  '[&:is([ckButton],:has(button))]:right-1',
+  '[&:is([ckButton],:has(button))]:pointer-coarse:max-lg:right-1.5',
 ]
 
 @Directive({

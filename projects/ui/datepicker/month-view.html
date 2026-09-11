@@ -1,0 +1,44 @@
+<table role="grid" [class]="_tableClass">
+  <thead aria-hidden="true">
+    <tr [class]="_weekRowClass">
+      @for (weekday of _weekdays(); track weekday.long) {
+        <th
+          scope="col"
+          [attr.aria-label]="weekday.long"
+          [class]="_weekdayClass"
+        >
+          {{ weekday.display }}
+        </th>
+      }
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (week of _weeks(); track $index) {
+      <tr [class]="_weekRowClass">
+        @for (cell of week; track $index) {
+          <td
+            role="gridcell"
+            [attr.aria-selected]="cell ? cell.isSelected : null"
+            [class]="_cellClass"
+          >
+            @if (cell) {
+              <button
+                type="button"
+                [tabindex]="cell.isActive ? 0 : -1"
+                [attr.data-active]="cell.isActive || null"
+                [attr.aria-label]="cell.ariaLabel"
+                [attr.aria-disabled]="cell.isDisabled || null"
+                [class]="cell.class"
+                (click)="_selectCell(cell)"
+                (keydown)="_handleKeydown($event)"
+              >
+                {{ cell.displayValue }}
+              </button>
+            }
+          </td>
+        }
+      </tr>
+    }
+  </tbody>
+</table>
